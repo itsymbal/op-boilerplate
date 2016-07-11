@@ -1,0 +1,3 @@
+include ':Boilerplate'
+// rename project 'Boilerplate' but keep source directory name
+project(':Boilerplate').projectDir = new File('app')

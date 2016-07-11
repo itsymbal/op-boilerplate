@@ -1,0 +1,116 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+
+// Define versions in a single place
+
+rootProject.ext {
+    // Sdk and tools
+    minSdkVersion = 19
+    targetSdkVersion = 23
+    compileSdkVersion = 23
+    buildToolsVersion = '23.0.3'
+    javaVersion = JavaVersion.VERSION_1_8
+    // App dependencies
+    // version 24.0.0 causes exception
+    // org.xmlpull.v1.XmlPullParserException: XML file
+    // build/intermediates/res/merged/debug/drawable/abc_ic_ab_back_material.xml line #-1
+    // (sorry, not yet implemented): invalid drawable tag vector
+    // TODO: attempt to upgrade once library version moves past 24.0.0
+    supportLibraryVersion = '23.4.0'
+    junitVersion = '4.12'
+    mockitoVersion = '1.10.19'
+    butterKnifeVersion = '8.0.1'
+    daggerVersion = '2.2'
+    leakCanaryVersion = '1.4-beta2'
+    timberVersion = '4.1.2'
+    powerMockVersion = '1.6.4'
+    constraintLayoutVersion = '1.0.0-alpha4'
+    robolectricVersion = "3.0"
+    assertJVersion = "1.1.1"
+}
+
+android {
+    compileOptions {
+        sourceCompatibility "$javaVersion"
+        targetCompatibility "$javaVersion"
+    }
+
+    useLibrary 'org.apache.http.legacy' // for robolectric 3.0 compatibility issue
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.orangepenguin.boilerplate"
+        minSdkVersion "$rootProject.ext.minSdkVersion"
+        targetSdkVersion "$rootProject.ext.targetSdkVersion"
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
+
+        }
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro',
+                    'proguard-rules-debug.pro'
+            applicationIdSuffix ".debug"
+        }
+    }
+    lintOptions {
+        lintConfig file("lint.xml")
+    }
+    buildToolsVersion '24'
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+    // Butterknife View injection
+    compile "com.jakewharton:butterknife:$rootProject.ext.butterKnifeVersion"
+    apt "com.jakewharton:butterknife-compiler:$rootProject.ext.butterKnifeVersion"
+    // Timber logging
+    compile "com.jakewharton.timber:timber:$rootProject.ext.timberVersion"
+    compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
+
+    // LeakCanary memory leak detector
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+
+    // Dagger dependency injection
+    apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    testApt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    androidTestApt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    testCompile "junit:junit:$rootProject.ext.junitVersion"
+    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    // LeakCanary memory leak detector
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakCanaryVersion"
+
+    // PowerMock mocking framework
+    testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockVersion"
+    testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockVersion"
+    testCompile "org.powermock:powermock-classloading-xstream:$rootProject.ext.powerMockVersion"
+
+    // Robolectric testing
+    testCompile "org.robolectric:robolectric:$rootProject.ext.robolectricVersion"
+    testCompile "org.robolectric:shadows-support-v4:$rootProject.ext.robolectricVersion"
+
+    // AssertJ assertions
+    testCompile("com.squareup.assertj:assertj-android:$rootProject.ext.assertJVersion") {
+        exclude group: 'com.android.support'
+    }
+    testCompile("com.squareup.assertj:assertj-android-support-v4:$rootProject.ext.assertJVersion") {
+        exclude group: 'com.android.support'
+    }
+}

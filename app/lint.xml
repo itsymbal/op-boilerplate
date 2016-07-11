@@ -1,0 +1,6 @@
+<!--resolve 'InvalidPackage: Package not included in Android' issue-->
+<lint>
+    <issue id="InvalidPackage">
+        <ignore path="**/.gradle/caches/**/*.jar"/>
+    </issue>
+</lint>
