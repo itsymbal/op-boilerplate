@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">Boilerplate</string>
     <string name="login_app_name">Boilerplate</string>
+
+    <!--Username activity-->
     <string name="username_hint">username</string>
+    <string name="username_required">Username required</string>
     <string name="remember_checkbox_content_desc">remember checkbox</string>
     <string name="content_description_app_logo">app logo</string>
     <string name="remember_checkbox">remember</string>
     <string name="view_user_content_description">view user button</string>
     <string name="view_user_button_label">View User Info</string>
+    <string name="title_activity_user_details">UserDetailsActivity</string>
 </resources>

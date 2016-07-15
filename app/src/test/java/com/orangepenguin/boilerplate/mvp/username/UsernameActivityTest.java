@@ -1,15 +1,11 @@
 package com.orangepenguin.boilerplate.mvp.username;
 
-import com.orangepenguin.boilerplate.BuildConfig;
+import com.orangepenguin.boilerplate.BaseRobolectricTest;
 import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.singletons.TestApplication;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
 import dagger.Component;
 import dagger.Module;
@@ -19,12 +15,7 @@ import static com.orangepenguin.boilerplate.fixtures.ActivityFixtures.buildAndSt
 import static com.orangepenguin.boilerplate.fixtures.ActivityFixtures.simulateConfigurationChange;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(application = TestApplication.class,
-        packageName = "com.orangepenguin.boilerplate",
-        constants = BuildConfig.class,
-        sdk = 19)
-public class UsernameActivityTest {
+public class UsernameActivityTest extends BaseRobolectricTest {
 
     private UsernameActivity usernameActivity;
     private UsernameContract.Presenter mockPresenter = Mockito.mock(UsernameContract.Presenter.class);

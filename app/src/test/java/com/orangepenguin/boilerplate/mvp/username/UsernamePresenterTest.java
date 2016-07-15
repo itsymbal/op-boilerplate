@@ -39,7 +39,7 @@ public class UsernamePresenterTest {
     public void shouldStartListActivityOnShowUserButtonPress() {
         usernamePresenter.setView(mockView);
         usernamePresenter.showUserButtonPressed(USERNAME, false);
-        verify(mockView).startDetailsActivity();
+        verify(mockView).startDetailsActivity(USERNAME);
     }
 
     /**
@@ -80,8 +80,7 @@ public class UsernamePresenterTest {
         TestPresenterComponent testPresenterComponent =
                 DaggerUsernamePresenterTest_TestPresenterComponent
                         .builder()
-                        .testPresenterModule(
-                                new TestPresenterModule())
+                        .testPresenterModule(new TestPresenterModule())
                         .build();
         Injector.setPresenterComponent(testPresenterComponent);
     }

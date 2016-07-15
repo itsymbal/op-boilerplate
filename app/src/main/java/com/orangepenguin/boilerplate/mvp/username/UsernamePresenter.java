@@ -22,9 +22,6 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
 
     @Override
     public void showUserButtonPressed(String username, boolean rememberChecked) {
-
-        // TODO: depending on current state (if already sent request do nothing) - show progress dialog,
-        // set async request to backend etc
         view.showMessage("showUserButtonPressed called with %s, %s", username, rememberChecked);
 
         // example of preference setting
@@ -34,6 +31,6 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
             view.clearPreference(Constants.PREF_USERNAME);
         }
 
-        view.startDetailsActivity();
+        view.startDetailsActivity(username);
     }
 }

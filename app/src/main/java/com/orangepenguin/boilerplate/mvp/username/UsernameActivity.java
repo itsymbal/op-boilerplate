@@ -1,12 +1,21 @@
 package com.orangepenguin.boilerplate.mvp.username;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.mobsandgeeks.saripaar.Rule;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Order;
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
 import com.orangepenguin.boilerplate.di.Injector;
+import com.orangepenguin.boilerplate.mvp.userdetails.UserDetailsActivity;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,21 +31,36 @@ import butterknife.OnClick;
  * The View performs the action (forwarding to next activity or saving / deleting preferences) as those are
  * Android-specific actions.
  */
-public class UsernameActivity extends BaseActivity<UsernameContract.Presenter> implements UsernameContract.View {
+public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
+        implements UsernameContract.View, Validator.ValidationListener {
 
+    // Simple input validation performed by Saripaar validation library. Validation kept out of Presenter
+    @NotEmpty(sequence = 1, messageResId = R.string.username_required)
+//    @UniqueUsername(sequence = 2, messageResId = R.string.password_min_length)
     @BindView(R.id.username_edit_text) EditText usernameEditText;
     @BindView(R.id.remember_check_box) CheckBox rememberCheckBox;
 
     @Inject UsernameContract.Presenter presenter;
+    private Validator validator = new Validator(this);
 
     @Override
-    public void startDetailsActivity() {
-        // TODO: start new Detail activity
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.username_activity);
 
-    @Override
-    public void setUsername(String s) {
-        usernameEditText.setText(s);
+
+        ButterKnife.bind(this);
+        validator.setValidationListener(this);
+
+        // injection only happens if presenter is null. That means the only thing that can be @Inject'ed into this
+        // view is the Presenter. That in turn can have anything necessary @Inject'ed, and then set in the View on
+        // setView(). Alternatively, create a data structure, e.g. a Map, to contain all @Inject'ed values and
+        // parametrize BaseActivity with it, and rename get/setPresener with ..NonConfigurationInstance
+        if (presenter == null) {
+            Injector.getUsernameComponent().inject(this);
+        }
+
+        presenter.setView(this);
     }
 
     @Override
@@ -55,23 +79,38 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter> i
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.username_activity);
-        ButterKnife.bind(this);
+    public void startDetailsActivity(String username) {
+        startActivity(UserDetailsActivity.makeIntent(this, username));
+    }
 
-        // injection only happens if presenter is null. That means the only thing that can be @Inject'ed into this
-        // view is the Presenter. That in turn can have anything necessary @Inject'ed, and then set in the View on
-        // setView()
-        if (presenter == null) {
-            Injector.getUsernameComponent().inject(this);
-        }
-
-        presenter.setView(this);
+    @Override
+    public void setUsername(String s) {
+        usernameEditText.setText(s);
     }
 
     @OnClick(R.id.view_user_button)
     void userButtonClick() {
+        validator.validate();
+    }
+
+    @Override
+    public void onValidationSucceeded() { // if all valudation rules pass
         presenter.showUserButtonPressed(usernameEditText.getText().toString(), rememberCheckBox.isChecked());
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (int i = 0; i < errors.size(); i++) {
+            ValidationError validationError = errors.get(i);
+            View viewWithError = validationError.getView();
+            if (viewWithError instanceof EditText) { // only for EditText
+                Rule failedRule = validationError.getFailedRules().get(0);
+                ((EditText) viewWithError).setError(failedRule.getMessage(this));
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            errors.get(0).getView().requestFocus();
+        }
     }
 }

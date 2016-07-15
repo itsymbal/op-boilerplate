@@ -6,7 +6,7 @@ import com.orangepenguin.boilerplate.BaseViewInterface;
 interface UsernameContract {
 
     interface View extends BaseViewInterface {
-        void startDetailsActivity();
+        void startDetailsActivity(String username);
         void setUsername(String s);
         void checkRememberCheckbox();
     }

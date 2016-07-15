@@ -4,24 +4,34 @@
           package="com.orangepenguin.boilerplate">
 
     <application
-        android:name="com.orangepenguin.boilerplate.singletons.BoilerplateApplication"
+        android:name=".singletons.BoilerplateApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <!-- Suppressing warning for FullBackupContent Lint suggestion -->
-        <!--https://developer.android.com/training/backup/autosyncapi.html-->
-        <!-- Suppressing warning for App Indexing Lint suggestion -->
-        <!--https://g.co/AppIndexing/AndroidStudio-->
 
-        <activity android:name="com.orangepenguin.boilerplate.mvp.username.UsernameActivity">
+        <!-- Suppressing warning for FullBackupContent Lint suggestion -->
+        <!-- https://developer.android.com/training/backup/autosyncapi.html -->
+        <!-- Suppressing warning for App Indexing Lint suggestion -->
+        <!-- https://g.co/AppIndexing/AndroidStudio -->
+
+        <activity android:name=".mvp.username.UsernameActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".mvp.userdetails.UserDetailsActivity"
+            android:label="@string/title_activity_user_details"
+            android:parentActivityName=".mvp.username.UsernameActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.orangepenguin.boilerplate.mvp.username.UsernameActivity"/>
         </activity>
     </application>
 
