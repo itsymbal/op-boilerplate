@@ -5,9 +5,8 @@ import dagger.Provides;
 
 @Module
 public final class UsernameModule {
-
     @Provides
-    UsernameContract.Presenter provideSimpleScreenPresenter() {
+    UsernameContract.Presenter provideUsernamePresenter() {
         return new UsernamePresenter();
     }
 }

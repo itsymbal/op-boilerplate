@@ -49,7 +49,7 @@ public class UsernameActivityTest extends BaseRobolectricTest {
                 .testSimpleActivityModule(new TestSimpleActivityModule(mockPresenter))
                 .build();
 
-        Injector.setUsernameComponent(testSimpleActivityComponent);
+        UsernameInjector.setUsernameComponent(testSimpleActivityComponent);
     }
 
     @Module

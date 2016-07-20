@@ -102,6 +102,8 @@ dependencies {
 
     // LeakCanary memory leak detector
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    debugCompile 'com.squareup.haha:haha:2.0.3'
+    // fix build error http://stackoverflow.com/questions/36762834/getting-errors-on-building-in-android-studio-2
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     // Dagger dependency injection

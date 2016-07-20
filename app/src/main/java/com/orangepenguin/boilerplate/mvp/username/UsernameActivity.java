@@ -57,7 +57,7 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         // setView(). Alternatively, create a data structure, e.g. a Map, to contain all @Inject'ed values and
         // parametrize BaseActivity with it, and rename get/setPresener with ..NonConfigurationInstance
         if (presenter == null) {
-            Injector.getUsernameComponent().inject(this);
+            UsernameInjector.getUsernameComponent().inject(this);
         }
 
         presenter.setView(this);

@@ -12,6 +12,7 @@ interface UsernameContract {
     }
 
     interface Presenter extends BasePresenterInterface {
+        void setView(View view);
         void showUserButtonPressed(String username, boolean rememberChecked);
     }
 }

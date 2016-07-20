@@ -1,5 +1,6 @@
 package com.orangepenguin.boilerplate.di;
 
+import com.orangepenguin.boilerplate.mvp.userdetails.UserDetailsPresenter;
 import com.orangepenguin.boilerplate.mvp.username.UsernamePresenter;
 
 import dagger.Subcomponent;
@@ -8,5 +9,5 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {PresenterModule.class})
 public interface PresenterComponent {
     void inject(UsernamePresenter usernamePresenter);
-
+    void inject(UserDetailsPresenter userDetailsPresenter);
 }

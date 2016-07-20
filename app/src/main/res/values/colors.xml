@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="darkGrey">#4d4d4f</color>
-    <color name="mediumGrey">#bababa</color>
-    <color name="lightGrey">#e6e6e6</color>
-    <color name="lighterGrey">#f0f0f0</color>
-    <color name="white">#ffffff</color>
+    <color name="white">#FFFFFF</color>
+    <color name="lightGrey">#DEE7EA</color>
+    <color name="mediumGrey">#808184</color>
+    <color name="darkGrey">#4A4A4A</color>
+
+    <color name="mediumBlue">#00587C</color>
+    <color name="darkBlue">#004E6E</color>
+
+    <color name="saladGreen">#BAD739</color>
+    <color name="lightGreen">#16D290</color>
+    <color name="mediumGreen">#00AA8F</color>
+    <color name="darkGreen">#00685E</color>
+
+    <color name="orange">#FF8300</color>
+    <color name="red">#FB3449</color>
+    <color name="purple">#AA198D</color>
 </resources>

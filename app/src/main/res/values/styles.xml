@@ -3,13 +3,15 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/lightGrey</item>
-        <item name="colorPrimaryDark">@color/darkGrey</item>
-        <item name="colorAccent">@color/lightGrey</item>
+        <item name="colorPrimary">@color/mediumBlue</item>
+        <item name="colorPrimaryDark">@color/darkBlue</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorControlNormal">@color/mediumGreen</item>
+        <item name="colorControlActivated">@color/mediumGreen</item>
+        <item name="android:textColorPrimary">@color/mediumBlue</item>
+        <item name="colorControlHighlight">@color/saladGreen</item>
+        <item name="colorAccent">@color/red</item>
         <item name="android:displayOptions">useLogo|showHome</item>
-        <item name="colorControlNormal">@color/darkGrey</item>
-        <item name="colorControlActivated">@color/darkGrey</item>
-        <item name="colorControlHighlight">@color/darkGrey</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
