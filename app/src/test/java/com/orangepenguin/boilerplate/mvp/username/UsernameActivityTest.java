@@ -1,7 +1,6 @@
 package com.orangepenguin.boilerplate.mvp.username;
 
 import com.orangepenguin.boilerplate.BaseRobolectricTest;
-import com.orangepenguin.boilerplate.di.Injector;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 
 import static com.orangepenguin.boilerplate.fixtures.ActivityFixtures.buildAndStartActivity;
-import static com.orangepenguin.boilerplate.fixtures.ActivityFixtures.simulateConfigurationChange;
+import static com.orangepenguin.boilerplate.fixtures.ActivityFixtures.emulateConfigurationChange;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UsernameActivityTest extends BaseRobolectricTest {
@@ -34,7 +33,7 @@ public class UsernameActivityTest extends BaseRobolectricTest {
     @Test
     public void shouldNotCreateNewPresenterOnConfigurationChange() {
         UsernameContract.Presenter originalPresenter = usernameActivity.presenter;
-        usernameActivity = simulateConfigurationChange(usernameActivity);
+        usernameActivity = emulateConfigurationChange(usernameActivity);
         assertThat(usernameActivity.presenter).isEqualTo(originalPresenter);
     }
 
@@ -68,7 +67,7 @@ public class UsernameActivityTest extends BaseRobolectricTest {
 
     @UsernameScope
     @Component(modules = {TestSimpleActivityModule.class})
-    interface TestUsernameComponent extends UsernameComponent {
+    interface TestUsernameComponent extends UsernameInjector.UsernameComponent {
         void inject(UsernameActivity activity);
     }
 }

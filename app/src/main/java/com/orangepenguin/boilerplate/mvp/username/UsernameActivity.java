@@ -48,7 +48,6 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         super.onCreate(savedInstanceState);
         setContentView(R.layout.username_activity);
 
-
         ButterKnife.bind(this);
         validator.setValidationListener(this);
 
@@ -94,7 +93,7 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
     }
 
     @Override
-    public void onValidationSucceeded() { // if all valudation rules pass
+    public void onValidationSucceeded() { // if all validation rules pass
         presenter.showUserButtonPressed(usernameEditText.getText().toString(), rememberCheckBox.isChecked());
     }
 
@@ -112,5 +111,15 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         if (!errors.isEmpty()) {
             errors.get(0).getView().requestFocus();
         }
+    }
+
+    @Override
+    public void showLoadingIndicator() {
+
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+
     }
 }

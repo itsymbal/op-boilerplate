@@ -7,4 +7,6 @@ public interface BaseViewInterface {
     void savePreference(String name, Boolean value);
     void clearPreference(String name);
     String getPreference(String name, String defaultValue);
+    void showLoadingIndicator();
+    void hideLoadingIndicator();
 }

@@ -2,8 +2,7 @@ package com.orangepenguin.boilerplate.di;
 
 import com.orangepenguin.boilerplate.mvp.userdetails.UserDetailsComponent;
 import com.orangepenguin.boilerplate.mvp.userdetails.UserDetailsModule;
-import com.orangepenguin.boilerplate.mvp.username.UsernameComponent;
-import com.orangepenguin.boilerplate.mvp.username.UsernameModule;
+import com.orangepenguin.boilerplate.mvp.username.UsernameInjector;
 import com.orangepenguin.boilerplate.singletons.BaseApplication;
 
 import javax.inject.Singleton;
@@ -21,7 +20,7 @@ import dagger.Component;
 @Singleton
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
-    UsernameComponent plus(UsernameModule usernameModule);
+    UsernameInjector.UsernameComponent plus(UsernameInjector.UsernameModule usernameModule);
     UserDetailsComponent plus(UserDetailsModule userDetailsModule);
     PresenterComponent plus(PresenterModule presenterModule);
 }

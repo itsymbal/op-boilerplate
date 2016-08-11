@@ -29,21 +29,19 @@ public class ActivityFixtures {
         return activity;
     }
 
-    public static <T extends FragmentActivity> T simulateConfigurationChange(T activity) {
+    public static <T extends FragmentActivity> T emulateConfigurationChange(T oldActivity) {
 
-        ActivityController<T> oldController = CONTROLLER_MAP.get(activity.getClass());
+        ActivityController<T> oldController = CONTROLLER_MAP.get(oldActivity.getClass());
 
         Bundle state = new Bundle();
-        Intent intent = activity.getIntent();
+        Intent intent = oldActivity.getIntent();
 
         @SuppressWarnings("unchecked")
-        Class<T> activityClass = (Class<T>) activity.getClass();
+        Class<T> activityClass = (Class<T>) oldActivity.getClass();
 
-        Object nonConfigurationInstance = activity.onRetainCustomNonConfigurationInstance();
+        Object nonConfigurationInstance = oldActivity.onRetainCustomNonConfigurationInstance();
         oldController.saveInstanceState(state)
-                     .pause()
-                     .stop()
-                     .destroy();
+                .pause();
 
 
         ActivityController<T> newController = Robolectric.buildActivity(activityClass);
@@ -51,6 +49,7 @@ public class ActivityFixtures {
 
         T newActivity = newController.get();
         ShadowActivity newShadow = shadowOf(newActivity);
+        newShadow.resetIsFinishing();
 
         Object instance = NonConfigurationInstanceHelper.createCustomInstances
                 (nonConfigurationInstance);
@@ -59,11 +58,16 @@ public class ActivityFixtures {
         newController
                 .withIntent(intent)
                 .create(state)
-                .postCreate(state)
+                .postCreate(state);
+
+        oldController
+                .stop()
+                .destroy();
+
+        newController
                 .start()
                 .restoreInstanceState(state)
-                .resume()
-                .get();
+                .resume();
         return newActivity;
     }
 }

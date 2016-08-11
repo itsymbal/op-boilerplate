@@ -8,6 +8,10 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
 
     private UsernameContract.View view;
 
+    UsernamePresenter() {
+        Injector.getPresenterComponent().inject(this);
+    }
+
     @Override
     public void showUserButtonPressed(String username, boolean rememberChecked) {
         view.showMessage("showUserButtonPressed called with %s, %s", username, rememberChecked);
@@ -25,7 +29,6 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
     @Override
     public void setView(UsernameContract.View view) {
         this.view = view;
-        Injector.getPresenterComponent().inject(this);
         String savedUsername = view.getPreference(Constants.PREF_USERNAME, null);
         if (savedUsername != null) {
             view.checkRememberCheckbox();

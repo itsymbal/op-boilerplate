@@ -29,8 +29,8 @@ rootProject.ext {
     leakCanaryVersion = '1.4-beta2'
     timberVersion = '4.1.2'
     powerMockVersion = '1.6.4'
-    constraintLayoutVersion = '1.0.0-alpha4'
-    robolectricVersion = "3.2-SNAPSHOT"
+    constraintLayoutVersion = '1.0.0-alpha1'
+    robolectricVersion = "3.1"
     assertJVersion = "1.1.1"
     saripaarVersion = "2.0.2"
 }
@@ -136,6 +136,5 @@ dependencies {
     testCompile("com.squareup.assertj:assertj-android-support-v4:$rootProject.ext.assertJVersion") {
         exclude group: 'com.android.support'
     }
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 }
