@@ -33,6 +33,7 @@ rootProject.ext {
     robolectricVersion = "3.1"
     assertJVersion = "1.1.1"
     saripaarVersion = "2.0.2"
+    rxJavaVersion = "1.1.4"
 }
 
 android {
@@ -114,6 +115,8 @@ dependencies {
 
     // Saripaar input validation
     compile "com.mobsandgeeks:android-saripaar:$rootProject.saripaarVersion"
+    // RxJava (possibly RxAndroid will go here too)
+    compile "io.reactivex:rxjava:$rxJavaVersion"
 
     testCompile "junit:junit:$rootProject.ext.junitVersion"
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"

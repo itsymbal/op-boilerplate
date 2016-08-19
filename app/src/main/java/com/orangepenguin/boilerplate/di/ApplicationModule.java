@@ -2,6 +2,7 @@ package com.orangepenguin.boilerplate.di;
 
 import android.content.Context;
 
+import com.orangepenguin.boilerplate.singletons.ApplicationInterface;
 import com.orangepenguin.boilerplate.singletons.BaseApplication;
 
 import dagger.Module;
@@ -24,4 +25,10 @@ public final class ApplicationModule {
     Context provideContext() {
         return application;
     }
+
+    @Provides
+    ApplicationInterface provideApplicationInterface() {
+        return application;
+    }
+
 }
