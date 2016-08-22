@@ -12,5 +12,4 @@ public class BoilerplateApplication extends BaseApplication {
             }
         });
     }
-
 }

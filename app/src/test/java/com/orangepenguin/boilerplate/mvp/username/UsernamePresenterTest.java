@@ -1,8 +1,9 @@
 package com.orangepenguin.boilerplate.mvp.username;
 
+import com.orangepenguin.boilerplate.di.DaggerTestPresenterComponent;
 import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.di.PresenterComponent;
-import com.orangepenguin.boilerplate.di.PresenterScope;
+import com.orangepenguin.boilerplate.di.TestPresenterComponent;
+import com.orangepenguin.boilerplate.di.TestPresenterModule;
 import com.orangepenguin.boilerplate.singletons.Constants;
 
 import org.junit.Before;
@@ -10,9 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import dagger.Component;
-import dagger.Module;
 
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -25,7 +23,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class UsernamePresenterTest {
     private static final String USERNAME = "testUsername";
 
-    @Mock UsernameContract.View mockView;
+    @Mock
+    UsernameContract.View mockView;
 
     private UsernamePresenter usernamePresenter;
 
@@ -78,22 +77,13 @@ public class UsernamePresenterTest {
 
     private void setUpDependencies() {
         TestPresenterComponent testPresenterComponent =
-                DaggerUsernamePresenterTest_TestPresenterComponent
+                DaggerTestPresenterComponent
                         .builder()
-                        .testPresenterModule(new TestPresenterModule())
+                        .testPresenterModule(
+                                TestPresenterModule
+                                        .builder()
+                                        .build())
                         .build();
         Injector.setPresenterComponent(testPresenterComponent);
-    }
-
-    @PresenterScope
-    @Component(modules = {TestPresenterModule.class})
-    public interface TestPresenterComponent extends PresenterComponent {
-        void inject(UsernamePresenter usernamePresenter);
-
-    }
-
-    @Module
-    static final class TestPresenterModule {
-        // Don't need anything injected in this simple presenter
     }
 }

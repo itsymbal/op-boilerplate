@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -25,16 +24,31 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
 
     private static final String USERNAME_INTENT_PARAM = "USERNAME_INTENT_PARAM";
 
-    @BindView(R.id.contents) EditText contents;
-    @BindView(R.id.loadingIndicator) ProgressBar loadingIndicator;
+    @BindView(R.id.contents)
+    EditText contents;
+    @BindView(R.id.loading_indicator)
+    ProgressBar loadingIndicator;
     @BindView(R.id.content_layout)
     ConstraintLayout contentLayout;
-    @Inject UserDetailsContract.Presenter presenter;
+    @Inject
+    UserDetailsContract.Presenter presenter;
 
     public static Intent makeIntent(Context context, String username) {
         Intent intent = new Intent(context, UserDetailsActivity.class);
         intent.putExtra(USERNAME_INTENT_PARAM, username);
         return intent;
+    }
+
+    @Override
+    public void showLoadingIndicator() {
+        loadingIndicator.setVisibility(VISIBLE);
+        contentLayout.setVisibility(GONE);
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        loadingIndicator.setVisibility(GONE);
+        contentLayout.setVisibility(VISIBLE);
     }
 
     @Override
@@ -53,9 +67,6 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
         String username = getIntent().getStringExtra(USERNAME_INTENT_PARAM);
         presenter.setView(this);
         presenter.onCreate(username);
-        this.isFinishing();
-        this.isChangingConfigurations();
-
         contents.setText("this be details activity for user " + username);
     }
 
@@ -67,17 +78,5 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
     @Override
     protected void setPresenter(UserDetailsContract.Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    public void showLoadingIndicator() {
-        loadingIndicator.setVisibility(VISIBLE);
-        contentLayout.setVisibility(GONE);
-    }
-
-    @Override
-    public void hideLoadingIndicator() {
-        loadingIndicator.setVisibility(GONE);
-        contentLayout.setVisibility(VISIBLE);
     }
 }

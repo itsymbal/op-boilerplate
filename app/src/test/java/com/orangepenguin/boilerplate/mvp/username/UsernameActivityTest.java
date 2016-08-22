@@ -51,6 +51,12 @@ public class UsernameActivityTest extends BaseRobolectricTest {
         UsernameInjector.setUsernameComponent(testSimpleActivityComponent);
     }
 
+    @UsernameScope
+    @Component(modules = {TestSimpleActivityModule.class})
+    interface TestUsernameComponent extends UsernameInjector.UsernameComponent {
+        void inject(UsernameActivity activity);
+    }
+
     @Module
     static final class TestSimpleActivityModule {
         UsernameContract.Presenter presenter;
@@ -63,11 +69,5 @@ public class UsernameActivityTest extends BaseRobolectricTest {
         UsernameContract.Presenter providePresenter() {
             return presenter;
         }
-    }
-
-    @UsernameScope
-    @Component(modules = {TestSimpleActivityModule.class})
-    interface TestUsernameComponent extends UsernameInjector.UsernameComponent {
-        void inject(UsernameActivity activity);
     }
 }

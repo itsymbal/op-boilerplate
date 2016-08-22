@@ -15,7 +15,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class BasePresenterTest {
-    @Mock BaseViewInterface mockView;
+    @Mock
+    BaseViewInterface mockView;
     private TestPresenter testPresenter;
 
     @Before

@@ -21,6 +21,8 @@ import dagger.Component;
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
     UsernameInjector.UsernameComponent plus(UsernameInjector.UsernameModule usernameModule);
+
     UserDetailsComponent plus(UserDetailsModule userDetailsModule);
+
     PresenterComponent plus(PresenterModule presenterModule);
 }

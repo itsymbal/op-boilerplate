@@ -15,7 +15,7 @@ import static android.widget.Toast.LENGTH_SHORT;
  * TODO: http://blog.bradcampbell.nz/keep-your-main-thread-synchronous/
  */
 
-public abstract class BaseApplication extends Application implements ApplicationInterface{
+public abstract class BaseApplication extends Application implements ApplicationInterface {
 
     private static BaseApplication application;
 
@@ -35,7 +35,6 @@ public abstract class BaseApplication extends Application implements Application
                 (getApplication())).build();
 
         Injector.setApplicationComponent(applicationComponent);
-
     }
 
     protected abstract void setUpLogging();

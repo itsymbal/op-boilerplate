@@ -16,10 +16,10 @@ import java.util.Map;
 import static org.robolectric.Shadows.shadowOf;
 
 public class ActivityFixtures {
+    private static Map<Class, ActivityController> CONTROLLER_MAP = new HashMap<>();
+
     private ActivityFixtures() {
     }
-
-    private static Map<Class, ActivityController> CONTROLLER_MAP = new HashMap<>();
 
     public static <T extends Activity> T buildAndStartActivity(Class<T> activityClass) {
         ActivityController<T> controller = Robolectric.buildActivity(activityClass);
@@ -31,6 +31,7 @@ public class ActivityFixtures {
 
     public static <T extends FragmentActivity> T emulateConfigurationChange(T oldActivity) {
 
+        @SuppressWarnings("unchecked")
         ActivityController<T> oldController = CONTROLLER_MAP.get(oldActivity.getClass());
 
         Bundle state = new Bundle();
@@ -42,7 +43,6 @@ public class ActivityFixtures {
         Object nonConfigurationInstance = oldActivity.onRetainCustomNonConfigurationInstance();
         oldController.saveInstanceState(state)
                 .pause();
-
 
         ActivityController<T> newController = Robolectric.buildActivity(activityClass);
         CONTROLLER_MAP.put(activityClass, newController);

@@ -9,10 +9,8 @@ import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Order;
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
-import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.mvp.userdetails.UserDetailsActivity;
 
 import java.util.List;
@@ -36,11 +34,13 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
 
     // Simple input validation performed by Saripaar validation library. Validation kept out of Presenter
     @NotEmpty(sequence = 1, messageResId = R.string.username_required)
-//    @UniqueUsername(sequence = 2, messageResId = R.string.password_min_length)
-    @BindView(R.id.username_edit_text) EditText usernameEditText;
-    @BindView(R.id.remember_check_box) CheckBox rememberCheckBox;
+    @BindView(R.id.username_edit_text)
+    EditText usernameEditText;
+    @BindView(R.id.remember_check_box)
+    CheckBox rememberCheckBox;
 
-    @Inject UsernameContract.Presenter presenter;
+    @Inject
+    UsernameContract.Presenter presenter;
     private Validator validator = new Validator(this);
 
     @Override
@@ -60,11 +60,7 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         }
 
         presenter.setView(this);
-    }
-
-    @Override
-    public void checkRememberCheckbox() {
-        rememberCheckBox.setChecked(true);
+        showLoadingIndicator();
     }
 
     @Override
@@ -85,6 +81,11 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
     @Override
     public void setUsername(String s) {
         usernameEditText.setText(s);
+    }
+
+    @Override
+    public void checkRememberCheckbox() {
+        rememberCheckBox.setChecked(true);
     }
 
     @OnClick(R.id.view_user_button)
@@ -111,15 +112,5 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         if (!errors.isEmpty()) {
             errors.get(0).getView().requestFocus();
         }
-    }
-
-    @Override
-    public void showLoadingIndicator() {
-
-    }
-
-    @Override
-    public void hideLoadingIndicator() {
-
     }
 }

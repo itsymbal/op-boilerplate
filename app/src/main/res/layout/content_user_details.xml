@@ -30,5 +30,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/content_layout"
         app:layout_constraintLeft_toLeftOf="@+id/content_layout"
         app:layout_constraintRight_toRightOf="@+id/content_layout"
-        app:layout_constraintTop_toTopOf="@+id/content_layout" />
+        app:layout_constraintTop_toTopOf="@+id/content_layout"
+        tools:ignore="LabelFor" />
 </android.support.constraint.ConstraintLayout>

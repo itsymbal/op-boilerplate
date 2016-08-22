@@ -2,7 +2,7 @@ package com.orangepenguin.boilerplate.mvp.userdetails;
 
 import com.orangepenguin.boilerplate.di.Injector;
 
-public class UserDetailsInjector {
+class UserDetailsInjector {
 
     private static UserDetailsComponent userDetailsComponent;
 
@@ -10,7 +10,7 @@ public class UserDetailsInjector {
         // private no-arg constructor for singleton class to force static usage
     }
 
-    public static UserDetailsComponent getUserDetailsComponent() {
+    static UserDetailsComponent getUserDetailsComponent() {
         if (userDetailsComponent != null) {
             return userDetailsComponent;
         }

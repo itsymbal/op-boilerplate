@@ -29,7 +29,7 @@ rootProject.ext {
     leakCanaryVersion = '1.4-beta2'
     timberVersion = '4.1.2'
     powerMockVersion = '1.6.4'
-    constraintLayoutVersion = '1.0.0-alpha1'
+    constraintLayoutVersion = '1.0.0-alpha7'
     robolectricVersion = "3.1"
     assertJVersion = "1.1.1"
     saripaarVersion = "2.0.2"
@@ -59,6 +59,7 @@ android {
     useLibrary 'org.apache.http.legacy' // for robolectric 3.0 compatibility issue
 
     compileSdkVersion rootProject.ext.compileSdkVersion
+    //noinspection GradleDependency
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
@@ -88,7 +89,6 @@ android {
     lintOptions {
         lintConfig file("lint.xml")
     }
-    buildToolsVersion '24'
 }
 
 dependencies {

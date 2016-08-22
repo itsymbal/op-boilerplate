@@ -9,5 +9,6 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {PresenterModule.class})
 public interface PresenterComponent {
     void inject(UsernamePresenter usernamePresenter);
+
     void inject(UserDetailsPresenter userDetailsPresenter);
 }

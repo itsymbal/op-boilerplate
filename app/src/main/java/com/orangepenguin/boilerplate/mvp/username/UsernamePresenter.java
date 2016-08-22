@@ -13,6 +13,16 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
     }
 
     @Override
+    public void setView(UsernameContract.View view) {
+        this.view = view;
+        String savedUsername = view.getPreference(Constants.PREF_USERNAME, null);
+        if (savedUsername != null) {
+            view.checkRememberCheckbox();
+            view.setUsername(savedUsername);
+        }
+    }
+
+    @Override
     public void showUserButtonPressed(String username, boolean rememberChecked) {
         view.showMessage("showUserButtonPressed called with %s, %s", username, rememberChecked);
 
@@ -24,15 +34,5 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
         }
 
         view.startDetailsActivity(username);
-    }
-
-    @Override
-    public void setView(UsernameContract.View view) {
-        this.view = view;
-        String savedUsername = view.getPreference(Constants.PREF_USERNAME, null);
-        if (savedUsername != null) {
-            view.checkRememberCheckbox();
-            view.setUsername(savedUsername);
-        }
     }
 }

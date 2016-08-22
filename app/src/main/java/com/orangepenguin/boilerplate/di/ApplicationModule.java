@@ -30,5 +30,4 @@ public final class ApplicationModule {
     ApplicationInterface provideApplicationInterface() {
         return application;
     }
-
 }

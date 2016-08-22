@@ -1,7 +1,6 @@
 package com.orangepenguin.boilerplate.mvp;
 
 import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 
 import com.orangepenguin.boilerplate.BasePresenterInterface;
 import com.orangepenguin.boilerplate.BaseViewInterface;
@@ -15,9 +14,20 @@ import static com.orangepenguin.boilerplate.BuildConfig.DEBUG;
 
 public abstract class BasePresenter implements BasePresenterInterface {
     protected Subscription subscription; // possibly replace with a CompositeSubscription
-    @Inject @Nullable ApplicationInterface application;
+    @Inject
+    ApplicationInterface application;
     private PresenterState presenterState = PresenterState.REQUEST_NOT_IN_PROCESS;
     private BaseViewInterface view;
+
+    @Override
+    public void showMessage(String format, Object... params) {
+        application.showMessage(format, params);
+    }
+
+    @Override
+    public void showDebugMessage(String format, Object... params) {
+        if (DEBUG) showMessage(format, params);
+    }
 
     @CallSuper
     public void setView(BaseViewInterface view) {
@@ -35,17 +45,7 @@ public abstract class BasePresenter implements BasePresenterInterface {
         }
     }
 
-    @Override
-    public void showMessage(String format, Object... params) {
-        application.showMessage(format, params);
-    }
-
-    @Override
-    public void showDebugMessage(String format, Object... params) {
-        if (DEBUG) showMessage(format, params);
-    }
-
-    enum PresenterState {
+    public enum PresenterState {
         REQUEST_IN_PROCESS,
         REQUEST_NOT_IN_PROCESS
     }
