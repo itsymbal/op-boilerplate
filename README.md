@@ -31,8 +31,9 @@ It is architected using the MVP (Model-View-Presenter) pattern.
 # Build Variants
 Project has two Build Variants - Release and Debug (currently only used for different Timber implementations)
 
-#TODO
-in no particular order
+# TODO
+ in no particular order
+
 1. Finish code to call an actual backend API, saving state in the presenter, and showing results in a RecyclerView upon completion
 1. Add CI project configuration via TravisCI or CircleCI
 1. Add images and deploy project to Google Play
