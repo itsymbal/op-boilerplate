@@ -3,7 +3,6 @@ package com.orangepenguin.boilerplate.mvp.username;
 import com.orangepenguin.boilerplate.BaseRobolectricTest;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mockito;
 
 import dagger.Component;
@@ -11,8 +10,6 @@ import dagger.Module;
 import dagger.Provides;
 
 import static com.orangepenguin.boilerplate.fixtures.ActivityFixtures.buildAndStartActivity;
-import static com.orangepenguin.boilerplate.fixtures.ActivityFixtures.emulateConfigurationChange;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class UsernameActivityTest extends BaseRobolectricTest {
 
@@ -23,18 +20,6 @@ public class UsernameActivityTest extends BaseRobolectricTest {
     public void setUp() throws Exception {
         setupTestDependencies();
         usernameActivity = buildAndStartActivity(UsernameActivity.class);
-    }
-
-    /**
-     * this test verifies that Presenter survives configuration change. Presenter keeps state of the View, if View has
-     * such state. Therefore this test is wicked important. TODO: since functionality moved to Base, consider moving
-     * test
-     */
-    @Test
-    public void shouldNotCreateNewPresenterOnConfigurationChange() {
-        UsernameContract.Presenter originalPresenter = usernameActivity.presenter;
-        usernameActivity = emulateConfigurationChange(usernameActivity);
-        assertThat(usernameActivity.presenter).isEqualTo(originalPresenter);
     }
 
     /**

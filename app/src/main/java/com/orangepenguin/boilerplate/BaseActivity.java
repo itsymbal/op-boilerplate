@@ -2,6 +2,8 @@ package com.orangepenguin.boilerplate;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 import static android.view.View.INVISIBLE;
@@ -80,13 +83,9 @@ public abstract class BaseActivity<TypeOfPresenter extends BasePresenterInterfac
     }
 
     @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        ButterKnife.bind(this); // use Butterknife to bind the activity views
     }
 
     @Override
@@ -97,6 +96,7 @@ public abstract class BaseActivity<TypeOfPresenter extends BasePresenterInterfac
         }
     }
 
+    @NonNull
     protected abstract TypeOfPresenter getPresenter();
 
     protected abstract void setPresenter(TypeOfPresenter presenter);

@@ -15,9 +15,9 @@ It is architected using the MVP (Model-View-Presenter) pattern.
 1. ButterKnife view injection
 1. Timber logging
 1. RetroLambda for Java 8 Lambdas
-1. LeakCanary 
+1. LeakCanary memory leak detector
 1. ConstraintLayout 
-1. Saripaar input validation
+1. Saripaar user input validation
 1. RxJava
 1. Victor SVG to PNG image conversion library
 
@@ -27,9 +27,10 @@ It is architected using the MVP (Model-View-Presenter) pattern.
 1. Mockito mocking
 1. PowerMock mocking (for mocking Final classes in Rx, e.g. Subscription)
 1. AssertJ Java assertions
+1. AssertJ Android View assertions
 
 # Build Variants
-Project has two Build Variants - Release and Debug (currently only used for different Timber implementations)
+Project has two Build Variants - Release and Debug 
 
 # TODO
  in no particular order
