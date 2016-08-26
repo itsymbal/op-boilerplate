@@ -1,6 +1,6 @@
 package com.orangepenguin.boilerplate.di;
 
-import com.orangepenguin.boilerplate.singletons.ApplicationInterface;
+import com.orangepenguin.boilerplate.ApplicationInterface;
 
 import dagger.Module;
 import dagger.Provides;

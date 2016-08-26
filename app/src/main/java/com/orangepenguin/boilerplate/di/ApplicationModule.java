@@ -2,8 +2,8 @@ package com.orangepenguin.boilerplate.di;
 
 import android.content.Context;
 
-import com.orangepenguin.boilerplate.singletons.ApplicationInterface;
-import com.orangepenguin.boilerplate.singletons.BaseApplication;
+import com.orangepenguin.boilerplate.ApplicationInterface;
+import com.orangepenguin.boilerplate.BaseApplication;
 
 import dagger.Module;
 import dagger.Provides;

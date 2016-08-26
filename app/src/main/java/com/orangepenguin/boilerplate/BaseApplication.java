@@ -1,6 +1,7 @@
-package com.orangepenguin.boilerplate.singletons;
+package com.orangepenguin.boilerplate;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.orangepenguin.boilerplate.di.ApplicationComponent;
@@ -42,5 +43,34 @@ public abstract class BaseApplication extends Application implements Application
     @Override
     public void showMessage(String format, Object... params) {
         Toast.makeText(this, String.format(format, params), LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void savePreference(String key, String value) {
+        getEditor().putString(key, value).apply();
+    }
+
+    @Override
+    public void savePreference(String key, Boolean value) {
+        getEditor().putBoolean(key, value).apply();
+    }
+
+    @Override
+    public void clearPreference(String key) {
+        getEditor().remove(key).apply();
+    }
+
+    @Override
+    public String getPreference(String key, String defaultValue) {
+        return getSharedPreferences().getString(key, defaultValue);
+    }
+
+    private SharedPreferences.Editor getEditor() {
+        return getSharedPreferences().edit();
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return getSharedPreferences(getPackageName(),
+                MODE_PRIVATE);
     }
 }

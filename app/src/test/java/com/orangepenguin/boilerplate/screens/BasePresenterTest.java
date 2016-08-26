@@ -1,5 +1,6 @@
-package com.orangepenguin.boilerplate.mvp;
+package com.orangepenguin.boilerplate.screens;
 
+import com.orangepenguin.boilerplate.BasePresenter;
 import com.orangepenguin.boilerplate.BaseViewInterface;
 
 import org.junit.Before;

@@ -17,7 +17,7 @@
         <!-- Suppressing warning for App Indexing Lint suggestion -->
         <!-- https://g.co/AppIndexing/AndroidStudio -->
 
-        <activity android:name=".mvp.username.UsernameActivity">
+        <activity android:name=".screens.username.UsernameActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -25,13 +25,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".mvp.userdetails.UserDetailsActivity"
+            android:name=".screens.userdetails.UserDetailsActivity"
             android:label="@string/title_activity_user_details"
-            android:parentActivityName=".mvp.username.UsernameActivity"
+            android:parentActivityName=".screens.username.UsernameActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.orangepenguin.boilerplate.mvp.username.UsernameActivity"/>
+                android:value="com.orangepenguin.boilerplate.screens.username.UsernameActivity"/>
         </activity>
     </application>
 

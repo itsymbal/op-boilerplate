@@ -1,8 +1,9 @@
-package com.orangepenguin.boilerplate.mvp.userdetails;
+package com.orangepenguin.boilerplate.screens.userdetails;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
@@ -24,14 +25,10 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
 
     private static final String USERNAME_INTENT_PARAM = "USERNAME_INTENT_PARAM";
 
-    @BindView(R.id.contents)
-    EditText contents;
-    @BindView(R.id.loading_indicator)
-    ProgressBar loadingIndicator;
-    @BindView(R.id.content_layout)
-    ConstraintLayout contentLayout;
-    @Inject
-    UserDetailsContract.Presenter presenter;
+    @BindView(R.id.contents) EditText contents;
+    @BindView(R.id.loading_indicator) ProgressBar loadingIndicator;
+    @BindView(R.id.content_layout) ConstraintLayout contentLayout;
+    @Inject UserDetailsContract.Presenter presenter;
 
     public static Intent makeIntent(Context context, String username) {
         Intent intent = new Intent(context, UserDetailsActivity.class);
@@ -70,6 +67,7 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
         contents.setText("this be details activity for user " + username);
     }
 
+    @NonNull
     @Override
     protected UserDetailsContract.Presenter getPresenter() {
         return presenter;

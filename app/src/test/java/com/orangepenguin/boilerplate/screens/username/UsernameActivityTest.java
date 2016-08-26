@@ -1,8 +1,9 @@
-package com.orangepenguin.boilerplate.mvp.username;
+package com.orangepenguin.boilerplate.screens.username;
 
 import com.orangepenguin.boilerplate.BaseRobolectricTest;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
 
 import dagger.Component;
@@ -20,6 +21,12 @@ public class UsernameActivityTest extends BaseRobolectricTest {
     public void setUp() throws Exception {
         setupTestDependencies();
         usernameActivity = buildAndStartActivity(UsernameActivity.class);
+    }
+
+    @Test
+    public void tstGoHere() {
+
+
     }
 
     /**

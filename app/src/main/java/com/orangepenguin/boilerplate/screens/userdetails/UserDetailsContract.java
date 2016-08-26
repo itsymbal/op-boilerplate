@@ -1,4 +1,4 @@
-package com.orangepenguin.boilerplate.mvp.userdetails;
+package com.orangepenguin.boilerplate.screens.userdetails;
 
 import com.orangepenguin.boilerplate.BasePresenterInterface;
 import com.orangepenguin.boilerplate.BaseViewInterface;

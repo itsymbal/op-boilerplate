@@ -1,10 +1,8 @@
-package com.orangepenguin.boilerplate.mvp;
+package com.orangepenguin.boilerplate;
 
 import android.support.annotation.CallSuper;
 
-import com.orangepenguin.boilerplate.BasePresenterInterface;
-import com.orangepenguin.boilerplate.BaseViewInterface;
-import com.orangepenguin.boilerplate.singletons.ApplicationInterface;
+import com.orangepenguin.boilerplate.di.Injector;
 
 import javax.inject.Inject;
 
@@ -13,9 +11,8 @@ import rx.Subscription;
 import static com.orangepenguin.boilerplate.BuildConfig.DEBUG;
 
 public abstract class BasePresenter implements BasePresenterInterface {
-    protected Subscription subscription; // possibly replace with a CompositeSubscription
-    @Inject
-    ApplicationInterface application;
+    public Subscription subscription; // possibly replace with a CompositeSubscription - common storage
+    @Inject protected ApplicationInterface application;
     private PresenterState presenterState = PresenterState.REQUEST_NOT_IN_PROCESS;
     private BaseViewInterface view;
 
@@ -31,6 +28,9 @@ public abstract class BasePresenter implements BasePresenterInterface {
 
     @CallSuper
     public void setView(BaseViewInterface view) {
+        if (application == null) { // not yet injected - then inject. First time setView() is being called.
+            Injector.getPresenterComponent().inject(this);
+        }
         this.view = view;
     }
 

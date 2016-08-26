@@ -1,4 +1,4 @@
-package com.orangepenguin.boilerplate.mvp.userdetails;
+package com.orangepenguin.boilerplate.screens.username;
 
 import java.lang.annotation.Retention;
 
@@ -8,5 +8,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Scope
 @Retention(RUNTIME)
-@interface UserDetailsScope {
+@interface UsernameScope {
 }

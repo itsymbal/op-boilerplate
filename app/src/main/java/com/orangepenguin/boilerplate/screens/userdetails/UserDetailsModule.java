@@ -1,4 +1,4 @@
-package com.orangepenguin.boilerplate.mvp.userdetails;
+package com.orangepenguin.boilerplate.screens.userdetails;
 
 import dagger.Module;
 import dagger.Provides;

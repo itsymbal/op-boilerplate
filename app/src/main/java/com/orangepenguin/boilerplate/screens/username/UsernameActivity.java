@@ -1,6 +1,7 @@
-package com.orangepenguin.boilerplate.mvp.username;
+package com.orangepenguin.boilerplate.screens.username;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -11,7 +12,7 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
-import com.orangepenguin.boilerplate.mvp.userdetails.UserDetailsActivity;
+import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsActivity;
 
 import java.util.List;
 
@@ -34,13 +35,10 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
 
     // Simple input validation performed by Saripaar validation library. Validation kept out of Presenter
     @NotEmpty(sequence = 1, messageResId = R.string.username_required)
-    @BindView(R.id.username_edit_text)
-    EditText usernameEditText;
-    @BindView(R.id.remember_check_box)
-    CheckBox rememberCheckBox;
+    @BindView(R.id.username_edit_text) EditText usernameEditText;
+    @BindView(R.id.remember_check_box) CheckBox rememberCheckBox;
 
-    @Inject
-    UsernameContract.Presenter presenter;
+    @Inject UsernameContract.Presenter presenter;
     private Validator validator = new Validator(this);
 
     @Override
@@ -63,6 +61,7 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         showLoadingIndicator();
     }
 
+    @NonNull
     @Override
     public UsernameContract.Presenter getPresenter() {
         return presenter;

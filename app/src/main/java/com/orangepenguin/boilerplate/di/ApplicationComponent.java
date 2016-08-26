@@ -1,9 +1,9 @@
 package com.orangepenguin.boilerplate.di;
 
-import com.orangepenguin.boilerplate.mvp.userdetails.UserDetailsComponent;
-import com.orangepenguin.boilerplate.mvp.userdetails.UserDetailsModule;
-import com.orangepenguin.boilerplate.mvp.username.UsernameInjector;
-import com.orangepenguin.boilerplate.singletons.BaseApplication;
+import com.orangepenguin.boilerplate.BaseApplication;
+import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsComponent;
+import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsModule;
+import com.orangepenguin.boilerplate.screens.username.UsernameInjector;
 
 import javax.inject.Singleton;
 
@@ -21,8 +21,6 @@ import dagger.Component;
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
     UsernameInjector.UsernameComponent plus(UsernameInjector.UsernameModule usernameModule);
-
     UserDetailsComponent plus(UserDetailsModule userDetailsModule);
-
     PresenterComponent plus(PresenterModule presenterModule);
 }

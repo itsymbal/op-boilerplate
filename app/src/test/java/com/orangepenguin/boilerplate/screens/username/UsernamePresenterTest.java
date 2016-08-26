@@ -1,5 +1,6 @@
-package com.orangepenguin.boilerplate.mvp.username;
+package com.orangepenguin.boilerplate.screens.username;
 
+import com.orangepenguin.boilerplate.ApplicationInterface;
 import com.orangepenguin.boilerplate.di.DaggerTestPresenterComponent;
 import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.di.TestPresenterComponent;
@@ -23,15 +24,15 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class UsernamePresenterTest {
     private static final String USERNAME = "testUsername";
 
-    @Mock
-    UsernameContract.View mockView;
+    @Mock UsernameContract.View mockView;
+    @Mock ApplicationInterface mockApplication;
 
     private UsernamePresenter usernamePresenter;
 
     @Before
     public void setUp() {
-        usernamePresenter = new UsernamePresenter();
         setUpDependencies();
+        usernamePresenter = new UsernamePresenter();
     }
 
     @Test
@@ -48,7 +49,7 @@ public class UsernamePresenterTest {
     public void shouldSetUsernamePreferenceIfCheckboxChecked() {
         usernamePresenter.setView(mockView);
         usernamePresenter.showUserButtonPressed(USERNAME, true);
-        verify(mockView).savePreference(Constants.PREF_USERNAME, USERNAME);
+        verify(mockApplication).savePreference(Constants.PREF_USERNAME, USERNAME);
     }
 
     /**
@@ -58,7 +59,7 @@ public class UsernamePresenterTest {
     public void shouldClearPreferenceIfCheckboxNotChecked() {
         usernamePresenter.setView(mockView);
         usernamePresenter.showUserButtonPressed(USERNAME, false);
-        verify(mockView).clearPreference(Constants.PREF_USERNAME);
+        verify(mockApplication).clearPreference(Constants.PREF_USERNAME);
     }
 
     /**
@@ -66,11 +67,11 @@ public class UsernamePresenterTest {
      */
     @Test
     public void shouldPopulateUsernameAndRememberCheckboxIfUsernamePreferenceSet() {
-        when(mockView.getPreference(Constants.PREF_USERNAME, null)).thenReturn(USERNAME);
+        when(mockApplication.getPreference(Constants.PREF_USERNAME, null)).thenReturn(USERNAME);
 
         usernamePresenter.setView(mockView);
 
-        verify(mockView).getPreference(Constants.PREF_USERNAME, null);
+        verify(mockApplication).getPreference(Constants.PREF_USERNAME, null);
         verify(mockView).setUsername(USERNAME);
         verify(mockView).checkRememberCheckbox();
     }
@@ -82,6 +83,7 @@ public class UsernamePresenterTest {
                         .testPresenterModule(
                                 TestPresenterModule
                                         .builder()
+                                        .baseApplication(mockApplication)
                                         .build())
                         .build();
         Injector.setPresenterComponent(testPresenterComponent);

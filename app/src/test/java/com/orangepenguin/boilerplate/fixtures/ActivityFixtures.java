@@ -41,7 +41,8 @@ public class ActivityFixtures {
         Class<T> activityClass = (Class<T>) oldActivity.getClass();
 
         Object nonConfigurationInstance = oldActivity.onRetainCustomNonConfigurationInstance();
-        oldController.saveInstanceState(state)
+        oldController
+                .saveInstanceState(state)
                 .pause();
 
         ActivityController<T> newController = Robolectric.buildActivity(activityClass);
@@ -51,9 +52,9 @@ public class ActivityFixtures {
         ShadowActivity newShadow = shadowOf(newActivity);
         newShadow.resetIsFinishing();
 
-        Object instance = NonConfigurationInstanceHelper.createCustomInstances
-                (nonConfigurationInstance);
+        Object instance = NonConfigurationInstanceHelper.createCustomInstances(nonConfigurationInstance);
         newShadow.setLastNonConfigurationInstance(instance);
+
 
         newController
                 .withIntent(intent)
@@ -61,6 +62,7 @@ public class ActivityFixtures {
                 .postCreate(state);
 
         oldController
+                .pause()
                 .stop()
                 .destroy();
 

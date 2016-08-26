@@ -1,9 +1,9 @@
-package com.orangepenguin.boilerplate.mvp.userdetails;
+package com.orangepenguin.boilerplate.screens.userdetails;
 
+import com.orangepenguin.boilerplate.BasePresenter;
 import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.mvp.BasePresenter;
 
-import static com.orangepenguin.boilerplate.mvp.BasePresenter.PresenterState.REQUEST_NOT_IN_PROCESS;
+import static com.orangepenguin.boilerplate.BasePresenter.PresenterState.REQUEST_NOT_IN_PROCESS;
 
 public class UserDetailsPresenter extends BasePresenter implements UserDetailsContract.Presenter {
 

@@ -1,14 +1,15 @@
 package com.orangepenguin.boilerplate.di;
 
-import com.orangepenguin.boilerplate.mvp.userdetails.UserDetailsPresenter;
-import com.orangepenguin.boilerplate.mvp.username.UsernamePresenter;
+import com.orangepenguin.boilerplate.BasePresenter;
+import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsPresenter;
+import com.orangepenguin.boilerplate.screens.username.UsernamePresenter;
 
 import dagger.Subcomponent;
 
 @PresenterScope
 @Subcomponent(modules = {PresenterModule.class})
 public interface PresenterComponent {
+    void inject(BasePresenter basePresenter);
     void inject(UsernamePresenter usernamePresenter);
-
     void inject(UserDetailsPresenter userDetailsPresenter);
 }

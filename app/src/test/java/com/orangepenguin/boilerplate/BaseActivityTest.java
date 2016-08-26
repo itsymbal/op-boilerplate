@@ -1,9 +1,8 @@
 package com.orangepenguin.boilerplate;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.orangepenguin.boilerplate.mvp.BasePresenter;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Before;
@@ -65,6 +64,7 @@ public class BaseActivityTest extends BaseRobolectricTest {
             }
         }
 
+        @NonNull
         @Override
         protected BasePresenterInterface getPresenter() {
             return presenter;
