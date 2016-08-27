@@ -9,8 +9,6 @@ interface UserDetailsContract {
     }
 
     interface Presenter extends BasePresenterInterface {
-        void setView(View view);
-
-        void onCreate(String username);
+        void setView(View view, String username);
     }
 }

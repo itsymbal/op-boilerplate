@@ -60,8 +60,16 @@ public abstract class BaseActivity<TypeOfPresenter extends BasePresenterInterfac
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         ButterKnife.bind(this); // use Butterknife to bind the activity views
+        if (toolbar != null) { // if layout defines a Toolbar with id R.id.toolbar
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true); // call this with 'false' to disable Up
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
     }
 
+    /**
+     * only call this is Activity is being destroyed forever
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

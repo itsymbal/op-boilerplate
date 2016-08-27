@@ -89,6 +89,19 @@ android {
     lintOptions {
         lintConfig file("lint.xml")
     }
+    /**
+     * Properties referenced here are defined in the top level gradle.properties file.
+     * They are then accessible as member variables of the generated BuildConfig.class file
+     * Use that file to store API keys, paths etc. An initial version of that file
+     * is checked into git but subsequent changes are not tracked in git. This allows each project to customize those
+     * properties without checking in secrets. File is set to watched / unwatched using aliases defined in ~/.gitconfig
+     [alias]
+     unwatch = update-index --assume-unchanged
+     watch = update-index --no-assume-unchanged
+     */
+    buildTypes.each {
+        it.buildConfigField 'String', 'GITHUB_API_KEY', GitHubApiKey
+    }
 }
 
 dependencies {

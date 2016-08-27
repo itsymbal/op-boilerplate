@@ -13,7 +13,6 @@ import static com.orangepenguin.boilerplate.BuildConfig.DEBUG;
 public abstract class BasePresenter implements BasePresenterInterface {
     public Subscription subscription; // possibly replace with a CompositeSubscription - common storage
     @Inject protected ApplicationInterface application;
-    private PresenterState presenterState = PresenterState.REQUEST_NOT_IN_PROCESS;
     private BaseViewInterface view;
 
     @Override
@@ -46,7 +45,8 @@ public abstract class BasePresenter implements BasePresenterInterface {
     }
 
     public enum PresenterState {
+        REQUEST_NOT_SENT,
         REQUEST_IN_PROCESS,
-        REQUEST_NOT_IN_PROCESS
+        RESPONSE_RECEIVED
     }
 }
