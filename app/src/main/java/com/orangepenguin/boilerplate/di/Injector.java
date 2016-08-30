@@ -10,12 +10,14 @@ public class Injector {
     }
 
     public static PresenterComponent getPresenterComponent() {
-        if (presenterComponent != null) {
-            return presenterComponent;
+        // presenter component is effectively a singleton. Once created it is never recreated
+        if (presenterComponent == null) {
+            presenterComponent = getApplicationComponent().plus(new PresenterModule());
         }
-        return getApplicationComponent().plus(new PresenterModule());
+        return presenterComponent;
     }
 
+    // setters allow setting a mock component from test code
     public static void setPresenterComponent(PresenterComponent presenterComponent) {
         Injector.presenterComponent = presenterComponent;
     }

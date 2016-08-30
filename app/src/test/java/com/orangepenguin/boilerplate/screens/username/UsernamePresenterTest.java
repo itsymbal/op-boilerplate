@@ -5,6 +5,8 @@ import com.orangepenguin.boilerplate.di.DaggerTestPresenterComponent;
 import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.di.TestPresenterComponent;
 import com.orangepenguin.boilerplate.di.TestPresenterModule;
+import com.orangepenguin.boilerplate.model.User;
+import com.orangepenguin.boilerplate.rest.GitHubClient;
 import com.orangepenguin.boilerplate.singletons.Constants;
 
 import org.junit.Before;
@@ -15,6 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
+import static rx.Observable.just;
 
 
 /**
@@ -26,20 +29,24 @@ public class UsernamePresenterTest {
 
     @Mock UsernameContract.View mockView;
     @Mock ApplicationInterface mockApplication;
+    @Mock GitHubClient mockGitHubClient;
 
+    @Mock User mockUser;
     private UsernamePresenter usernamePresenter;
 
     @Before
     public void setUp() {
         setUpDependencies();
         usernamePresenter = new UsernamePresenter();
+        when(mockGitHubClient.user(USERNAME)).thenReturn(just(mockUser));
     }
 
     @Test
     public void shouldStartListActivityOnShowUserButtonPress() {
         usernamePresenter.setView(mockView);
         usernamePresenter.showUserButtonPressed(USERNAME, false);
-        verify(mockView).startDetailsActivity(USERNAME);
+
+        verify(mockView).startDetailsActivity(mockUser);
     }
 
     /**
@@ -84,6 +91,7 @@ public class UsernamePresenterTest {
                                 TestPresenterModule
                                         .builder()
                                         .baseApplication(mockApplication)
+                                        .gitHubClient(mockGitHubClient)
                                         .build())
                         .build();
         Injector.setPresenterComponent(testPresenterComponent);

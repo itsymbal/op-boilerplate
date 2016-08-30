@@ -4,27 +4,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
+import com.orangepenguin.boilerplate.model.User;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.orangepenguin.boilerplate.BuildConfig.DEBUG;
+
 public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presenter>
         implements UserDetailsContract.View {
 
-    private static final String USERNAME_INTENT_PARAM = "USERNAME_INTENT_PARAM";
+    private static final String USER_INTENT_PARAM = "USER_INTENT_PARAM";
 
-    @BindView(R.id.contents) EditText contents;
     @Inject UserDetailsContract.Presenter presenter;
+    @BindView(R.id.avatar_imageview) ImageView avatarImageview;
+    @BindView(R.id.username_textview) TextView usernameTextView;
+    @BindView(R.id.name_textview) TextView nameTextView;
+    @BindView(R.id.company_textview) TextView companyTextView;
+    @BindView(R.id.repos_textview) TextView reposTextView;
+    private Picasso picasso;
 
-    public static Intent makeIntent(Context context, String username) {
+    public static Intent makeIntent(Context context, User user) {
         Intent intent = new Intent(context, UserDetailsActivity.class);
-        intent.putExtra(USERNAME_INTENT_PARAM, username);
+        intent.putExtra(USER_INTENT_PARAM, user);
         return intent;
     }
 
@@ -38,9 +48,11 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
             UserDetailsInjector.getUserDetailsComponent().inject(this);
         }
 
-        String username = getIntent().getStringExtra(USERNAME_INTENT_PARAM);
-        presenter.setView(this, username);
-        contents.setText("this be details activity for user " + username);
+        User user = (User) getIntent().getSerializableExtra(USER_INTENT_PARAM);
+        presenter.setView(this, user);
+
+        picasso = Picasso.with(this);
+        if (DEBUG) picasso.setIndicatorsEnabled(true); //show cached indicators
     }
 
     @NonNull
@@ -52,5 +64,25 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
     @Override
     protected void setPresenter(UserDetailsContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void setUsername(String username) {
+        usernameTextView.setText(username);
+    }
+
+    @Override
+    public void setCompany(String company) {
+        companyTextView.setText(company);
+    }
+
+    @Override
+    public void setName(String name) {
+        nameTextView.setText(name);
+    }
+
+    @Override
+    public void setAvatarUrl(String avatarUrl) {
+        picasso.load(avatarUrl).into(avatarImageview);
     }
 }

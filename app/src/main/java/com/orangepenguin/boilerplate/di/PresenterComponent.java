@@ -4,9 +4,11 @@ import com.orangepenguin.boilerplate.BasePresenter;
 import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsPresenter;
 import com.orangepenguin.boilerplate.screens.username.UsernamePresenter;
 
+import javax.inject.Singleton;
+
 import dagger.Subcomponent;
 
-@PresenterScope
+@Singleton
 @Subcomponent(modules = {PresenterModule.class})
 public interface PresenterComponent {
     void inject(BasePresenter basePresenter);

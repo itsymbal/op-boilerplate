@@ -34,6 +34,10 @@ rootProject.ext {
     assertJVersion = "1.1.1"
     saripaarVersion = "2.0.2"
     rxJavaVersion = "1.1.4"
+    gsonVersion = "2.7"
+    picassoVersion = "2.4.0"
+    retrofitVersion = "2.1.0"
+    okHttpVersion = "3.3.0"
 }
 
 android {
@@ -53,7 +57,7 @@ android {
         svgDpi = 72
 
         // Do not generate these densities for SVG assets
-        excludeDensities = [ 'ldpi', 'xxxhdpi' ]
+        excludeDensities = ['ldpi', 'xxxhdpi']
     }
 
     useLibrary 'org.apache.http.legacy' // for robolectric 3.0 compatibility issue
@@ -76,7 +80,6 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
-
         }
         debug {
             minifyEnabled true
@@ -85,9 +88,6 @@ android {
                     'proguard-rules-debug.pro'
             applicationIdSuffix ".debug"
         }
-    }
-    lintOptions {
-        lintConfig file("lint.xml")
     }
     /**
      * Properties referenced here are defined in the top level gradle.properties file.
@@ -100,19 +100,23 @@ android {
      watch = update-index --no-assume-unchanged
      */
     buildTypes.each {
-        it.buildConfigField 'String', 'GITHUB_API_KEY', GitHubApiKey
+        it.buildConfigField 'String', 'GITHUB_API_KEY', "\"" + GitHubApiKey + "\""
+        it.buildConfigField 'String', 'GITHUB_URL', "\"" + "https://api.github.com" + "\""
+    }
+    lintOptions {
+        lintConfig file("lint.xml")
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support:design:$supportLibraryVersion"
     // Butterknife View injection
-    compile "com.jakewharton:butterknife:$rootProject.ext.butterKnifeVersion"
-    apt "com.jakewharton:butterknife-compiler:$rootProject.ext.butterKnifeVersion"
+    compile "com.jakewharton:butterknife:$butterKnifeVersion"
+    apt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
     // Timber logging
-    compile "com.jakewharton.timber:timber:$rootProject.ext.timberVersion"
-    compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
+    compile "com.jakewharton.timber:timber:$timberVersion"
+    compile "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
 
     // LeakCanary memory leak detector
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
@@ -120,36 +124,46 @@ dependencies {
     // fix build error http://stackoverflow.com/questions/36762834/getting-errors-on-building-in-android-studio-2
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
+    // Retrofit network library and dependencies
+    compile "com.google.code.gson:gson:$gsonVersion"
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+
+    // Picasso image library
+    compile "com.squareup.picasso:picasso:$picassoVersion"
+
     // Dagger dependency injection
-    apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-    testApt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-    androidTestApt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+    apt "com.google.dagger:dagger-compiler:$daggerVersion"
+    testApt "com.google.dagger:dagger-compiler:$daggerVersion"
+    androidTestApt "com.google.dagger:dagger-compiler:$daggerVersion"
+    compile "com.google.dagger:dagger:$daggerVersion"
 
     // Saripaar input validation
-    compile "com.mobsandgeeks:android-saripaar:$rootProject.saripaarVersion"
+    compile "com.mobsandgeeks:android-saripaar:$saripaarVersion"
     // RxJava (possibly RxAndroid will go here too)
     compile "io.reactivex:rxjava:$rxJavaVersion"
 
-    testCompile "junit:junit:$rootProject.ext.junitVersion"
-    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.mockito:mockito-all:$mockitoVersion"
     // LeakCanary memory leak detector
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakCanaryVersion"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     // PowerMock mocking framework
-    testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockVersion"
-    testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockVersion"
-    testCompile "org.powermock:powermock-classloading-xstream:$rootProject.ext.powerMockVersion"
+    testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
+    testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
+    testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
 
     // Robolectric testing
-    testCompile "org.robolectric:robolectric:$rootProject.ext.robolectricVersion"
-    testCompile "org.robolectric:shadows-support-v4:$rootProject.ext.robolectricVersion"
+    testCompile "org.robolectric:robolectric:$robolectricVersion"
+    testCompile "org.robolectric:shadows-support-v4:$robolectricVersion"
 
     // AssertJ assertions
-    testCompile("com.squareup.assertj:assertj-android:$rootProject.ext.assertJVersion") {
+    testCompile("com.squareup.assertj:assertj-android:$assertJVersion") {
         exclude group: 'com.android.support'
     }
-    testCompile("com.squareup.assertj:assertj-android-support-v4:$rootProject.ext.assertJVersion") {
+    testCompile("com.squareup.assertj:assertj-android-support-v4:$assertJVersion") {
         exclude group: 'com.android.support'
     }
     provided 'org.glassfish:javax.annotation:10.0-b28'

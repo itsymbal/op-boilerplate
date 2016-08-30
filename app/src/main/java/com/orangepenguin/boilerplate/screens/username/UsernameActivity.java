@@ -12,6 +12,7 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
+import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsActivity;
 
 import java.util.List;
@@ -58,7 +59,6 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         }
 
         presenter.setView(this);
-        showLoadingIndicator();
     }
 
     @NonNull
@@ -73,8 +73,8 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
     }
 
     @Override
-    public void startDetailsActivity(String username) {
-        startActivity(UserDetailsActivity.makeIntent(this, username));
+    public void startDetailsActivity(User user) {
+        startActivity(UserDetailsActivity.makeIntent(this, user));
     }
 
     @Override
@@ -85,6 +85,11 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
     @Override
     public void checkRememberCheckbox() {
         rememberCheckBox.setChecked(true);
+    }
+
+    @Override
+    public void setUsernameError(String error) {
+        usernameEditText.setError(error);
     }
 
     @OnClick(R.id.view_user_button)

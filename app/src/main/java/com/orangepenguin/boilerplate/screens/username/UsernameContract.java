@@ -2,15 +2,15 @@ package com.orangepenguin.boilerplate.screens.username;
 
 import com.orangepenguin.boilerplate.BasePresenterInterface;
 import com.orangepenguin.boilerplate.BaseViewInterface;
+import com.orangepenguin.boilerplate.model.User;
 
 interface UsernameContract {
 
     interface View extends BaseViewInterface {
-        void startDetailsActivity(String username);
-
+        void startDetailsActivity(User user);
         void setUsername(String s);
-
         void checkRememberCheckbox();
+        void setUsernameError(String error);
     }
 
     interface Presenter extends BasePresenterInterface {
