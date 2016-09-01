@@ -7,15 +7,12 @@ import com.orangepenguin.boilerplate.rest.GitHubClient;
 
 import javax.inject.Inject;
 
-import static com.orangepenguin.boilerplate.BasePresenter.PresenterState.REQUEST_NOT_SENT;
-
 /**
  * This example presenter requests data for passed in username, keeps state of the request, and sets the state on
  * the view that is set at the time of event
  */
 public class UserDetailsPresenter extends BasePresenter implements UserDetailsContract.Presenter {
 
-    PresenterState presenterState = REQUEST_NOT_SENT;
     @Inject GitHubClient gitHubClient;
     private UserDetailsContract.View view;
     private User user;
@@ -35,18 +32,6 @@ public class UserDetailsPresenter extends BasePresenter implements UserDetailsCo
 
     private void updateViewState() {
         setUserDetailsOnView();
-        //        switch (presenterState) {
-        //            case REQUEST_NOT_SENT:
-        //                requestData();
-        //                break;
-        //            case REQUEST_IN_PROCESS:
-        //                view.showLoadingIndicator();
-        //                break;
-        //            case RESPONSE_RECEIVED:
-        //                view.hideLoadingIndicator();
-        //                setUserDetailsOnView();
-        //                break;
-        //        }
     }
 
     private void setUserDetailsOnView() {

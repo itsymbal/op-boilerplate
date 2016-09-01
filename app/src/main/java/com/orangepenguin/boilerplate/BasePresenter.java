@@ -15,6 +15,10 @@ public abstract class BasePresenter implements BasePresenterInterface {
     @Inject protected ApplicationInterface application;
     private BaseViewInterface view;
 
+    public BasePresenter() {
+        Injector.getPresenterComponent().inject(this);
+    }
+
     @Override
     public void showMessage(String format, Object... params) {
         application.showMessage(format, params);
@@ -27,9 +31,6 @@ public abstract class BasePresenter implements BasePresenterInterface {
 
     @CallSuper
     public void setView(BaseViewInterface view) {
-        if (application == null) { // not yet injected - then inject. First time setView() is being called.
-            Injector.getPresenterComponent().inject(this);
-        }
         this.view = view;
     }
 
@@ -47,6 +48,7 @@ public abstract class BasePresenter implements BasePresenterInterface {
     public enum PresenterState {
         REQUEST_NOT_SENT,
         REQUEST_IN_PROCESS,
+        REQUEST_NOT_IN_PROCESS,
         RESPONSE_RECEIVED
     }
 }

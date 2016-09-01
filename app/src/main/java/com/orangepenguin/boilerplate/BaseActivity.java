@@ -11,6 +11,7 @@ import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import timber.log.Timber;
 
 import static android.view.View.INVISIBLE;
@@ -23,6 +24,9 @@ public abstract class BaseActivity<TypeOfPresenter extends BasePresenterInterfac
     @Nullable @BindView(R.id.toolbar) protected Toolbar toolbar; // common toolbar storage
     @Nullable @BindView(R.id.loading_indicator) protected View loadingIndicator; // common loading indicator
     @Nullable @BindView(R.id.contents_container) protected View contentContainer; // common content storage
+
+    // TODO: have a list of Unbinders
+    protected Unbinder unbinder;
 
     @Override
     public void showLoadingIndicator() {
@@ -77,6 +81,9 @@ public abstract class BaseActivity<TypeOfPresenter extends BasePresenterInterfac
             if (getPresenter() != null) {
                 getPresenter().onDestroy();
             }
+        }
+        if (unbinder != null) {
+            unbinder.unbind();
         }
     }
 

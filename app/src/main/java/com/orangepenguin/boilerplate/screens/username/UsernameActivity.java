@@ -17,8 +17,6 @@ import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsActivity;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,23 +37,23 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
     @BindView(R.id.username_edit_text) EditText usernameEditText;
     @BindView(R.id.remember_check_box) CheckBox rememberCheckBox;
 
-    @Inject UsernameContract.Presenter presenter;
+    private UsernameContract.Presenter presenter;
     private Validator validator = new Validator(this);
+    private UsernameInjector injector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.username_activity);
 
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         validator.setValidationListener(this);
 
-        // injection only happens if presenter is null. That means the only thing that can be @Inject'ed into this
-        // view is the Presenter. That in turn can have anything necessary @Inject'ed, and then set in the View on
-        // setView(). Alternatively, create a data structure, e.g. a Map, to contain all @Inject'ed values and
-        // parametrize BaseActivity with it, and rename get/setPresener with ..NonConfigurationInstance
+        // the getPresenter() method creates a brand new instance of Presenter. That only needs to happen once for
+        // this Activity instance. After that on configuration change the Presenter gets saved and restored to the new
+        // instance of Activity by BaseActivity via getPresenter()/ setPresenter() methods
         if (presenter == null) {
-            UsernameInjector.getUsernameComponent().inject(this);
+            presenter = UsernameInjector.getPresenter();
         }
 
         presenter.setView(this);
@@ -102,6 +100,14 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         presenter.showUserButtonPressed(usernameEditText.getText().toString(), rememberCheckBox.isChecked());
     }
 
+    /**
+     * Saripaar input validation can only be tested on device either by hand or using Espresso, but not using
+     * Robolectric. This is because it does not run
+     * validation if the View in question is not visible, which under Robolectric it never is (method isVisible()
+     * traverses up the hierarchy and finds that the root view is not attached to any screen)
+     *
+     * @param errors
+     */
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
         for (int i = 0; i < errors.size(); i++) {
@@ -116,5 +122,10 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         if (!errors.isEmpty()) {
             errors.get(0).getView().requestFocus();
         }
+    }
+
+    @OnClick(R.id.username_edit_text)
+    void onUserNameClicked() {
+
     }
 }

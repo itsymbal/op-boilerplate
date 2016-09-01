@@ -23,5 +23,17 @@
         <item name="android:background">?attr/colorPrimary</item>
     </style>
 
+    <!-- first define App's own text style, explicitly inheriting from system style-->
+    <style name="TextAppearance.App" parent="@style/TextAppearance.AppCompat"/>
+
+    <!-- now inherit from App's style using dot notation. Only override elements that are not already in system style-->
+    <style name="TextAppearance.App.Label">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.App.Label.Small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
 
 </resources>

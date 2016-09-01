@@ -60,7 +60,7 @@ public class BaseActivityTest extends BaseRobolectricTest {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.layout_test_activity);
             if (presenter == null) {
-                presenter = new TestPresenter(); // in real code this would be injected by Dagger2
+                presenter = new TestPresenter(); // in real code this would be retrieved from Injector
             }
         }
 

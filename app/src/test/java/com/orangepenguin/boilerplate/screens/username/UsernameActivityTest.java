@@ -24,42 +24,11 @@ public class UsernameActivityTest extends BaseRobolectricTest {
     }
 
     @Test
-    public void tstGoHere() {
-
+    public void sampleTest() {
 
     }
 
-    /**
-     * this setup method is an example to follow. Set up a Test Component, which will be used to inject SUT, and set
-     * it on Injector static class. If set, it will be used; if not, a brand new one will be created
-     */
     private void setupTestDependencies() {
-
-        TestUsernameComponent testSimpleActivityComponent = DaggerUsernameActivityTest_TestUsernameComponent
-                .builder()
-                .testSimpleActivityModule(new TestSimpleActivityModule(mockPresenter))
-                .build();
-
-        UsernameInjector.setUsernameComponent(testSimpleActivityComponent);
-    }
-
-    @UsernameScope
-    @Component(modules = {TestSimpleActivityModule.class})
-    interface TestUsernameComponent extends UsernameInjector.UsernameComponent {
-        void inject(UsernameActivity activity);
-    }
-
-    @Module
-    static final class TestSimpleActivityModule {
-        UsernameContract.Presenter presenter;
-
-        TestSimpleActivityModule(UsernameContract.Presenter presenter) {
-            this.presenter = presenter;
-        }
-
-        @Provides
-        UsernameContract.Presenter providePresenter() {
-            return presenter;
-        }
+        UsernameInjector.setPresenter(mockPresenter);
     }
 }

@@ -9,6 +9,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.orangepenguin.boilerplate.BuildConfig.GITHUB_URL;
@@ -37,5 +39,14 @@ final class PresenterModule {
                     .create(GitHubClient.class);
         }
         return gitHubClient;
+    }
+
+    /*
+     * In production code, observe on Main thread. In test code, we don't have no Main thread (because it depends on
+     * an Android looper), so test component can supply a different type of scheduler
+     */
+    @Provides
+    public Scheduler provideObserveOnScheduler() {
+        return AndroidSchedulers.mainThread();
     }
 }

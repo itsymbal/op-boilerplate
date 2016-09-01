@@ -55,7 +55,6 @@ public class ActivityFixtures {
         Object instance = NonConfigurationInstanceHelper.createCustomInstances(nonConfigurationInstance);
         newShadow.setLastNonConfigurationInstance(instance);
 
-
         newController
                 .withIntent(intent)
                 .create(state)

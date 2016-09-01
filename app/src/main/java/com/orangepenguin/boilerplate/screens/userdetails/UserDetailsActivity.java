@@ -24,13 +24,13 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
 
     private static final String USER_INTENT_PARAM = "USER_INTENT_PARAM";
 
-    @Inject UserDetailsContract.Presenter presenter;
-    @BindView(R.id.avatar_imageview) ImageView avatarImageview;
+    @Inject Picasso picasso;
+    @BindView(R.id.avatar_imageview) ImageView avatarImageView;
     @BindView(R.id.username_textview) TextView usernameTextView;
     @BindView(R.id.name_textview) TextView nameTextView;
     @BindView(R.id.company_textview) TextView companyTextView;
     @BindView(R.id.repos_textview) TextView reposTextView;
-    private Picasso picasso;
+    private UserDetailsContract.Presenter presenter;
 
     public static Intent makeIntent(Context context, User user) {
         Intent intent = new Intent(context, UserDetailsActivity.class);
@@ -42,17 +42,17 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
-
         ButterKnife.bind(this);
+
+        UserDetailsInjector.getUserDetailsComponent().inject(this);
+        if (DEBUG) picasso.setIndicatorsEnabled(true); //show cached indicators
+
         if (presenter == null) {
-            UserDetailsInjector.getUserDetailsComponent().inject(this);
+            presenter = UserDetailsInjector.getPresenter();
         }
 
         User user = (User) getIntent().getSerializableExtra(USER_INTENT_PARAM);
         presenter.setView(this, user);
-
-        picasso = Picasso.with(this);
-        if (DEBUG) picasso.setIndicatorsEnabled(true); //show cached indicators
     }
 
     @NonNull
@@ -83,6 +83,6 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
 
     @Override
     public void setAvatarUrl(String avatarUrl) {
-        picasso.load(avatarUrl).into(avatarImageview);
+        picasso.load(avatarUrl).into(avatarImageView);
     }
 }

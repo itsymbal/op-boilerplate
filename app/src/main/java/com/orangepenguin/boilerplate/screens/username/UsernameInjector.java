@@ -1,41 +1,21 @@
 package com.orangepenguin.boilerplate.screens.username;
 
-import com.orangepenguin.boilerplate.di.Injector;
-
-import dagger.Module;
-import dagger.Provides;
-import dagger.Subcomponent;
-
 public class UsernameInjector {
 
-    private static UsernameComponent usernameComponent;
+    private static UsernameContract.Presenter presenter;
 
     private UsernameInjector() {
         // private no-arg constructor for singleton class to force static usage
     }
 
-    static UsernameComponent getUsernameComponent() {
-        if (usernameComponent != null) {
-            return usernameComponent;
+    public static UsernameContract.Presenter getPresenter() {
+        if (presenter != null) {
+            return presenter;
         }
-        return Injector.getApplicationComponent().plus(new UsernameModule());
+        return new UsernamePresenter();
     }
 
-    static void setUsernameComponent(UsernameComponent usernameComponent) {
-        UsernameInjector.usernameComponent = usernameComponent;
-    }
-
-    @UsernameScope
-    @Subcomponent(modules = {UsernameModule.class})
-    public interface UsernameComponent {
-        void inject(UsernameActivity activity);
-    }
-
-    @Module
-    public static final class UsernameModule {
-        @Provides
-        UsernameContract.Presenter provideUsernamePresenter() {
-            return new UsernamePresenter();
-        }
+    public static void setPresenter(UsernameContract.Presenter presenter) {
+        UsernameInjector.presenter = presenter;
     }
 }

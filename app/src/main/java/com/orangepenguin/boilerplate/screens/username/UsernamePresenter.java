@@ -8,11 +8,17 @@ import com.orangepenguin.boilerplate.singletons.Constants;
 
 import javax.inject.Inject;
 
+import rx.Scheduler;
 import timber.log.Timber;
+
+import static com.orangepenguin.boilerplate.BasePresenter.PresenterState.REQUEST_IN_PROCESS;
+import static com.orangepenguin.boilerplate.BasePresenter.PresenterState.REQUEST_NOT_IN_PROCESS;
 
 public class UsernamePresenter extends BasePresenter implements UsernameContract.Presenter {
 
     @Inject GitHubClient gitHubClient;
+    @Inject Scheduler observeScheduler;
+    PresenterState presenterState = REQUEST_NOT_IN_PROCESS;
     private UsernameContract.View view;
     private User user;
 
@@ -28,6 +34,7 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
             view.checkRememberCheckbox();
             view.setUsername(savedUsername);
         }
+        setViewState();
     }
 
     @Override
@@ -41,23 +48,38 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
             application.clearPreference(Constants.PREF_USERNAME);
         }
 
-        fetchUser(username);
+        fetchUser(username.trim());
     }
 
-    private User fetchUser(String username) {
+    private void setViewState() {
+        if (presenterState == REQUEST_IN_PROCESS) {
+            view.showLoadingIndicator();
+        }
+    }
 
+    private void fetchUser(String username) {
         view.showLoadingIndicator();
-        subscription = gitHubClient.user(username).subscribe(
+        presenterState = REQUEST_IN_PROCESS;
+        subscription = gitHubClient.user(username)
+                //TODO: check the issue described here
+                //http://blog.bradcampbell.nz/keep-your-main-thread-synchronous/
+                // it's likely not an issue, since *some* view will exist
+                .observeOn(observeScheduler)
+                .subscribe(
                 user -> {
+                    Timber.v("calling onNext() on thread" + Thread.currentThread().getName());
+                    presenterState = REQUEST_NOT_IN_PROCESS;
+                    view.hideLoadingIndicator();
                     view.startDetailsActivity(user);
                 },
                 throwable -> {
+                    Timber.v("calling onError() on thread" + Thread.currentThread().getName());
+
+                    presenterState = REQUEST_NOT_IN_PROCESS;
                     view.hideLoadingIndicator();
                     Timber.d(throwable, "error fetching user");
                     view.setUsernameError("No such user");
                 }
         );
-
-        return null;
     }
 }

@@ -34,6 +34,7 @@ rootProject.ext {
     assertJVersion = "1.1.1"
     saripaarVersion = "2.0.2"
     rxJavaVersion = "1.1.4"
+    rxAndroidVersion = "1.2.1"
     gsonVersion = "2.7"
     picassoVersion = "2.4.0"
     retrofitVersion = "2.1.0"
@@ -144,6 +145,7 @@ dependencies {
     compile "com.mobsandgeeks:android-saripaar:$saripaarVersion"
     // RxJava (possibly RxAndroid will go here too)
     compile "io.reactivex:rxjava:$rxJavaVersion"
+    compile "io.reactivex:rxandroid:$rxAndroidVersion"
 
     testCompile "junit:junit:$junitVersion"
     testCompile "org.mockito:mockito-all:$mockitoVersion"
