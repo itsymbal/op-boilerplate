@@ -12,6 +12,7 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
+import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsActivity;
 
@@ -39,7 +40,6 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
 
     private UsernameContract.Presenter presenter;
     private Validator validator = new Validator(this);
-    private UsernameInjector injector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,8 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
         // this Activity instance. After that on configuration change the Presenter gets saved and restored to the new
         // instance of Activity by BaseActivity via getPresenter()/ setPresenter() methods
         if (presenter == null) {
-            presenter = UsernameInjector.getPresenter();
+            presenter = (UsernameContract.Presenter) Injector.getPresenter
+                    (UsernameContract.Presenter.class);
         }
 
         presenter.setView(this);

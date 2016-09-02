@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
+import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.model.User;
 import com.squareup.picasso.Picasso;
 
@@ -44,11 +45,12 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
         setContentView(R.layout.activity_user_details);
         ButterKnife.bind(this);
 
-        UserDetailsInjector.getUserDetailsComponent().inject(this);
+        Injector.getActivityComponent().inject(this);
         if (DEBUG) picasso.setIndicatorsEnabled(true); //show cached indicators
 
         if (presenter == null) {
-            presenter = UserDetailsInjector.getPresenter();
+            presenter = (UserDetailsContract.Presenter) Injector.getPresenter
+                    (UserDetailsContract.Presenter.class);
         }
 
         User user = (User) getIntent().getSerializableExtra(USER_INTENT_PARAM);

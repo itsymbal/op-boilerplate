@@ -1,11 +1,11 @@
 package com.orangepenguin.boilerplate.screens.userdetails;
 
-import android.media.Image;
 import android.widget.ImageView;
 
 import com.orangepenguin.boilerplate.BaseRobolectricTest;
+import com.orangepenguin.boilerplate.di.ActivityComponent;
+import com.orangepenguin.boilerplate.di.Injector;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestCreator;
 
 import org.junit.Before;
@@ -36,8 +36,10 @@ public class UserDetailsActivityTest extends BaseRobolectricTest {
 
     @Test
     public void loadAvatarUrlShouldCallPicasso() {
-        userDetailsActivity.setAvatarUrl("test_url");
         when(mockPicasso.load("test_url")).thenReturn(mockRequestCreator);
+
+        userDetailsActivity.setAvatarUrl("test_url");
+
         verify(mockPicasso).load("test_url");
         verify(mockRequestCreator).into((ImageView)Matchers.any());
     }
@@ -48,7 +50,7 @@ public class UserDetailsActivityTest extends BaseRobolectricTest {
      */
     private void setupTestDependencies() {
         // TODO: convert to non-Dagger Presenter handling
-        UserDetailsInjector.setPresenter(mockPresenter);
+        Injector.setPresenter(UserDetailsContract.Presenter.class, mockPresenter);
 
         UserDetailsActivityTest.TestUserDetailsComponent testSimpleActivityComponent =
                 DaggerUserDetailsActivityTest_TestUserDetailsComponent
@@ -56,11 +58,11 @@ public class UserDetailsActivityTest extends BaseRobolectricTest {
                 .testActivityModule(new TestActivityModule())
                 .build();
 
-        UserDetailsInjector.setUserDetailsComponent(testSimpleActivityComponent);
+        Injector.setActivityComponent(testSimpleActivityComponent);
     }
 
     @Component(modules = {TestActivityModule.class})
-    interface TestUserDetailsComponent extends UserDetailsInjector.UserDetailsComponent {
+    interface TestUserDetailsComponent extends ActivityComponent {
         void inject(UserDetailsActivity activity);
     }
 
