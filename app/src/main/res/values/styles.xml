@@ -14,9 +14,9 @@
         <item name="android:displayOptions">useLogo|showHome</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/white</item>
@@ -24,7 +24,7 @@
     </style>
 
     <!-- first define App's own text style, explicitly inheriting from system style-->
-    <style name="TextAppearance.App" parent="@style/TextAppearance.AppCompat"/>
+    <style name="TextAppearance.App" parent="@style/TextAppearance.AppCompat" />
 
     <!-- now inherit from App's style using dot notation. Only override elements that are not already in system style-->
     <style name="TextAppearance.App.Label">

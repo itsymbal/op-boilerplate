@@ -4,7 +4,7 @@ import com.orangepenguin.boilerplate.BasePresenterInterface;
 import com.orangepenguin.boilerplate.BaseViewInterface;
 import com.orangepenguin.boilerplate.model.User;
 
-interface UserDetailsContract {
+public interface UserDetailsContract {
 
     interface View extends BaseViewInterface {
         void setUsername(String usrename);

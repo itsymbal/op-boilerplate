@@ -1,7 +1,6 @@
 package com.orangepenguin.boilerplate.screens.username;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -12,7 +11,6 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
-import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsActivity;
 
@@ -38,7 +36,6 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
     @BindView(R.id.username_edit_text) EditText usernameEditText;
     @BindView(R.id.remember_check_box) CheckBox rememberCheckBox;
 
-    private UsernameContract.Presenter presenter;
     private Validator validator = new Validator(this);
 
     @Override
@@ -48,27 +45,7 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
 
         unbinder = ButterKnife.bind(this);
         validator.setValidationListener(this);
-
-        // the getPresenter() method creates a brand new instance of Presenter. That only needs to happen once for
-        // this Activity instance. After that on configuration change the Presenter gets saved and restored to the new
-        // instance of Activity by BaseActivity via getPresenter()/ setPresenter() methods
-        if (presenter == null) {
-            presenter = (UsernameContract.Presenter) Injector.getPresenter
-                    (UsernameContract.Presenter.class);
-        }
-
         presenter.setView(this);
-    }
-
-    @NonNull
-    @Override
-    public UsernameContract.Presenter getPresenter() {
-        return presenter;
-    }
-
-    @Override
-    public void setPresenter(UsernameContract.Presenter presenter) {
-        this.presenter = presenter;
     }
 
     @Override

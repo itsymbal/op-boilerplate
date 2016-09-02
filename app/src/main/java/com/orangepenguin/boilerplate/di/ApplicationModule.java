@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.orangepenguin.boilerplate.ApplicationInterface;
 import com.orangepenguin.boilerplate.BaseApplication;
-import com.squareup.picasso.Picasso;
 
 import dagger.Module;
 import dagger.Provides;
@@ -30,10 +29,5 @@ public final class ApplicationModule {
     @Provides
     ApplicationInterface provideApplicationInterface() {
         return application;
-    }
-
-    @Provides
-    Picasso providePicasso(Context context) {
-        return Picasso.with(context);
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.orangepenguin.boilerplate">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.orangepenguin.boilerplate">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".singletons.BoilerplateApplication"
@@ -19,21 +19,20 @@
         <!-- Suppressing warning for App Indexing Lint suggestion -->
         <!-- https://g.co/AppIndexing/AndroidStudio -->
 
-        <activity android:name=".screens.username.UsernameActivity"
+        <activity
+            android:name=".screens.username.UsernameActivity"
             android:label="Search GitHub user"
-            android:launchMode="singleTop"
-            >
+            android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".screens.userdetails.UserDetailsActivity"
             android:label="@string/title_activity_user_details"
             android:parentActivityName=".screens.username.UsernameActivity"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

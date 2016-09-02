@@ -1,8 +1,9 @@
 package com.orangepenguin.boilerplate;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.orangepenguin.boilerplate.di.Injector;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Before;
@@ -17,9 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BaseActivityTest extends BaseRobolectricTest {
 
     private TestActivity testActivity;
+    private TestPresenter testPresenter;
 
     @Before
     public void setUp() throws Exception {
+        testPresenter = new TestPresenter();
+        Injector.setPresenter(BasePresenterInterface.class, testPresenter);
         testActivity = buildAndStartActivity(TestActivity.class);
         ButterKnife.bind(this, testActivity);
     }
@@ -53,26 +57,10 @@ public class BaseActivityTest extends BaseRobolectricTest {
 
     static class TestActivity extends BaseActivity<BasePresenterInterface> {
 
-        BasePresenterInterface presenter;
-
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.layout_test_activity);
-            if (presenter == null) {
-                presenter = new TestPresenter(); // in real code this would be retrieved from Injector
-            }
-        }
-
-        @NonNull
-        @Override
-        protected BasePresenterInterface getPresenter() {
-            return presenter;
-        }
-
-        @Override
-        protected void setPresenter(BasePresenterInterface testPresenter) {
-            this.presenter = testPresenter;
         }
     }
 

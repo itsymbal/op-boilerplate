@@ -41,7 +41,7 @@ public class UserDetailsActivityTest extends BaseRobolectricTest {
         userDetailsActivity.setAvatarUrl("test_url");
 
         verify(mockPicasso).load("test_url");
-        verify(mockRequestCreator).into((ImageView)Matchers.any());
+        verify(mockRequestCreator).into((ImageView) Matchers.any());
     }
 
     /**
@@ -54,9 +54,9 @@ public class UserDetailsActivityTest extends BaseRobolectricTest {
 
         UserDetailsActivityTest.TestUserDetailsComponent testSimpleActivityComponent =
                 DaggerUserDetailsActivityTest_TestUserDetailsComponent
-                .builder()
-                .testActivityModule(new TestActivityModule())
-                .build();
+                        .builder()
+                        .testActivityModule(new TestActivityModule())
+                        .build();
 
         Injector.setActivityComponent(testSimpleActivityComponent);
     }

@@ -3,7 +3,6 @@ package com.orangepenguin.boilerplate.di;
 import com.google.common.annotations.VisibleForTesting;
 import com.orangepenguin.boilerplate.ApplicationInterface;
 import com.orangepenguin.boilerplate.rest.GitHubClient;
-import com.squareup.picasso.Picasso;
 
 import dagger.Module;
 import dagger.Provides;
@@ -53,7 +52,7 @@ public final class TestPresenterModule {
             return this;
         }
 
-        public Builder observeOnScheduler (Scheduler observeOnScheduler) {
+        public Builder observeOnScheduler(Scheduler observeOnScheduler) {
             this.observeOnScheduler = observeOnScheduler;
             return this;
         }

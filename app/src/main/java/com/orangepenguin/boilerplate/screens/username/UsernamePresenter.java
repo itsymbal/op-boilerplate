@@ -60,26 +60,26 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
     private void fetchUser(String username) {
         view.showLoadingIndicator();
         presenterState = REQUEST_IN_PROCESS;
-        subscription = gitHubClient.user(username)
-                //TODO: check the issue described here
-                //http://blog.bradcampbell.nz/keep-your-main-thread-synchronous/
-                // it's likely not an issue, since *some* view will exist
+        subscription = gitHubClient
+                .user(username)
                 .observeOn(observeScheduler)
                 .subscribe(
-                user -> {
-                    Timber.v("calling onNext() on thread" + Thread.currentThread().getName());
-                    presenterState = REQUEST_NOT_IN_PROCESS;
-                    view.hideLoadingIndicator();
-                    view.startDetailsActivity(user);
-                },
-                throwable -> {
-                    Timber.v("calling onError() on thread" + Thread.currentThread().getName());
+                        user -> {
+                            Timber.v(
+                                    "calling onNext() on thread" + Thread.currentThread().getName());
+                            presenterState = REQUEST_NOT_IN_PROCESS;
+                            view.hideLoadingIndicator();
+                            view.startDetailsActivity(user);
+                        },
+                        throwable -> {
+                            Timber.v("calling onError() on thread" + Thread.currentThread()
+                                                                           .getName());
 
-                    presenterState = REQUEST_NOT_IN_PROCESS;
-                    view.hideLoadingIndicator();
-                    Timber.d(throwable, "error fetching user");
-                    view.setUsernameError("No such user");
-                }
-        );
+                            presenterState = REQUEST_NOT_IN_PROCESS;
+                            view.hideLoadingIndicator();
+                            Timber.d(throwable, "error fetching user");
+                            view.setUsernameError("No such user");
+                        }
+                );
     }
 }

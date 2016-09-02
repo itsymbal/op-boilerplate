@@ -8,7 +8,6 @@ import com.orangepenguin.boilerplate.di.TestPresenterModule;
 import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.rest.GitHubClient;
 import com.orangepenguin.boilerplate.singletons.Constants;
-import com.squareup.picasso.Picasso;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -4,7 +4,7 @@ import com.orangepenguin.boilerplate.BasePresenterInterface;
 import com.orangepenguin.boilerplate.BaseViewInterface;
 import com.orangepenguin.boilerplate.model.User;
 
-interface UsernameContract {
+public interface UsernameContract {
 
     interface View extends BaseViewInterface {
         void startDetailsActivity(User user);

@@ -43,6 +43,9 @@ public abstract class BasePresenter implements BasePresenterInterface {
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
+        view = null; // null out View reference so it can be destroyed, even while Presenter may still be referenced
+        // by some inner Subscriber
+
     }
 
     public enum PresenterState {

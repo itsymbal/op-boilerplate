@@ -1,10 +1,15 @@
 package com.orangepenguin.boilerplate.di;
 
-import com.orangepenguin.boilerplate.BasePresenter;
 import com.orangepenguin.boilerplate.BasePresenterInterface;
+import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsContract;
+import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsPresenter;
+import com.orangepenguin.boilerplate.screens.username.UsernameContract;
+import com.orangepenguin.boilerplate.screens.username.UsernamePresenter;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import timber.log.Timber;
 
 public class Injector {
 
@@ -12,6 +17,16 @@ public class Injector {
     private static PresenterComponent presenterComponent;
     private static ActivityComponent activityComponent;
     private static Map<Class, BasePresenterInterface> presenterMap = new HashMap<>();
+    private static Map<Class, Class> presenterImplementations = new HashMap<>();
+
+    // There may be a way to find an implementation using some Java reflection library, but this is both faster and
+    // does not require another library import. The downside is you have to define and populate this map. The upside
+    // is that the implementing class is configured here, external to the View, which only knows about Presenter
+    // interface.
+    static {
+        presenterImplementations.put(UsernameContract.Presenter.class, UsernamePresenter.class);
+        presenterImplementations.put(UserDetailsContract.Presenter.class, UserDetailsPresenter.class);
+    }
 
     private Injector() {
         // private no-arg constructor for singleton class to force static usage
@@ -49,16 +64,17 @@ public class Injector {
         Injector.applicationComponent = applicationComponent;
     }
 
-    public static BasePresenterInterface getPresenter(Class presenterClass) {
-        if (presenterMap.containsKey(presenterClass)) {
-            return presenterMap.get(presenterClass);
+    public static BasePresenterInterface getPresenter(Class presenterInterface) {
+        if (presenterMap.containsKey(presenterInterface)) {
+            return presenterMap.get(presenterInterface);
         }
 
-        BasePresenter presenter = null;
+        BasePresenterInterface presenter = null;
         try {
-            presenter = (BasePresenter) presenterClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException ex) {
-            // TODO: figure out what to do with dis exceptions
+            Class presenterImplementationClass = presenterImplementations.get(presenterInterface);
+            presenter = (BasePresenterInterface) presenterImplementationClass.newInstance();
+        } catch (NullPointerException | InstantiationException | IllegalAccessException ex) {
+            Timber.e(ex, "Error instantiating Presenter class for interface %s", presenterInterface.getCanonicalName());
         }
         return presenter;
     }
