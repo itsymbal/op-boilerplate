@@ -3,18 +3,16 @@ package com.orangepenguin.boilerplate.screens.userdetails;
 import android.widget.ImageView;
 
 import com.orangepenguin.boilerplate.BaseRobolectricTest;
-import com.orangepenguin.boilerplate.di.ActivityComponent;
+import com.orangepenguin.boilerplate.di.DaggerTestActivityComponent;
 import com.orangepenguin.boilerplate.di.Injector;
+import com.orangepenguin.boilerplate.di.TestActivityComponent;
+import com.orangepenguin.boilerplate.di.TestActivityModule;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
-
-import dagger.Component;
-import dagger.Module;
-import dagger.Provides;
 
 import static com.orangepenguin.boilerplate.fixtures.ActivityFixtures.buildAndStartActivity;
 import static org.mockito.Mockito.mock;
@@ -49,28 +47,14 @@ public class UserDetailsActivityTest extends BaseRobolectricTest {
      * it on Injector static class. If set, it will be used; if not, a brand new one will be created by Injector
      */
     private void setupTestDependencies() {
-        // TODO: convert to non-Dagger Presenter handling
         Injector.setPresenter(UserDetailsContract.Presenter.class, mockPresenter);
 
-        UserDetailsActivityTest.TestUserDetailsComponent testSimpleActivityComponent =
-                DaggerUserDetailsActivityTest_TestUserDetailsComponent
+        TestActivityComponent testSimpleActivityComponent =
+                DaggerTestActivityComponent
                         .builder()
                         .testActivityModule(new TestActivityModule())
                         .build();
 
         Injector.setActivityComponent(testSimpleActivityComponent);
-    }
-
-    @Component(modules = {TestActivityModule.class})
-    interface TestUserDetailsComponent extends ActivityComponent {
-        void inject(UserDetailsActivity activity);
-    }
-
-    @Module
-    static final class TestActivityModule {
-        @Provides
-        Picasso providePicasso() {
-            return UserDetailsActivityTest.mockPicasso;
-        }
     }
 }

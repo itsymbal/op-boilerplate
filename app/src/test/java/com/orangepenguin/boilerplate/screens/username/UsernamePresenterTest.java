@@ -1,9 +1,6 @@
 package com.orangepenguin.boilerplate.screens.username;
 
 import com.orangepenguin.boilerplate.ApplicationInterface;
-import com.orangepenguin.boilerplate.di.DaggerTestPresenterComponent;
-import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.di.TestPresenterComponent;
 import com.orangepenguin.boilerplate.di.TestPresenterModule;
 import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.rest.GitHubClient;
@@ -20,6 +17,7 @@ import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
 import rx.subjects.PublishSubject;
 
+import static com.orangepenguin.boilerplate.di.ComponentUtil.setUpPresenterDependencies;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -127,17 +125,12 @@ public class UsernamePresenterTest {
     }
 
     private void setUpDependencies() {
-        TestPresenterComponent testPresenterComponent =
-                DaggerTestPresenterComponent
+        setUpPresenterDependencies(
+                TestPresenterModule
                         .builder()
-                        .testPresenterModule(
-                                TestPresenterModule
-                                        .builder()
-                                        .baseApplication(mockApplication)
-                                        .gitHubClient(mockGitHubClient)
-                                        .observeOnScheduler(Schedulers.immediate())
-                                        .build())
-                        .build();
-        Injector.setPresenterComponent(testPresenterComponent);
+                        .baseApplication(mockApplication)
+                        .gitHubClient(mockGitHubClient)
+                        .observeOnScheduler(Schedulers.immediate())
+                        .build());
     }
 }
