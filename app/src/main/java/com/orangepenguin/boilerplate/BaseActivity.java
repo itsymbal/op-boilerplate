@@ -2,6 +2,7 @@ package com.orangepenguin.boilerplate;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import static android.view.View.VISIBLE;
 public abstract class BaseActivity<TypeOfPresenterInterface extends BasePresenterInterface>
         extends AppCompatActivity implements BaseViewInterface {
 
+    public static final String STATE = "STATE";
     @Nullable @BindView(R.id.toolbar) protected Toolbar toolbar; // common toolbar storage
     @Nullable @BindView(R.id.loading_indicator) protected View loadingIndicator; // common loading indicator
     @Nullable @BindView(R.id.contents_container) protected View contentContainer; // common content storage
@@ -65,6 +67,10 @@ public abstract class BaseActivity<TypeOfPresenterInterface extends BasePresente
         if (presenter == null) {
             presenter = (TypeOfPresenterInterface) Injector.getPresenter(getPresenterInterfaceClassFromType());
         }
+        if (savedInstanceState != null) {
+            Parcelable state = savedInstanceState.getParcelable(STATE);
+            presenter.restoreState(state);
+        }
     }
 
     @Override
@@ -90,6 +96,12 @@ public abstract class BaseActivity<TypeOfPresenterInterface extends BasePresente
         if (unbinder != null) {
             unbinder.unbind();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle bundle) {
+        Parcelable state = presenter.onSaveState();
+        bundle.putParcelable(STATE, state);
     }
 
     private Class getPresenterInterfaceClassFromType() {

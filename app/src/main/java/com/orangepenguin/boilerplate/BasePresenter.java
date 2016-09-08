@@ -1,5 +1,6 @@
 package com.orangepenguin.boilerplate;
 
+import android.os.Parcelable;
 import android.support.annotation.CallSuper;
 
 import com.orangepenguin.boilerplate.di.Injector;
@@ -47,6 +48,12 @@ public abstract class BasePresenter implements BasePresenterInterface {
         // by some inner Subscriber
 
     }
+
+    public Parcelable onSaveState() {
+        return null;
+    }
+
+    public void restoreState(Parcelable state) {}
 
     public enum PresenterState {
         REQUEST_NOT_SENT,
