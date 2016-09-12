@@ -1,9 +1,9 @@
 package com.orangepenguin.boilerplate.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcelable;
 
-import java.io.Serializable;
+import com.google.auto.value.AutoValue;
+import com.google.gson.annotations.SerializedName;
 
 import javax.annotation.Generated;
 
@@ -13,61 +13,16 @@ import javax.annotation.Generated;
  * TODO: use AutoValue with Parcel extension to save this in a Parcel for saving state
  */
 @Generated("org.jsonschema2pojo")
-public class User implements Serializable {
-
-    @SerializedName("login")
-    @Expose
-    public String login;
+@AutoValue
+public abstract class User implements Parcelable {
     @SerializedName("avatar_url")
-    @Expose
-    public String avatarUrl;
+    public abstract String avatarUrl();
     @SerializedName("repos_url")
-    @Expose
-    public String reposUrl;
+    public abstract String reposUrl();
     @SerializedName("name")
-    @Expose
-    public String name;
+    public abstract String name();
     @SerializedName("company")
-    @Expose
-    public String company;
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public String getReposUrl() {
-        return reposUrl;
-    }
-
-    public void setReposUrl(String reposUrl) {
-        this.reposUrl = reposUrl;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
+    public abstract String company();
+    @SerializedName("login")
+    public abstract String login();
 }

@@ -1,11 +1,10 @@
 package com.orangepenguin.boilerplate.screens.userdetails;
 
+import android.os.Parcelable;
+
 import com.orangepenguin.boilerplate.BasePresenter;
 import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.model.User;
-import com.orangepenguin.boilerplate.rest.GitHubClient;
-
-import javax.inject.Inject;
 
 /**
  * This example presenter requests data for passed in username, keeps state of the request, and sets the state on
@@ -13,7 +12,6 @@ import javax.inject.Inject;
  */
 public class UserDetailsPresenter extends BasePresenter implements UserDetailsContract.Presenter {
 
-    @Inject GitHubClient gitHubClient;
     private UserDetailsContract.View view;
     private User user;
 
@@ -35,25 +33,20 @@ public class UserDetailsPresenter extends BasePresenter implements UserDetailsCo
     }
 
     private void setUserDetailsOnView() {
-        view.setUsername(user.getLogin());
-        if (user.getName() != null) {
-            view.setName(user.getName());
+        view.setUsername(user.login());
+        if (user.name() != null) {
+            view.setName(user.name());
         }
-        if (user.getCompany() != null) {
-            view.setCompany(user.getCompany());
+        if (user.company() != null) {
+            view.setCompany(user.company());
         }
-        if (user.getAvatarUrl() != null) {
-            view.setAvatarUrl(user.getAvatarUrl());
+        if (user.avatarUrl() != null) {
+            view.setAvatarUrl(user.avatarUrl());
         }
     }
 
-    // request data from GitHub backend
-
-    /**
-     * when requesting data from backend using Rx, make sure to capture returned Subscription object in the superclass'
-     * subscription field. This way it will get unsubscribed in onDestroy()
-     */
-    private void requestData() {
-
+    @Override
+    public Parcelable onSaveState() {
+        return user;
     }
 }

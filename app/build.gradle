@@ -25,7 +25,7 @@ rootProject.ext {
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
     butterKnifeVersion = '8.0.1'
-    daggerVersion = '2.2'
+    daggerVersion = '2.4'
     leakCanaryVersion = '1.4-beta2'
     timberVersion = '4.1.2'
     powerMockVersion = '1.6.4'
@@ -135,6 +135,14 @@ dependencies {
     // Picasso image library
     compile "com.squareup.picasso:picasso:$picassoVersion"
 
+    // the explicit inclusion of javapoet is a fix for a (hopefully) temporary issue:
+    // https://github.com/rharter/auto-value-gson/issues/43
+    // java.lang.NoSuchMethodError: com.squareup.javapoet.TypeName.isBoxedPrimitive()
+    // caused by a library including an earlier javapoet. Try removing this later
+    // keeping version local as this is a temporary solution
+    // TODO: ^^
+    apt 'com.squareup:javapoet:1.7.0'
+
     // Dagger dependency injection
     apt "com.google.dagger:dagger-compiler:$daggerVersion"
     testApt "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -150,9 +158,10 @@ dependencies {
     // AutoValue / Parcelable / Json parser
     provided "com.google.auto.value:auto-value:1.2"
     apt "com.google.auto.value:auto-value:1.2"
-    apt "com.ryanharter.auto.value:auto-value-parcel:0.2.1"
-    apt 'com.ryanharter.auto.value:auto-value-gson:0.4.2'
-    provided 'com.ryanharter.auto.value:auto-value-gson:0.4.2'
+//    apt 'com.ryanharter.auto.value:auto-value-gson:0.4.2'
+//    provided 'com.ryanharter.auto.value:auto-value-gson:0.4.2'
+    apt "com.ryanharter.auto.value:auto-value-parcel:0.2.4-rc2"
+    apt 'com.squareup:javapoet:1.7.0'
 
     testCompile "junit:junit:$junitVersion"
     testCompile "org.mockito:mockito-all:$mockitoVersion"
