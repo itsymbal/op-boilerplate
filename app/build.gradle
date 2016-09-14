@@ -185,4 +185,5 @@ dependencies {
         exclude group: 'com.android.support'
     }
     provided 'org.glassfish:javax.annotation:10.0-b28'
+
 }
