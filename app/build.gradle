@@ -36,6 +36,8 @@ rootProject.ext {
     rxJavaVersion = "1.1.4"
     rxAndroidVersion = "1.2.1"
     gsonVersion = "2.7"
+    autoValueGsonVersion = "0.4.2"
+    autoValueParcelVersion = "0.2.4-rc2"
     picassoVersion = "2.4.0"
     retrofitVersion = "2.1.0"
     okHttpVersion = "3.3.0"
@@ -158,10 +160,10 @@ dependencies {
     // AutoValue / Parcelable / Json parser
     provided "com.google.auto.value:auto-value:1.2"
     apt "com.google.auto.value:auto-value:1.2"
-//    apt 'com.ryanharter.auto.value:auto-value-gson:0.4.2'
-//    provided 'com.ryanharter.auto.value:auto-value-gson:0.4.2'
-    apt "com.ryanharter.auto.value:auto-value-parcel:0.2.4-rc2"
-    apt 'com.squareup:javapoet:1.7.0'
+
+    apt "com.ryanharter.auto.value:auto-value-gson:$autoValueGsonVersion"
+    provided "com.ryanharter.auto.value:auto-value-gson:$autoValueGsonVersion"
+    apt "com.ryanharter.auto.value:auto-value-parcel:$autoValueParcelVersion"
 
     testCompile "junit:junit:$junitVersion"
     testCompile "org.mockito:mockito-all:$mockitoVersion"

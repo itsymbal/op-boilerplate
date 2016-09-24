@@ -3,6 +3,7 @@ package com.orangepenguin.boilerplate.screens.username;
 import com.orangepenguin.boilerplate.BasePresenter;
 import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.model.User;
+import com.orangepenguin.boilerplate.repository.UserRepo;
 import com.orangepenguin.boilerplate.rest.GitHubClient;
 import com.orangepenguin.boilerplate.singletons.Constants;
 
@@ -18,6 +19,8 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
 
     @Inject GitHubClient gitHubClient;
     @Inject Scheduler observeScheduler;
+    @Inject UserRepo userRepo;
+
     PresenterState presenterState = REQUEST_NOT_IN_PROCESS;
     private UsernameContract.View view;
     private User user;
@@ -60,24 +63,20 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
     private void fetchUser(String username) {
         view.showLoadingIndicator();
         presenterState = REQUEST_IN_PROCESS;
-        subscription = gitHubClient
-                .user(username)
-                .observeOn(observeScheduler)
+        subscription = userRepo
+                .fetchUser(username)
                 .subscribe(
                         user -> {
-                            Timber.v(
-                                    "calling onNext() on thread" + Thread.currentThread().getName());
                             presenterState = REQUEST_NOT_IN_PROCESS;
                             view.hideLoadingIndicator();
                             view.startDetailsActivity(user);
                         },
                         throwable -> {
-                            Timber.v("calling onError() on thread" + Thread.currentThread()
-                                                                           .getName());
-
                             presenterState = REQUEST_NOT_IN_PROCESS;
                             view.hideLoadingIndicator();
                             Timber.d(throwable, "error fetching user");
+                            // TODO: figure out type of error and do the right thing:
+                            // 1 - no network, 2 - network error, 3 - bad username
                             view.setUsernameError("No such user");
                         }
                 );

@@ -3,26 +3,38 @@ package com.orangepenguin.boilerplate.model;
 import android.os.Parcelable;
 
 import com.google.auto.value.AutoValue;
-import com.google.gson.annotations.SerializedName;
+import com.orangepenguin.boilerplate.repository.ApiUser;
 
-import javax.annotation.Generated;
-
-/**
- * generated using jsonschema2pojo.org using Gson annotation style.
- * TODO: probably don't need @Expose annotation, and probably can make properties default access (package-private)
- * TODO: use AutoValue with Parcel extension to save this in a Parcel for saving state
- */
-@Generated("org.jsonschema2pojo")
 @AutoValue
 public abstract class User implements Parcelable {
-    @SerializedName("avatar_url")
+    public static Builder builder() {
+        return new AutoValue_User.Builder();
+    }
+
+    public static Builder fromApiUser(ApiUser apiUser) {
+        return builder()
+                .avatarUrl(apiUser.avatarUrl())
+                .reposUrl(apiUser.reposUrl())
+                .name(apiUser.name())
+                .company(apiUser.company())
+                .login(apiUser.login());
+    }
+
+    public abstract Builder toBuilder();
+
     public abstract String avatarUrl();
-    @SerializedName("repos_url")
     public abstract String reposUrl();
-    @SerializedName("name")
     public abstract String name();
-    @SerializedName("company")
     public abstract String company();
-    @SerializedName("login")
     public abstract String login();
+
+    @AutoValue.Builder
+    public static abstract class Builder {
+        public abstract Builder avatarUrl(String avatarUrl);
+        public abstract Builder reposUrl(String reposUrl);
+        public abstract Builder name(String name);
+        public abstract Builder company(String company);
+        public abstract Builder login(String login);
+        public abstract User build();
+    }
 }

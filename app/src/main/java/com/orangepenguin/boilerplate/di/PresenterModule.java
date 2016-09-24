@@ -1,5 +1,7 @@
 package com.orangepenguin.boilerplate.di;
 
+import com.google.gson.GsonBuilder;
+import com.orangepenguin.boilerplate.repository.AutoValueAdapterFactory;
 import com.orangepenguin.boilerplate.rest.GitHubClient;
 
 import dagger.Module;
@@ -29,11 +31,15 @@ final class PresenterModule {
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(loggingInterceptor)
                     .build();
+            GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(
+                    new GsonBuilder()
+                            .registerTypeAdapterFactory(new AutoValueAdapterFactory())
+                            .create());
 
             gitHubClient = new Retrofit.Builder()
                     .client(client)
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(gsonConverterFactory)
                     .baseUrl(GITHUB_URL)
                     .build()
                     .create(GitHubClient.class);

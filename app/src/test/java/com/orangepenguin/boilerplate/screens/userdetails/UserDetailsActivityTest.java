@@ -52,7 +52,12 @@ public class UserDetailsActivityTest extends BaseRobolectricTest {
         TestActivityComponent testSimpleActivityComponent =
                 DaggerTestActivityComponent
                         .builder()
-                        .testActivityModule(new TestActivityModule())
+                        .testActivityModule(
+                                TestActivityModule
+                                        .builder()
+                                        .picasso(mockPicasso)
+                                        .build()
+                        )
                         .build();
 
         Injector.setActivityComponent(testSimpleActivityComponent);

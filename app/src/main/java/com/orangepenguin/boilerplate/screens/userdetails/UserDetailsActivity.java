@@ -40,7 +40,7 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsContract.Presen
         setContentView(R.layout.activity_user_details);
         Injector.getActivityComponent().inject(this);
 
-        User user = (User) getIntent().getSerializableExtra(USER_INTENT_PARAM);
+        User user = getIntent().getParcelableExtra(USER_INTENT_PARAM);
         presenter.setView(this, user);
     }
 

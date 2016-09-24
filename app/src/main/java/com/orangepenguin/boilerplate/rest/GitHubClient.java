@@ -1,6 +1,6 @@
 package com.orangepenguin.boilerplate.rest;
 
-import com.orangepenguin.boilerplate.model.User;
+import com.orangepenguin.boilerplate.repository.ApiUser;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -11,7 +11,7 @@ import rx.Observable;
  */
 public interface GitHubClient {
     @GET("/users/{username}")
-    Observable<User> user(@Path("username") String username);
+    Observable<ApiUser> user(@Path("username") String username);
 
     //    @GET("/gists/{id}")
     //    Observable<GistDetail> gist(@Path("id") String id);

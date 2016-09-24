@@ -3,6 +3,7 @@ package com.orangepenguin.boilerplate.screens.username;
 import com.orangepenguin.boilerplate.ApplicationInterface;
 import com.orangepenguin.boilerplate.di.TestPresenterModule;
 import com.orangepenguin.boilerplate.model.User;
+import com.orangepenguin.boilerplate.repository.UserRepo;
 import com.orangepenguin.boilerplate.rest.GitHubClient;
 import com.orangepenguin.boilerplate.singletons.Constants;
 
@@ -36,6 +37,7 @@ public class UsernamePresenterTest {
 
     @Mock UsernameContract.View mockView;
     @Mock ApplicationInterface mockApplication;
+    @Mock UserRepo mockUserRepo;
     @Mock GitHubClient mockGitHubClient;
     @Mock User mockUser;
 
@@ -46,7 +48,8 @@ public class UsernamePresenterTest {
     public void setUp() {
         setUpDependencies();
         usernamePresenter = new UsernamePresenter();
-        when(mockGitHubClient.user(USERNAME)).thenReturn(just(mockUser));
+
+        when(mockUserRepo.fetchUser(USERNAME)).thenReturn(just(mockUser));
     }
 
     @Test
@@ -121,7 +124,7 @@ public class UsernamePresenterTest {
         // schedule an observable event to occur at 1000 ms - return successful response with User object
         worker.schedule(() -> mockUserObservable.onNext(mockUser), 1000, MILLISECONDS);
         // configure mock client to actually use mock Observable
-        when(mockGitHubClient.user(USERNAME)).thenReturn(mockUserObservable);
+        when(mockUserRepo.fetchUser(USERNAME)).thenReturn(mockUserObservable);
     }
 
     private void setUpDependencies() {
@@ -129,6 +132,7 @@ public class UsernamePresenterTest {
                 TestPresenterModule
                         .builder()
                         .baseApplication(mockApplication)
+                        .userRepo(mockUserRepo)
                         .gitHubClient(mockGitHubClient)
                         .observeOnScheduler(Schedulers.immediate())
                         .build());

@@ -25,10 +25,6 @@ public class UserDetailsPresenter extends BasePresenter implements UserDetailsCo
     public void setView(UserDetailsContract.View view, User user) {
         this.view = view;
         this.user = user;
-        updateViewState();
-    }
-
-    private void updateViewState() {
         setUserDetailsOnView();
     }
 
