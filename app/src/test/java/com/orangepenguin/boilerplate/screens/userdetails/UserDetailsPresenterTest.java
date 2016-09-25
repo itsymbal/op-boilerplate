@@ -2,8 +2,6 @@ package com.orangepenguin.boilerplate.screens.userdetails;
 
 import android.os.Parcelable;
 
-import com.orangepenguin.boilerplate.ApplicationInterface;
-import com.orangepenguin.boilerplate.di.TestPresenterModule;
 import com.orangepenguin.boilerplate.model.User;
 
 import org.junit.Before;
@@ -20,32 +18,18 @@ public class UserDetailsPresenterTest {
 
     UserDetailsPresenter userDetailsPresenter;
     @Mock UserDetailsContract.View mockView;
-    @Mock ApplicationInterface mockApplication;
     @Mock User mockUser;
 
     @Before
     public void setUp() {
-        setUpDependencies();
+        setUpPresenterDependencies();
         userDetailsPresenter = new UserDetailsPresenter();
     }
 
     @Test
     public void testSavingState() {
         userDetailsPresenter.setView(mockView, mockUser);
-
         Parcelable state = userDetailsPresenter.onSaveState();
-
         assertEquals(mockUser, state);
-
-
     }
-
-    private void setUpDependencies() {
-        setUpPresenterDependencies(
-                TestPresenterModule
-                        .builder()
-                        .baseApplication(mockApplication)
-                        .build());
-    }
-
 }

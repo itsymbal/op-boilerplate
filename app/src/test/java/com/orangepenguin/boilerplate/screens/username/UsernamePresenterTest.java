@@ -1,10 +1,7 @@
 package com.orangepenguin.boilerplate.screens.username;
 
-import com.orangepenguin.boilerplate.ApplicationInterface;
 import com.orangepenguin.boilerplate.di.TestPresenterModule;
 import com.orangepenguin.boilerplate.model.User;
-import com.orangepenguin.boilerplate.repository.UserRepo;
-import com.orangepenguin.boilerplate.rest.GitHubClient;
 import com.orangepenguin.boilerplate.singletons.Constants;
 
 import org.junit.Before;
@@ -36,20 +33,20 @@ public class UsernamePresenterTest {
     private static final String USERNAME = "testUsername";
 
     @Mock UsernameContract.View mockView;
-    @Mock ApplicationInterface mockApplication;
-    @Mock UserRepo mockUserRepo;
-    @Mock GitHubClient mockGitHubClient;
     @Mock User mockUser;
+
+    TestPresenterModule testPresenterModule;
+
 
     private UsernamePresenter usernamePresenter;
     private TestScheduler scheduler = Schedulers.test(); // observeScheduler to advance time by hand
 
     @Before
     public void setUp() {
-        setUpDependencies();
+        testPresenterModule = setUpPresenterDependencies();
         usernamePresenter = new UsernamePresenter();
 
-        when(mockUserRepo.fetchUser(USERNAME)).thenReturn(just(mockUser));
+        when(testPresenterModule.provideUserRepo().fetchUser(USERNAME)).thenReturn(just(mockUser));
     }
 
     @Test
@@ -67,7 +64,7 @@ public class UsernamePresenterTest {
     public void shouldSetUsernamePreferenceIfCheckboxChecked() {
         usernamePresenter.setView(mockView);
         usernamePresenter.showUserButtonPressed(USERNAME, true);
-        verify(mockApplication).savePreference(Constants.PREF_USERNAME, USERNAME);
+        verify(testPresenterModule.provideApplication()).savePreference(Constants.PREF_USERNAME, USERNAME);
     }
 
     /**
@@ -77,7 +74,7 @@ public class UsernamePresenterTest {
     public void shouldClearPreferenceIfCheckboxNotChecked() {
         usernamePresenter.setView(mockView);
         usernamePresenter.showUserButtonPressed(USERNAME, false);
-        verify(mockApplication).clearPreference(Constants.PREF_USERNAME);
+        verify(testPresenterModule.provideApplication()).clearPreference(Constants.PREF_USERNAME);
     }
 
     /**
@@ -85,11 +82,12 @@ public class UsernamePresenterTest {
      */
     @Test
     public void shouldPopulateUsernameAndRememberCheckboxIfUsernamePreferenceSet() {
-        when(mockApplication.getPreference(Constants.PREF_USERNAME, null)).thenReturn(USERNAME);
+        when(testPresenterModule.provideApplication().getPreference(Constants.PREF_USERNAME, null)).thenReturn
+                (USERNAME);
 
         usernamePresenter.setView(mockView);
 
-        verify(mockApplication).getPreference(Constants.PREF_USERNAME, null);
+        verify(testPresenterModule.provideApplication()).getPreference(Constants.PREF_USERNAME, null);
         verify(mockView).setUsername(USERNAME);
         verify(mockView).checkRememberCheckbox();
     }
@@ -124,17 +122,6 @@ public class UsernamePresenterTest {
         // schedule an observable event to occur at 1000 ms - return successful response with User object
         worker.schedule(() -> mockUserObservable.onNext(mockUser), 1000, MILLISECONDS);
         // configure mock client to actually use mock Observable
-        when(mockUserRepo.fetchUser(USERNAME)).thenReturn(mockUserObservable);
-    }
-
-    private void setUpDependencies() {
-        setUpPresenterDependencies(
-                TestPresenterModule
-                        .builder()
-                        .baseApplication(mockApplication)
-                        .userRepo(mockUserRepo)
-                        .gitHubClient(mockGitHubClient)
-                        .observeOnScheduler(Schedulers.immediate())
-                        .build());
+        when(testPresenterModule.provideUserRepo().fetchUser(USERNAME)).thenReturn(mockUserObservable);
     }
 }

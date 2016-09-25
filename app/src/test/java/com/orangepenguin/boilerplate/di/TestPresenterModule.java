@@ -24,22 +24,22 @@ public final class TestPresenterModule {
     }
 
     @Provides
-    ApplicationInterface provideApplication() {
+    public ApplicationInterface provideApplication() {
         return application;
     }
 
     @Provides
-    GitHubClient provideGitHubClient() {
+    public GitHubClient provideGitHubClient() {
         return gitHubClient;
     }
 
     @Provides
-    Scheduler provideObserveOnScheduler() {
+    public Scheduler provideObserveOnScheduler() {
         return observeOnScheduler;
     }
 
     @Provides
-    UserRepo provideUserRepo() {
+    public UserRepo provideUserRepo() {
         return userRepo;
     }
 
