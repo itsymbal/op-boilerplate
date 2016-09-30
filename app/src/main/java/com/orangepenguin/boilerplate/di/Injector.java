@@ -16,6 +16,7 @@ public class Injector {
     private static ApplicationComponent applicationComponent;
     private static PresenterComponent presenterComponent;
     private static ActivityComponent activityComponent;
+    private static RepositoryComponent repositoryComponent;
     private static Map<Class, BasePresenterInterface> presenterMap = new HashMap<>();
     private static Map<Class, Class> presenterImplementations = new HashMap<>();
 
@@ -54,6 +55,19 @@ public class Injector {
     // setters allow setting a mock component from test code
     public static void setPresenterComponent(PresenterComponent presenterComponent) {
         Injector.presenterComponent = presenterComponent;
+    }
+
+    public static RepositoryComponent getRepositoryComponent() {
+        // repository component is effectively a singleton. Once created it is never recreated
+        if (repositoryComponent == null) {
+            repositoryComponent = getApplicationComponent().plus(new RepositoryModule());
+        }
+        return repositoryComponent;
+    }
+
+    // setters allow setting a mock component from test code
+    public static void setRepositoryComponent(RepositoryComponent repositoryComponent) {
+        Injector.repositoryComponent = repositoryComponent;
     }
 
     public static ApplicationComponent getApplicationComponent() {

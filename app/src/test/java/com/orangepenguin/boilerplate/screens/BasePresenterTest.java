@@ -1,12 +1,8 @@
 package com.orangepenguin.boilerplate.screens;
 
-import com.orangepenguin.boilerplate.BaseApplication;
 import com.orangepenguin.boilerplate.BasePresenter;
 import com.orangepenguin.boilerplate.BaseViewInterface;
-import com.orangepenguin.boilerplate.di.DaggerTestPresenterComponent;
-import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.di.TestPresenterComponent;
-import com.orangepenguin.boilerplate.di.TestPresenterModule;
+import com.orangepenguin.boilerplate.di.ComponentUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +23,7 @@ public class BasePresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        setUpDependencies();
+        ComponentUtil.setUpTestPresenterModule();
         testPresenter = new TestPresenter();
     }
 
@@ -51,19 +47,6 @@ public class BasePresenterTest {
         testPresenter.onDestroy();
 
         verify(mockSubscription, never()).unsubscribe();
-    }
-
-    private void setUpDependencies() {
-        TestPresenterComponent testPresenterComponent =
-                DaggerTestPresenterComponent
-                        .builder()
-                        .testPresenterModule(
-                                TestPresenterModule
-                                        .builder()
-                                        .baseApplication(mock(BaseApplication.class))
-                                        .build())
-                        .build();
-        Injector.setPresenterComponent(testPresenterComponent);
     }
 
 

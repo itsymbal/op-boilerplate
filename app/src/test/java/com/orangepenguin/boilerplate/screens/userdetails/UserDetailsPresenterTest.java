@@ -2,6 +2,7 @@ package com.orangepenguin.boilerplate.screens.userdetails;
 
 import android.os.Parcelable;
 
+import com.orangepenguin.boilerplate.di.ComponentUtil;
 import com.orangepenguin.boilerplate.model.User;
 
 import org.junit.Before;
@@ -10,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.orangepenguin.boilerplate.di.ComponentUtil.setUpPresenterDependencies;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -22,7 +22,7 @@ public class UserDetailsPresenterTest {
 
     @Before
     public void setUp() {
-        setUpPresenterDependencies();
+        ComponentUtil.setUpTestPresenterModule();
         userDetailsPresenter = new UserDetailsPresenter();
     }
 

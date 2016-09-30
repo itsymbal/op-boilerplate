@@ -1,13 +1,23 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.trello.victor'
 
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url 'https://maven.fabric.io/public' }
 }
 
-// Define versions in a single place
 rootProject.ext {
     // Sdk and tools
     minSdkVersion = 19
@@ -20,7 +30,7 @@ rootProject.ext {
     // org.xmlpull.v1.XmlPullParserException: XML file
     // build/intermediates/res/merged/debug/drawable/abc_ic_ab_back_material.xml line #-1
     // (sorry, not yet implemented): invalid drawable tag vector
-    // TODO: attempt to upgrade once library version moves past 24.0.0
+    // TODO: attempt to upgrade once Robolectric bug is fixed
     supportLibraryVersion = '23.4.0'
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
@@ -36,11 +46,14 @@ rootProject.ext {
     rxJavaVersion = "1.1.4"
     rxAndroidVersion = "1.2.1"
     gsonVersion = "2.7"
+    autoValueVersion = "1.2"
     autoValueGsonVersion = "0.4.2"
     autoValueParcelVersion = "0.2.4-rc2"
     picassoVersion = "2.4.0"
     retrofitVersion = "2.1.0"
     okHttpVersion = "3.3.0"
+    mockWebeserverPlusVersion = "0.8.2-SNAPSHOT"
+    glassFishVersion = "10.0-b28"
 }
 
 android {
@@ -111,6 +124,7 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:design:$supportLibraryVersion"
@@ -158,8 +172,8 @@ dependencies {
     compile "io.reactivex:rxandroid:$rxAndroidVersion"
 
     // AutoValue / Parcelable / Json parser
-    provided "com.google.auto.value:auto-value:1.2"
-    apt "com.google.auto.value:auto-value:1.2"
+    provided "com.google.auto.value:auto-value:$autoValueVersion"
+    apt "com.google.auto.value:auto-value:$autoValueVersion"
 
     apt "com.ryanharter.auto.value:auto-value-gson:$autoValueGsonVersion"
     provided "com.ryanharter.auto.value:auto-value-gson:$autoValueGsonVersion"
@@ -179,6 +193,12 @@ dependencies {
     testCompile "org.robolectric:robolectric:$robolectricVersion"
     testCompile "org.robolectric:shadows-support-v4:$robolectricVersion"
 
+    // MockWebServer and Plus
+    testCompile("com.orhanobut:mockwebserverplus:$mockWebeserverPlusVersion") {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+        exclude group: 'com.squareup.okio', module: 'okio'
+    }
+
     // AssertJ assertions
     testCompile("com.squareup.assertj:assertj-android:$assertJVersion") {
         exclude group: 'com.android.support'
@@ -186,6 +206,9 @@ dependencies {
     testCompile("com.squareup.assertj:assertj-android-support-v4:$assertJVersion") {
         exclude group: 'com.android.support'
     }
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+    provided "org.glassfish:javax.annotation:$glassFishVersion"
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.4@aar') {
+        transitive = true;
+    }
 
 }

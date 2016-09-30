@@ -33,6 +33,10 @@
             android:label="@string/title_activity_user_details"
             android:parentActivityName=".screens.username.UsernameActivity"
             android:theme="@style/AppTheme"></activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="118f11234567b4f8516c85d760103dff840e348b"/>
     </application>
 
 </manifest>

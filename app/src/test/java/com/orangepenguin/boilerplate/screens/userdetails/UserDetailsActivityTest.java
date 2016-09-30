@@ -3,10 +3,8 @@ package com.orangepenguin.boilerplate.screens.userdetails;
 import android.widget.ImageView;
 
 import com.orangepenguin.boilerplate.BaseRobolectricTest;
-import com.orangepenguin.boilerplate.di.DaggerTestActivityComponent;
+import com.orangepenguin.boilerplate.di.ComponentUtil;
 import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.di.TestActivityComponent;
-import com.orangepenguin.boilerplate.di.TestActivityModule;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
@@ -21,14 +19,15 @@ import static org.mockito.Mockito.when;
 
 public class UserDetailsActivityTest extends BaseRobolectricTest {
 
-    private static Picasso mockPicasso = mock(Picasso.class);
+    private static Picasso mockPicasso;
     private static RequestCreator mockRequestCreator = mock(RequestCreator.class);
     private UserDetailsActivity userDetailsActivity;
     private UserDetailsContract.Presenter mockPresenter = mock(UserDetailsContract.Presenter.class);
 
     @Before
     public void setUp() throws Exception {
-        setupTestDependencies();
+        Injector.setPresenter(UserDetailsContract.Presenter.class, mockPresenter);
+        mockPicasso = ComponentUtil.setUpTestActivityModule().providePicasso();
         userDetailsActivity = buildAndStartActivity(UserDetailsActivity.class);
     }
 
@@ -40,26 +39,5 @@ public class UserDetailsActivityTest extends BaseRobolectricTest {
 
         verify(mockPicasso).load("test_url");
         verify(mockRequestCreator).into((ImageView) Matchers.any());
-    }
-
-    /**
-     * this setup method is an example to follow. Set up a Test Component, which will be used to inject SUT, and set
-     * it on Injector static class. If set, it will be used; if not, a brand new one will be created by Injector
-     */
-    private void setupTestDependencies() {
-        Injector.setPresenter(UserDetailsContract.Presenter.class, mockPresenter);
-
-        TestActivityComponent testSimpleActivityComponent =
-                DaggerTestActivityComponent
-                        .builder()
-                        .testActivityModule(
-                                TestActivityModule
-                                        .builder()
-                                        .picasso(mockPicasso)
-                                        .build()
-                        )
-                        .build();
-
-        Injector.setActivityComponent(testSimpleActivityComponent);
     }
 }

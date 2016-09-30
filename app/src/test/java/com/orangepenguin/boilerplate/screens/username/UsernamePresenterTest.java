@@ -1,5 +1,6 @@
 package com.orangepenguin.boilerplate.screens.username;
 
+import com.orangepenguin.boilerplate.di.ComponentUtil;
 import com.orangepenguin.boilerplate.di.TestPresenterModule;
 import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.singletons.Constants;
@@ -15,7 +16,6 @@ import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
 import rx.subjects.PublishSubject;
 
-import static com.orangepenguin.boilerplate.di.ComponentUtil.setUpPresenterDependencies;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -37,13 +37,12 @@ public class UsernamePresenterTest {
 
     TestPresenterModule testPresenterModule;
 
-
     private UsernamePresenter usernamePresenter;
     private TestScheduler scheduler = Schedulers.test(); // observeScheduler to advance time by hand
 
     @Before
     public void setUp() {
-        testPresenterModule = setUpPresenterDependencies();
+        testPresenterModule = ComponentUtil.setUpTestPresenterModule();
         usernamePresenter = new UsernamePresenter();
 
         when(testPresenterModule.provideUserRepo().fetchUser(USERNAME)).thenReturn(just(mockUser));

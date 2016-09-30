@@ -10,7 +10,7 @@ import dagger.Provides;
 import static com.orangepenguin.boilerplate.BuildConfig.DEBUG;
 
 @Module
-public final class ActivityModule {
+final class ActivityModule {
     @Provides
     Picasso providePicasso(Context context) {
         Picasso picasso = Picasso.with(context);

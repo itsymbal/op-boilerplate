@@ -19,4 +19,5 @@ import dagger.Component;
 public interface ApplicationComponent {
     ActivityComponent plus(ActivityModule userDetailsModule);
     PresenterComponent plus(PresenterModule presenterModule);
+    RepositoryComponent plus(RepositoryModule repositoryModule);
 }

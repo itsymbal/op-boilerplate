@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.crashlytics.android.Crashlytics;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -19,6 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * this simple activity has a single text field, a checkbox, and a submit button. It is just about the simplest setup
@@ -41,6 +43,9 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // TODO: ponder initializing this in a Presenter?
+        // discuss with twitter folks
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.username_activity);
 
         unbinder = ButterKnife.bind(this);

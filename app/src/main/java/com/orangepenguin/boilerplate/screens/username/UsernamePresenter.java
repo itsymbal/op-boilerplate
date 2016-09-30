@@ -2,14 +2,11 @@ package com.orangepenguin.boilerplate.screens.username;
 
 import com.orangepenguin.boilerplate.BasePresenter;
 import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.model.User;
-import com.orangepenguin.boilerplate.repository.UserRepo;
-import com.orangepenguin.boilerplate.rest.GitHubClient;
+import com.orangepenguin.boilerplate.repository.UserRepository;
 import com.orangepenguin.boilerplate.singletons.Constants;
 
 import javax.inject.Inject;
 
-import rx.Scheduler;
 import timber.log.Timber;
 
 import static com.orangepenguin.boilerplate.BasePresenter.PresenterState.REQUEST_IN_PROCESS;
@@ -17,13 +14,10 @@ import static com.orangepenguin.boilerplate.BasePresenter.PresenterState.REQUEST
 
 public class UsernamePresenter extends BasePresenter implements UsernameContract.Presenter {
 
-    @Inject GitHubClient gitHubClient;
-    @Inject Scheduler observeScheduler;
-    @Inject UserRepo userRepo;
+    @Inject UserRepository userRepository;
 
     PresenterState presenterState = REQUEST_NOT_IN_PROCESS;
     private UsernameContract.View view;
-    private User user;
 
     UsernamePresenter() {
         Injector.getPresenterComponent().inject(this);
@@ -63,7 +57,7 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
     private void fetchUser(String username) {
         view.showLoadingIndicator();
         presenterState = REQUEST_IN_PROCESS;
-        subscription = userRepo
+        subscription = userRepository
                 .fetchUser(username)
                 .subscribe(
                         user -> {

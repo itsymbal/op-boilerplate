@@ -9,8 +9,7 @@ import javax.annotation.Generated;
 
 /**
  * generated using jsonschema2pojo.org using Gson annotation style.
- * TODO: probably don't need @Expose annotation, and probably can make properties default access (package-private)
- * TODO: use AutoValue with Parcel extension to save this in a Parcel for saving state
+ * TODO: probably can make properties default access (package-private)
  */
 @Generated("org.jsonschema2pojo")
 @AutoValue
