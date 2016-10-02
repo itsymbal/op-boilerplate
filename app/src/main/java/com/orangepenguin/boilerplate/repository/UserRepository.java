@@ -31,6 +31,8 @@ public class UserRepository {
                 .subscribeOn(Schedulers.io());
     }
 
+    // This method can actually be private; set as public for the time being for ease of testing
+    //    properly will be tested through fetchUser()
     public User fetchUserSync(String username) throws IOException {
         //        return gitHubClient
         //                .user(username)
@@ -38,8 +40,11 @@ public class UserRepository {
         //                .map(apiUser -> User.fromApiUser(apiUser).build());
         //        final ApiUser[] apiUser = new ApiUser[1];
         // this call is synchronous, intentionally.
+        //        Call<ApiUser> call = gitHubClient.callUser(username);
         Call<ApiUser> call = gitHubClient.callUser(username);
+
         ApiUser apiUser = call.execute().body();
+        //        ApiUser apiUser = call.execute().body();
         User user = User.fromApiUser(apiUser).build();
         return user;
     }

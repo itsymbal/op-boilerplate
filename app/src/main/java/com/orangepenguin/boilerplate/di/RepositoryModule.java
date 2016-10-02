@@ -1,8 +1,8 @@
 package com.orangepenguin.boilerplate.di;
 
-import com.google.gson.GsonBuilder;
-import com.orangepenguin.boilerplate.repository.AutoValueAdapterFactory;
+import com.orangepenguin.boilerplate.repository.ApiMoshiAdapterFactory;
 import com.orangepenguin.boilerplate.rest.GitHubClient;
+import com.squareup.moshi.Moshi;
 
 import javax.inject.Singleton;
 
@@ -12,7 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -34,16 +34,14 @@ public class RepositoryModule {
                     .addInterceptor(loggingInterceptor)
                     .build();
 
-            // Add our custom adapter factory to enable @AutoValue class parsing
-            GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(
-                    new GsonBuilder()
-                            .registerTypeAdapterFactory(new AutoValueAdapterFactory())
-                            .create());
+            Moshi moshi = new Moshi.Builder()
+                    .add(ApiMoshiAdapterFactory.create())
+                    .build();
 
             gitHubClient = new Retrofit.Builder()
                     .client(client)
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
-                    .addConverterFactory(gsonConverterFactory)
+                    .addConverterFactory(MoshiConverterFactory.create(moshi))
                     .baseUrl(getGitHubUrl())
                     .build()
                     .create(GitHubClient.class);

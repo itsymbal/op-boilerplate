@@ -1,36 +1,28 @@
 package com.orangepenguin.boilerplate.repository;
 
 import com.google.auto.value.AutoValue;
-import com.google.gson.Gson;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
-import javax.annotation.Generated;
-
-/**
- * generated using jsonschema2pojo.org using Gson annotation style.
- * TODO: probably can make properties default access (package-private)
- */
-@Generated("org.jsonschema2pojo")
 @AutoValue
-@AutoGson
 public abstract class ApiUser {
-    public static TypeAdapter<ApiUser> typeAdapter(Gson gson) {
-        return new AutoValue_ApiUser.GsonTypeAdapter(gson);
+    public static JsonAdapter<ApiUser> jsonAdapter(Moshi moshi) {
+        return new AutoValue_ApiUser.MoshiJsonAdapter(moshi);
     }
 
-    @SerializedName("avatar_url")
+    @Json(name = "avatar_url")
     public abstract String avatarUrl();
 
-    @SerializedName("repos_url")
+    @Json(name = "repos_url")
     public abstract String reposUrl();
 
-    @SerializedName("name")
+    @Json(name = "name")
     public abstract String name();
 
-    @SerializedName("company")
+    @Json(name = "company")
     public abstract String company();
 
-    @SerializedName("login")
+    @Json(name = "login")
     public abstract String login();
 }

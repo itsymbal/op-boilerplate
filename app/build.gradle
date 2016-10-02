@@ -31,6 +31,7 @@ rootProject.ext {
     // build/intermediates/res/merged/debug/drawable/abc_ic_ab_back_material.xml line #-1
     // (sorry, not yet implemented): invalid drawable tag vector
     // TODO: attempt to upgrade once Robolectric bug is fixed
+//    supportLibraryVersion = '24.2.1'
     supportLibraryVersion = '23.4.0'
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
@@ -41,13 +42,14 @@ rootProject.ext {
     powerMockVersion = '1.6.4'
     constraintLayoutVersion = '1.0.0-alpha7'
     robolectricVersion = "3.1"
+//    robolectricVersion = "3.2-SNAPSHOT"
     assertJVersion = "1.1.1"
     saripaarVersion = "2.0.2"
     rxJavaVersion = "1.1.4"
     rxAndroidVersion = "1.2.1"
     gsonVersion = "2.7"
     autoValueVersion = "1.2"
-    autoValueGsonVersion = "0.4.2"
+    autoValueMoshiVersion = "0.4.0"
     autoValueParcelVersion = "0.2.4-rc2"
     picassoVersion = "2.4.0"
     retrofitVersion = "2.1.0"
@@ -144,7 +146,7 @@ dependencies {
     // Retrofit network library and dependencies
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
 
@@ -167,17 +169,16 @@ dependencies {
 
     // Saripaar input validation
     compile "com.mobsandgeeks:android-saripaar:$saripaarVersion"
-    // RxJava (possibly RxAndroid will go here too)
+    // RxJava / RxAndroid
     compile "io.reactivex:rxjava:$rxJavaVersion"
     compile "io.reactivex:rxandroid:$rxAndroidVersion"
 
-    // AutoValue / Parcelable / Json parser
+    // AutoValue / Parcelable /  Moshi Json parser
     provided "com.google.auto.value:auto-value:$autoValueVersion"
     apt "com.google.auto.value:auto-value:$autoValueVersion"
-
-    apt "com.ryanharter.auto.value:auto-value-gson:$autoValueGsonVersion"
-    provided "com.ryanharter.auto.value:auto-value-gson:$autoValueGsonVersion"
     apt "com.ryanharter.auto.value:auto-value-parcel:$autoValueParcelVersion"
+    apt "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
+    provided "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
 
     testCompile "junit:junit:$junitVersion"
     testCompile "org.mockito:mockito-all:$mockitoVersion"
