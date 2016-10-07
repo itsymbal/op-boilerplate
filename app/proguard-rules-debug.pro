@@ -1,1 +1,1 @@
--dontobfuscate
+-dontobfuscate # need proper stacktraces in Debug builds

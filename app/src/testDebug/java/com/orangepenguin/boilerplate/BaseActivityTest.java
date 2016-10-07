@@ -19,6 +19,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * this here test lives in testDebug, rather than the main Test directory. This is because the corresponding layout,
+ * R.layout.layout_test_activity ought not be included in production builds. By moving the test to a Debug variant,
+ * we can also move the layout to the Debug variant.
+ */
 public class BaseActivityTest extends BaseRobolectricTest {
 
     private TestActivity testActivity;

@@ -1,9 +1,12 @@
 buildscript {
     repositories {
+        // repo for Fabric components, i.e. Crashlytics
         maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
+        // The Fabric Gradle plugin uses an open ended version to react
+        // quickly to Android tooling updates
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
@@ -17,6 +20,15 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url 'https://maven.fabric.io/public' }
 }
+
+// for release to play store, add the following properties to keys.properties
+// keys.properties is marked as 'unwatch'- lest you wants your passwords in the repo
+//ext.key_alias="<your private key alias>"
+//ext.key_password="<your private key password>"
+//ext.store_file="<full path to your keystore file.jks>"
+//ext.store_password="<your keystore password>"
+
+apply from: "keys.properties"
 
 rootProject.ext {
     // Sdk and tools
@@ -40,7 +52,7 @@ rootProject.ext {
     leakCanaryVersion = '1.4-beta2'
     timberVersion = '4.1.2'
     powerMockVersion = '1.6.4'
-    constraintLayoutVersion = '1.0.0-alpha7'
+    constraintLayoutVersion = '1.0.0-alpha9'
     robolectricVersion = "3.1"
 //    robolectricVersion = "3.2-SNAPSHOT"
     assertJVersion = "1.1.1"
@@ -59,6 +71,15 @@ rootProject.ext {
 }
 
 android {
+    signingConfigs {
+        PlayStoreConfig {
+            keyAlias key_alias
+            keyPassword key_password
+            storeFile file(store_file)
+            storePassword store_password
+        }
+    }
+
     compileOptions {
         sourceCompatibility "$javaVersion"
         targetCompatibility "$javaVersion"
@@ -93,21 +114,21 @@ android {
     }
 
     buildTypes {
-
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-rules.pro'
+            // TODO: troubleshoot Proguard - yay! also
+            // TODO: figure out a way to upload de-obfuscation info to Crashlytics
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-rules-debug.pro'
+            signingConfig signingConfigs.PlayStoreConfig
         }
         debug {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-rules.pro',
-                    'proguard-rules-debug.pro'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-rules-debug.pro'
             applicationIdSuffix ".debug"
         }
     }
     /**
+     * TODO: update comment now that we have keys.properties
      * Properties referenced here are defined in the top level gradle.properties file.
      * They are then accessible as member variables of the generated BuildConfig.class file
      * Use that file to store API keys, paths etc. An initial version of that file
@@ -118,12 +139,12 @@ android {
      watch = update-index --no-assume-unchanged
      */
     buildTypes.each {
-        it.buildConfigField 'String', 'GITHUB_API_KEY', "\"" + GitHubApiKey + "\""
-        it.buildConfigField 'String', 'GITHUB_URL', "\"" + "https://api.github.com" + "\""
+        it.buildConfigField('String', 'GITHUB_URL', "\"" + "https://api.github.com" + "\"")
     }
     lintOptions {
         lintConfig file("lint.xml")
     }
+
 }
 
 
@@ -211,5 +232,4 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.4@aar') {
         transitive = true;
     }
-
 }

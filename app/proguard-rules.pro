@@ -24,7 +24,3 @@
 -dontwarn sun.misc.Unsafe
 
 -keepattributes *Annotation*
-
-# Keep AmWell SDK classes
--keep class orangepenguin.sdk.** { *; }
--keepclassmembers class orangepenguin.sdk.** { *; }

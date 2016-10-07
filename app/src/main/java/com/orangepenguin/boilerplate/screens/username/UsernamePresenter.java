@@ -19,7 +19,7 @@ public class UsernamePresenter extends BasePresenter implements UsernameContract
     PresenterState presenterState = REQUEST_NOT_IN_PROCESS;
     private UsernameContract.View view;
 
-    UsernamePresenter() {
+    public UsernamePresenter() {
         Injector.getPresenterComponent().inject(this);
     }
 

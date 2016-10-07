@@ -15,7 +15,7 @@ public class UserDetailsPresenter extends BasePresenter implements UserDetailsCo
     private UserDetailsContract.View view;
     private User user;
 
-    UserDetailsPresenter() {
+    public UserDetailsPresenter() {
         Injector.getPresenterComponent().inject(this);
     }
 

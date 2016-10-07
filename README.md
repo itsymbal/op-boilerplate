@@ -1,7 +1,7 @@
 # op-boilerplate
 
 This is a Bolierplate Android app.
-It is architected using the MVP (Model-View-Presenter) pattern.
+It is using the MVP (Model-View-Presenter) pattern.
 
 #This implementation has the following features:
 
@@ -9,6 +9,10 @@ It is architected using the MVP (Model-View-Presenter) pattern.
 1. Presenters keep state. When a View gets recreated upon configuration change it inherits the presenter from the previous View. Presenter updates View state to that of the previously existing View. For example, if a View sends an async request, and a new View is created, the request is not re-sent. The new View gets the callback when the async request returns. If the async request has returned in one view, and new veiew is created, new view gets the data delivered to it immediately
 1. Presenters are injected into Views using Dagger 2. That makes it easy to inject mock Presenters into Views, and mock dependencies into Presenters.
 1. Code is fully tested and comes with a test suite setup. Presenters are tested using plain jUnit tests. Views are tested using Robolectric.
+
+### Crashlytics integration
+
+Add your Fabric keys to app/fabric.properties. They are necessary to log to Crashlytics in Prod build.
 
 # Project integrates the following libraries:
 1. Dagger 2 dependency injection
@@ -34,14 +38,13 @@ Project has two Build Variants - Release and Debug
 
 # TODO
  in no particular order
-1. Integrate Crashlytics
+1. Integrate Crashlytics (obfuscation info)
 1. Retrieve and display a list, to figure out integration with lists/ adapters
 1. Enable caching in Repository. Retrieve from Network, populate memory cache
 1. Enable local DB caching, probably via Realm DB.
 1. Add CI project configuration via TravisCI or CircleCI
 1. Add images and deploy project to Google Play
 1. Add auto-deployment configuration, possibly via Fastlane
-1. Extract API keys to external file
 1. Add Checkstyle plugin
 1. Add Espresso integration testing
 1. Add automated performance testing - start time, screen load time, APK size, method count
@@ -54,6 +57,8 @@ Project has two Build Variants - Release and Debug
 1. Signup / login flow example. Possibly using Firebase?
 1. Error handling of network / user errors
 1. Handle 'don't have network' state
+1. Rx network call with exponential backoff
+1. Integrate View Binding with a View Model for setting data on View
 
 License
 --------

@@ -20,7 +20,7 @@ buildscript {
         // Lombok prevents Studio Lint from choking on Lambdas
         // https://github.com/evant/android-retrolambda-lombok
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
-        // Victor SVG->PNG library
+        // Trello's Victor SVG->PNG library
         classpath 'com.trello:victor:0.3.0'
     }
 }

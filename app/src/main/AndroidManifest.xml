@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.orangepenguin.boilerplate">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".singletons.BoilerplateApplication"
         android:allowBackup="true"
@@ -33,10 +31,8 @@
             android:label="@string/title_activity_user_details"
             android:parentActivityName=".screens.username.UsernameActivity"
             android:theme="@style/AppTheme"/>
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="118f11234567b4f8516c85d760103dff840e348b"/>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
