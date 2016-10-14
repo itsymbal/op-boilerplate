@@ -24,3 +24,13 @@
 -dontwarn sun.misc.Unsafe
 
 -keepattributes *Annotation*
+
+# Fabric configuration
+# https://docs.fabric.io/android/crashlytics/dex-and-proguard.html
+-keepattributes SourceFile,LineNumberTable
+#If you are using custom exceptions, add this line so that custom exception types are skipped during obfuscation:
+-keep public class * extends java.lang.Exception
+
+#Exclude Saripaar classes from obfuscation and minification.
+-keep class com.mobsandgeeks.saripaar.** {*;}
+-keep @com.mobsandgeeks.saripaar.annotation.ValidateUsing class * {*;}

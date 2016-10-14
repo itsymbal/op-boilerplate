@@ -38,25 +38,24 @@ Project has two Build Variants - Release and Debug
 
 # TODO
  in no particular order
-1. Integrate Crashlytics (obfuscation info)
+1. Add images and deploy project to Google Play
+1. Add auto-deployment configuration, possibly via Fastlane
+1. Set up project generation utility 
+1. Add Checkstyle plugin
+1. Add CI project configuration via TravisCI or CircleCI
 1. Retrieve and display a list, to figure out integration with lists/ adapters
 1. Enable caching in Repository. Retrieve from Network, populate memory cache
 1. Enable local DB caching, probably via Realm DB.
-1. Add CI project configuration via TravisCI or CircleCI
-1. Add images and deploy project to Google Play
-1. Add auto-deployment configuration, possibly via Fastlane
-1. Add Checkstyle plugin
 1. Add Espresso integration testing
 1. Add automated performance testing - start time, screen load time, APK size, method count
-1. Set up project generation utility 
-1. Example of a multi-module Component and its use
+1. Example of a multi-module Component and its use (Component that uses multiple Modules - and creating test version of it)
 1. Example of functionality composition. Reusable presenter components?
  multiple sections per screen - multiple fragments?
 1. Master / detail flow implementation. Fragments as Views instead of Activities
 1. Integrate third party SDK, e.g. Branch. Presenter integration via shim?
-1. Signup / login flow example. Possibly using Firebase?
+1. Signup / login flow example. Possibly using Firebase Authentication?
 1. Error handling of network / user errors
-1. Handle 'don't have network' state
+1. Handle 'don't have network' state (airplane mode / network off / network not connected)
 1. Rx network call with exponential backoff
 1. Integrate View Binding with a View Model for setting data on View
 

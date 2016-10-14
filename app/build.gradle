@@ -73,6 +73,7 @@ rootProject.ext {
 android {
     signingConfigs {
         PlayStoreConfig {
+            // values in keys.properties file
             keyAlias key_alias
             keyPassword key_password
             storeFile file(store_file)
@@ -117,12 +118,12 @@ android {
         release {
             // TODO: troubleshoot Proguard - yay! also
             // TODO: figure out a way to upload de-obfuscation info to Crashlytics
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-rules-debug.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.PlayStoreConfig
         }
         debug {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-rules-debug.pro'
             applicationIdSuffix ".debug"
         }
