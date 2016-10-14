@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import rx.Observable;
 import rx.Scheduler;
+import rx.schedulers.Schedulers;
 
 public class UserRepository {
 
