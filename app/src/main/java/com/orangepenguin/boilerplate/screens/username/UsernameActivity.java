@@ -12,10 +12,13 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
+import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsActivity;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,18 +33,21 @@ import io.fabric.sdk.android.Fabric;
  * The View performs the action (forwarding to next activity or saving / deleting preferences) as those are
  * Android-specific actions.
  */
-public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
-        implements UsernameContract.View, Validator.ValidationListener {
+public class UsernameActivity extends BaseActivity
+        implements UsernameView, Validator.ValidationListener {
 
+    private final Validator validator = new Validator(this);
     // Simple input validation performed by Saripaar validation library. Validation kept out of Presenter
     @NotEmpty(sequence = 1, messageResId = R.string.username_required)
     @BindView(R.id.username_edit_text) EditText usernameEditText;
     @BindView(R.id.remember_check_box) CheckBox rememberCheckBox;
-
-    private Validator validator = new Validator(this);
+    @Inject
+    UsernamePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Injector.getComponentFactory().getViewComponent().inject(this);
+
         super.onCreate(savedInstanceState);
         // TODO: ponder initializing this in a Presenter?
         // discuss with twitter folks
@@ -50,7 +56,18 @@ public class UsernameActivity extends BaseActivity<UsernameContract.Presenter>
 
         unbinder = ButterKnife.bind(this);
         validator.setValidationListener(this);
-        presenter.setView(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.takeView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.dropView();
     }
 
     @Override

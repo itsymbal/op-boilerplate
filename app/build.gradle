@@ -6,15 +6,13 @@ buildscript {
 
     dependencies {
         // The Fabric Gradle plugin uses an open ended version to react
-        // quickly to Android tooling updates
-        classpath 'io.fabric.tools:gradle:1.+'
+        // quickly to Android tooling updates which means can't use it offline
+        // Fuck that I need to be able to work offline
+//        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.trello.victor'
+//apply plugin: 'io.fabric'
 
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
@@ -31,43 +29,34 @@ repositories {
 apply from: "keys.properties"
 
 rootProject.ext {
-    // Sdk and tools
-    minSdkVersion = 19
-    targetSdkVersion = 23
-    compileSdkVersion = 23
-    buildToolsVersion = '23.0.3'
-    javaVersion = JavaVersion.VERSION_1_8
-    // App dependencies
-    // version 24.0.0 causes exception
-    // org.xmlpull.v1.XmlPullParserException: XML file
-    // build/intermediates/res/merged/debug/drawable/abc_ic_ab_back_material.xml line #-1
-    // (sorry, not yet implemented): invalid drawable tag vector
-    // TODO: attempt to upgrade once Robolectric bug is fixed
-//    supportLibraryVersion = '24.2.1'
-    supportLibraryVersion = '23.4.0'
-    junitVersion = '4.12'
-    mockitoVersion = '1.10.19'
-    butterKnifeVersion = '8.0.1'
-    daggerVersion = '2.4'
-    leakCanaryVersion = '1.4-beta2'
-    timberVersion = '4.1.2'
-    powerMockVersion = '1.6.4'
-    constraintLayoutVersion = '1.0.0-alpha9'
-    robolectricVersion = "3.1"
-//    robolectricVersion = "3.2-SNAPSHOT"
     assertJVersion = "1.1.1"
-    saripaarVersion = "2.0.2"
-    rxJavaVersion = "1.1.4"
-    rxAndroidVersion = "1.2.1"
-    gsonVersion = "2.7"
-    autoValueVersion = "1.2"
     autoValueMoshiVersion = "0.4.0"
     autoValueParcelVersion = "0.2.4-rc2"
-    picassoVersion = "2.4.0"
-    retrofitVersion = "2.1.0"
-    okHttpVersion = "3.3.0"
-    mockWebeserverPlusVersion = "0.8.2-SNAPSHOT"
+    autoValueVersion = "1.2"
+    buildToolsVersion = '26.0.0-rc2'
+    butterKnifeVersion = '8.5.1'
+    compileSdkVersion = 25
+    constraintLayoutVersion = '1.0.2'
+    daggerVersion = '2.6'
+    espressoVersion = '2.2.2'
+    gsonVersion = "2.7"
     glassFishVersion = "10.0-b28"
+    javaVersion = JavaVersion.VERSION_1_8
+    junitVersion = '4.12'
+    leakCanaryVersion = '1.4-beta2'
+    minSdkVersion = 19
+    mockitoVersion = '1.10.19'
+    mockWebeserverPlusVersion = "1.0.0"
+    okHttpVersion = "3.3.0"
+    picassoVersion = "2.4.0"
+    powerMockVersion = '1.6.4'
+    retrofitVersion = "2.1.0"
+    rxAndroidVersion = "1.2.1"
+    rxJavaVersion = "1.1.4"
+    saripaarVersion = "2.0.2"
+    supportLibraryVersion = '25.3.1'
+    targetSdkVersion = 25
+    timberVersion = '4.5.1'
 }
 
 android {
@@ -81,26 +70,22 @@ android {
         }
     }
 
+    android {
+        sourceSets {
+            String sharedTestDir = 'src/sharedTest/java'
+            test {
+                java.srcDir sharedTestDir
+            }
+            androidTest {
+                java.srcDir sharedTestDir
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility "$javaVersion"
         targetCompatibility "$javaVersion"
     }
-
-    // Trello Victor location of SVGs
-    sourceSets {
-        main {
-            svg.srcDir 'src/main/svg'
-        }
-    }
-    victor {
-        // Any assets defined in relative terms needs a base DPI specified
-        svgDpi = 72
-
-        // Do not generate these densities for SVG assets
-        excludeDensities = ['ldpi', 'xxxhdpi']
-    }
-
-    useLibrary 'org.apache.http.legacy' // for robolectric 3.0 compatibility issue
 
     compileSdkVersion rootProject.ext.compileSdkVersion
     //noinspection GradleDependency
@@ -112,19 +97,33 @@ android {
         targetSdkVersion "$rootProject.ext.targetSdkVersion"
         versionCode 1
         versionName "1.0"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // add test outputs as a source folder to Studio
+        // for library projects use  android.libraryVariants.all
+        android.applicationVariants.all {
+            def aptOutputDir = new File(buildDir, "generated/source/apt/${it.unitTestVariant.dirName}")
+            it.unitTestVariant.addJavaSourceFoldersToModel(aptOutputDir)
+        }
     }
 
     buildTypes {
         release {
-            // TODO: troubleshoot Proguard - yay! also
             // TODO: figure out a way to upload de-obfuscation info to Crashlytics
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.PlayStoreConfig
         }
         debug {
-            minifyEnabled true
+//            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-rules-debug.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-test.pro'
             applicationIdSuffix ".debug"
         }
     }
@@ -145,7 +144,6 @@ android {
     lintOptions {
         lintConfig file("lint.xml")
     }
-
 }
 
 
@@ -154,7 +152,7 @@ dependencies {
     compile "com.android.support:design:$supportLibraryVersion"
     // Butterknife View injection
     compile "com.jakewharton:butterknife:$butterKnifeVersion"
-    apt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
     // Timber logging
     compile "com.jakewharton.timber:timber:$timberVersion"
     compile "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
@@ -181,12 +179,12 @@ dependencies {
     // caused by a library including an earlier javapoet. Try removing this later
     // keeping version local as this is a temporary solution
     // TODO: ^^
-    apt 'com.squareup:javapoet:1.7.0'
+    annotationProcessor 'com.squareup:javapoet:1.8.0'
 
     // Dagger dependency injection
-    apt "com.google.dagger:dagger-compiler:$daggerVersion"
-    testApt "com.google.dagger:dagger-compiler:$daggerVersion"
-    androidTestApt "com.google.dagger:dagger-compiler:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    testAnnotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     compile "com.google.dagger:dagger:$daggerVersion"
 
     // Saripaar input validation
@@ -197,30 +195,30 @@ dependencies {
 
     // AutoValue / Parcelable /  Moshi Json parser
     provided "com.google.auto.value:auto-value:$autoValueVersion"
-    apt "com.google.auto.value:auto-value:$autoValueVersion"
-    apt "com.ryanharter.auto.value:auto-value-parcel:$autoValueParcelVersion"
-    apt "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
+    annotationProcessor "com.google.auto.value:auto-value:$autoValueVersion"
+    annotationProcessor "com.ryanharter.auto.value:auto-value-parcel:$autoValueParcelVersion"
+    annotationProcessor "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
     provided "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
 
-    testCompile "junit:junit:$junitVersion"
+    testCompile("junit:junit:$junitVersion")
+//            {
+//        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+//    }
     testCompile "org.mockito:mockito-all:$mockitoVersion"
+    androidTestCompile "org.mockito:mockito-all:$mockitoVersion"
     // LeakCanary memory leak detector
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     // PowerMock mocking framework
     testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
-    testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
+    testCompile ("org.powermock:powermock-api-mockito:$powerMockVersion")
+//            {
+//        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+//    }
     testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
 
-    // Robolectric testing
-    testCompile "org.robolectric:robolectric:$robolectricVersion"
-    testCompile "org.robolectric:shadows-support-v4:$robolectricVersion"
-
     // MockWebServer and Plus
-    testCompile("com.orhanobut:mockwebserverplus:$mockWebeserverPlusVersion") {
-        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-        exclude group: 'com.squareup.okio', module: 'okio'
-    }
+    testCompile("com.orhanobut:mockwebserverplus:$mockWebeserverPlusVersion")
 
     // AssertJ assertions
     testCompile("com.squareup.assertj:assertj-android:$assertJVersion") {
@@ -231,6 +229,11 @@ dependencies {
     }
     provided "org.glassfish:javax.annotation:$glassFishVersion"
     compile('com.crashlytics.sdk.android:crashlytics:2.6.4@aar') {
-        transitive = true;
+        transitive = true
+    }
+
+    // Espresso
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion") {
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
     }
 }

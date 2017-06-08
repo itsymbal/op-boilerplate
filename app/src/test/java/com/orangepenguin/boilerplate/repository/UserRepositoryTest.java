@@ -1,8 +1,10 @@
 package com.orangepenguin.boilerplate.repository;
 
-import com.orangepenguin.boilerplate.di.ComponentUtil;
-import com.orangepenguin.boilerplate.di.TestRepositoryModule;
+import com.orangepenguin.boilerplate.di.Injector;
+import com.orangepenguin.boilerplate.di.UnitTestComponentFactory;
 import com.orangepenguin.boilerplate.model.User;
+import com.orangepenguin.boilerplate.rest.GitHubClientBuilder;
+import com.orangepenguin.boilerplate.rx.RxTestSchedulers;
 import com.orhanobut.mockwebserverplus.MockWebServerPlus;
 
 import org.junit.Before;
@@ -17,10 +19,10 @@ public class UserRepositoryTest {
     @Before
     public void setUp() {
         String serverBaseUrl = server.url("/");
-        TestRepositoryModule testRepositoryModule = ComponentUtil.setUpTestRepositoryModule();
-        testRepositoryModule.setGitHubUrl(serverBaseUrl);
+        Injector.setComponentFactory(new UnitTestComponentFactory());
+
         System.out.printf("serverUrl '" + serverBaseUrl + "'");
-        userRepository = new UserRepository();
+        userRepository = new UserRepository(GitHubClientBuilder.getGitHubClient(serverBaseUrl), new RxTestSchedulers());
     }
 
     @Test

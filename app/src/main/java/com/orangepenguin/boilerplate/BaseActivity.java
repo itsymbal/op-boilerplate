@@ -1,8 +1,6 @@
 package com.orangepenguin.boilerplate;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.orangepenguin.boilerplate.di.Injector;
-
-import java.lang.reflect.ParameterizedType;
+import com.orangepenguin.boilerplate.di.ViewComponent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,17 +19,15 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 @SuppressLint("Registered")
-public abstract class BaseActivity<TypeOfPresenterInterface extends BasePresenterInterface>
+public abstract class BaseActivity<TypeOfPresenter extends BasePresenter>
         extends AppCompatActivity implements BaseViewInterface {
 
-    public static final String STATE = "STATE";
     @Nullable @BindView(R.id.toolbar) protected Toolbar toolbar; // common toolbar storage
     @Nullable @BindView(R.id.loading_indicator) protected View loadingIndicator; // common loading indicator
     @Nullable @BindView(R.id.contents_container) protected View contentContainer; // common content storage
-    protected TypeOfPresenterInterface presenter;
 
-    // TODO: have a list of Unbinders
     protected Unbinder unbinder;
+    protected ViewComponent viewComponent;
 
     @Override
     public void showLoadingIndicator() {
@@ -56,21 +51,7 @@ public abstract class BaseActivity<TypeOfPresenterInterface extends BasePresente
 
     @Override
     public Object onRetainCustomNonConfigurationInstance() {
-        return presenter;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        presenter = (TypeOfPresenterInterface) getLastCustomNonConfigurationInstance();
-        if (presenter == null) {
-            presenter = (TypeOfPresenterInterface) Injector.getPresenter(getPresenterInterfaceClassFromType());
-        }
-        if (savedInstanceState != null) {
-            Parcelable state = savedInstanceState.getParcelable(STATE);
-            presenter.restoreState(state);
-        }
+        return viewComponent;
     }
 
     @Override
@@ -84,28 +65,29 @@ public abstract class BaseActivity<TypeOfPresenterInterface extends BasePresente
         }
     }
 
-    /**
-     * only call this is Activity is being destroyed forever
-     */
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (!isChangingConfigurations()) {
-            presenter.onDestroy();
-        }
         if (unbinder != null) {
             unbinder.unbind();
         }
+        /*    Only call this if Activity is being destroyed forever */
+        if (!isChangingConfigurations()) {
+            getPresenter().terminate();
+        }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle bundle) {
-        Parcelable state = presenter.onSaveState();
-        bundle.putParcelable(STATE, state);
+    protected TypeOfPresenter getPresenter() {
+        return null;
     }
 
-    private Class getPresenterInterfaceClassFromType() {
-        ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
-        return (Class) parameterizedType.getActualTypeArguments()[0];
+    protected ViewComponent getViewComponent() {
+        viewComponent = (ViewComponent) getLastCustomNonConfigurationInstance();
+        if (viewComponent == null) {
+            viewComponent = Injector.getComponentFactory().getViewComponent();
+        }
+
+        return viewComponent;
     }
 }

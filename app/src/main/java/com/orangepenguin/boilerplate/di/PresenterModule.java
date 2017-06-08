@@ -1,6 +1,10 @@
 package com.orangepenguin.boilerplate.di;
 
-import com.orangepenguin.boilerplate.repository.UserRepository;
+import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsPresenter;
+import com.orangepenguin.boilerplate.screens.username.UsernamePresenter;
+import com.orangepenguin.boilerplate.usecase.UserUseCase;
+import com.orangepenguin.boilerplate.util.NotificationUtil;
+import com.orangepenguin.boilerplate.util.SharedPreferencesUtil;
 
 import dagger.Module;
 import dagger.Provides;
@@ -8,13 +12,17 @@ import dagger.Provides;
 @Module
 public class PresenterModule {
 
-    UserRepository userRepository;
+    @Provides
+    @PerScreen
+    public UsernamePresenter provideUsernamePresenter(UserUseCase userUseCase, SharedPreferencesUtil
+            sharedPreferencesUtil, NotificationUtil
+                                                              notificationUtil) {
+        return new UsernamePresenter(userUseCase, sharedPreferencesUtil, notificationUtil);
+    }
 
     @Provides
-    public UserRepository provideUserRepository() {
-        if (userRepository == null) {
-            userRepository = new UserRepository();
-        }
-        return new UserRepository();
+    @PerScreen
+    public UserDetailsPresenter provideUserDetailsPresenter() {
+        return new UserDetailsPresenter();
     }
 }

@@ -29,7 +29,7 @@ public abstract class User implements Parcelable {
     public abstract String login();
 
     @AutoValue.Builder
-    public static abstract class Builder {
+    public abstract static class Builder {
         public abstract Builder avatarUrl(String avatarUrl);
         public abstract Builder reposUrl(String reposUrl);
         public abstract Builder name(String name);

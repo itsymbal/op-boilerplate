@@ -1,10 +1,10 @@
 package com.orangepenguin.boilerplate.singletons;
 
-import com.orangepenguin.boilerplate.BaseApplication;
+import com.orangepenguin.boilerplate.Application;
 
 import timber.log.Timber;
 
-public class BoilerplateApplication extends BaseApplication {
+public class BoilerplateApplication extends Application {
     @Override
     protected void setUpLogging() {
         Timber.plant(new Timber.DebugTree() {

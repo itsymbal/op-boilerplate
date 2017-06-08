@@ -1,9 +1,10 @@
 package com.orangepenguin.boilerplate.screens.username;
 
-import com.orangepenguin.boilerplate.di.ComponentUtil;
-import com.orangepenguin.boilerplate.di.TestPresenterModule;
 import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.singletons.Constants;
+import com.orangepenguin.boilerplate.usecase.UserUseCase;
+import com.orangepenguin.boilerplate.util.NotificationUtil;
+import com.orangepenguin.boilerplate.util.SharedPreferencesUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,28 +32,27 @@ import static rx.Observable.just;
 @RunWith(MockitoJUnitRunner.class)
 public class UsernamePresenterTest {
     private static final String USERNAME = "testUsername";
-
-    @Mock UsernameContract.View mockView;
+    private final TestScheduler scheduler = Schedulers.test(); // observeScheduler to advance time by hand
+    @Mock UsernameView mockView;
     @Mock User mockUser;
-
-    TestPresenterModule testPresenterModule;
-
+    @Mock UserUseCase userUseCase;
+    @Mock SharedPreferencesUtil sharedPreferencesUtil;
+    @Mock NotificationUtil notificationUtil;
     private UsernamePresenter usernamePresenter;
-    private TestScheduler scheduler = Schedulers.test(); // observeScheduler to advance time by hand
 
     @Before
     public void setUp() {
-        testPresenterModule = ComponentUtil.setUpTestPresenterModule();
-        usernamePresenter = new UsernamePresenter();
-
-        when(testPresenterModule.provideUserRepo().fetchUser(USERNAME)).thenReturn(just(mockUser));
+        usernamePresenter = new UsernamePresenter(userUseCase, sharedPreferencesUtil, notificationUtil);
+        when(userUseCase.fetchUser(USERNAME)).thenReturn(just(mockUser));
     }
 
     @Test
     public void shouldStartListActivityOnShowUserButtonPress() {
-        usernamePresenter.setView(mockView);
+        usernamePresenter.takeView(mockView);
         usernamePresenter.showUserButtonPressed(USERNAME, false);
 
+        verify(mockView).showLoadingIndicator();
+        verify(mockView).hideLoadingIndicator();
         verify(mockView).startDetailsActivity(mockUser);
     }
 
@@ -61,9 +61,9 @@ public class UsernamePresenterTest {
      */
     @Test
     public void shouldSetUsernamePreferenceIfCheckboxChecked() {
-        usernamePresenter.setView(mockView);
+        usernamePresenter.takeView(mockView);
         usernamePresenter.showUserButtonPressed(USERNAME, true);
-        verify(testPresenterModule.provideApplication()).savePreference(Constants.PREF_USERNAME, USERNAME);
+        verify(sharedPreferencesUtil).savePreference(Constants.PREF_USERNAME, USERNAME);
     }
 
     /**
@@ -71,9 +71,9 @@ public class UsernamePresenterTest {
      */
     @Test
     public void shouldClearPreferenceIfCheckboxNotChecked() {
-        usernamePresenter.setView(mockView);
+        usernamePresenter.takeView(mockView);
         usernamePresenter.showUserButtonPressed(USERNAME, false);
-        verify(testPresenterModule.provideApplication()).clearPreference(Constants.PREF_USERNAME);
+        verify(sharedPreferencesUtil).clearPreference(Constants.PREF_USERNAME);
     }
 
     /**
@@ -81,29 +81,29 @@ public class UsernamePresenterTest {
      */
     @Test
     public void shouldPopulateUsernameAndRememberCheckboxIfUsernamePreferenceSet() {
-        when(testPresenterModule.provideApplication().getPreference(Constants.PREF_USERNAME, null)).thenReturn
+        when(sharedPreferencesUtil.getPreference(Constants.PREF_USERNAME, null)).thenReturn
                 (USERNAME);
 
-        usernamePresenter.setView(mockView);
+        usernamePresenter.takeView(mockView);
 
-        verify(testPresenterModule.provideApplication()).getPreference(Constants.PREF_USERNAME, null);
+        verify(sharedPreferencesUtil).getPreference(Constants.PREF_USERNAME, null);
         verify(mockView).setUsername(USERNAME);
         verify(mockView).checkRememberCheckbox();
     }
 
     @Test
-    public void shouldUpdateLoadingIndicatorOnSetView() {
+    public void shouldUpdateLoadingIndicatorOntakeView() {
         // arrange
         setUpDelayedUsersResponse();
-        usernamePresenter.setView(mockView);
+        usernamePresenter.takeView(mockView);
         // act
         usernamePresenter.showUserButtonPressed(USERNAME, false);
         // assert
         verify(mockView).showLoadingIndicator();
         // arrange
-        UsernameContract.View newMockView = mock(UsernameContract.View.class);
+        UsernameView newMockView = mock(UsernameView.class);
         // Act
-        usernamePresenter.setView(newMockView);
+        usernamePresenter.takeView(newMockView);
         // Assert
         verify(newMockView).showLoadingIndicator();
         // Act
@@ -117,10 +117,11 @@ public class UsernamePresenterTest {
     private void setUpDelayedUsersResponse() {
         Scheduler.Worker worker = scheduler.createWorker(); // worker to schedule events in time
         // Subjects allow both input and output, so they can be swapped in for Observable calls to unit test your code.
-        final PublishSubject<User> mockUserObservable = PublishSubject.create();
+        PublishSubject<User> mockUserObservable = PublishSubject.create();
         // schedule an observable event to occur at 1000 ms - return successful response with User object
         worker.schedule(() -> mockUserObservable.onNext(mockUser), 1000, MILLISECONDS);
+        worker.schedule(() -> mockUserObservable.onCompleted(), 1000, MILLISECONDS);
         // configure mock client to actually use mock Observable
-        when(testPresenterModule.provideUserRepo().fetchUser(USERNAME)).thenReturn(mockUserObservable);
+        when(userUseCase.fetchUser(USERNAME)).thenReturn(mockUserObservable);
     }
 }

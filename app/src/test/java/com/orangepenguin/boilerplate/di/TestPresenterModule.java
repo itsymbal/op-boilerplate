@@ -1,7 +1,7 @@
 package com.orangepenguin.boilerplate.di;
 
-import com.orangepenguin.boilerplate.ApplicationInterface;
-import com.orangepenguin.boilerplate.repository.UserRepository;
+import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsPresenter;
+import com.orangepenguin.boilerplate.screens.username.UsernamePresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -10,16 +10,14 @@ import static org.mockito.Mockito.mock;
 
 @Module
 public final class TestPresenterModule {
-    private ApplicationInterface application = mock(ApplicationInterface.class);
-    private UserRepository userRepository = mock(UserRepository.class);
 
     @Provides
-    public ApplicationInterface provideApplication() {
-        return application;
+    public UserDetailsPresenter provideUserDetailsPresenter() {
+        return mock(UserDetailsPresenter.class);
     }
 
     @Provides
-    public UserRepository provideUserRepo() {
-        return userRepository;
+    public UsernamePresenter provideUsernamePresenter() {
+        return mock(UsernamePresenter.class);
     }
 }

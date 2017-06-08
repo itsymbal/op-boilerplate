@@ -4,9 +4,10 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven { url 'https://maven.google.com' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -14,14 +15,6 @@ buildscript {
         // android-apt plugin makes annotation-generated code available to Studio to view, decompile etc
         // https://bitbucket.org/hvisser/android-apt/overview
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        // Retrolambda allows for use of Java 8 features (lambdas)
-        // https://github.com/evant/gradle-retrolambda
-        classpath "me.tatarka:gradle-retrolambda:3.2.5"
-        // Lombok prevents Studio Lint from choking on Lambdas
-        // https://github.com/evant/android-retrolambda-lombok
-        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
-        // Trello's Victor SVG->PNG library
-        classpath 'com.trello:victor:0.3.0'
     }
 }
 

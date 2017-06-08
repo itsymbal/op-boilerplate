@@ -2,11 +2,15 @@ package com.orangepenguin.boilerplate.di;
 
 import android.content.Context;
 
-import com.orangepenguin.boilerplate.ApplicationInterface;
-import com.orangepenguin.boilerplate.BaseApplication;
+import com.orangepenguin.boilerplate.Application;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+
+import static com.orangepenguin.boilerplate.BuildConfig.GITHUB_URL;
 
 /**
  * This is a Dagger module. We use this to pass in the Context dependency to the
@@ -15,19 +19,25 @@ import dagger.Provides;
 @Module
 public final class ApplicationModule {
 
-    private final BaseApplication application;
+    private final Application application;
 
-    public ApplicationModule(BaseApplication application) {
+    public ApplicationModule(Application application) {
         this.application = application;
     }
 
+    /**
+     * Supply Application context. It's important to realize not all Contexts are equal so only use
+     * this where Application is appropriate https://possiblemobile.com/2013/06/context/
+     */
     @Provides
     Context provideContext() {
         return application;
     }
 
     @Provides
-    ApplicationInterface provideApplicationInterface() {
-        return application;
+    @Singleton
+    @Named("serverUrl")
+    protected String provideGitHubUrl() {
+        return GITHUB_URL;
     }
 }

@@ -1,14 +1,14 @@
 # op-boilerplate
 
 This is a Bolierplate Android app.
-It is using the MVP (Model-View-Presenter) pattern.
+It is using the MVP (Model-View-Presenter) pattern (but not for long!)
 
 #This implementation has the following features:
 
 1. Presenters survive configuration change of the View. A new Presenter is created when a screen is first created, and destroyed when screen is destroyed. It persists across config changes.
-1. Presenters keep state. When a View gets recreated upon configuration change it inherits the presenter from the previous View. Presenter updates View state to that of the previously existing View. For example, if a View sends an async request, and a new View is created, the request is not re-sent. The new View gets the callback when the async request returns. If the async request has returned in one view, and new veiew is created, new view gets the data delivered to it immediately
+1. Presenters keep state. When a View gets recreated upon configuration change it inherits the presenter from the previous View. Presenter updates View state to that of the previously existing View. For example, if a View sends an async request, and a new View is created, the request is not re-sent. The new View gets the callback when the async request returns. If the async request has returned in one view, and new view is created, new view gets the data delivered to it immediately
 1. Presenters are injected into Views using Dagger 2. That makes it easy to inject mock Presenters into Views, and mock dependencies into Presenters.
-1. Code is fully tested and comes with a test suite setup. Presenters are tested using plain jUnit tests. Views are tested using Robolectric.
+1. Code is fully tested and comes with a test suite setup. Presenters are tested using plain jUnit tests. Views are tested using Espresso and jUnit.
 
 ### Crashlytics integration
 
@@ -18,16 +18,13 @@ Add your Fabric keys to app/fabric.properties. They are necessary to log to Cras
 1. Dagger 2 dependency injection
 1. ButterKnife view injection
 1. Timber logging
-1. RetroLambda for Java 8 Lambdas
 1. LeakCanary memory leak detector
 1. ConstraintLayout 
 1. Saripaar user input validation
 1. RxJava
-1. Victor SVG to PNG image conversion library
 
 # Testing via
 1. jUnit 4.12
-1. Robolectric UI testing
 1. Mockito mocking
 1. PowerMock mocking (for mocking Final classes in Rx, e.g. Subscription)
 1. AssertJ Java assertions
@@ -38,10 +35,15 @@ Project has two Build Variants - Release and Debug
 
 # TODO
  in no particular order
+1. Convert to Kotlin
+1. Convert to MVVM
+1. Integrate View Binding with a View Model for setting data on View
+1. Add Composition pattern to Activity
 1. Add images and deploy project to Google Play
 1. Add auto-deployment configuration, possibly via Fastlane
 1. Set up project generation utility 
 1. Add Checkstyle plugin
+1. Add SonarQube integration
 1. Add CI project configuration via TravisCI or CircleCI
 1. Retrieve and display a list, to figure out integration with lists/ adapters
 1. Enable caching in Repository. Retrieve from Network, populate memory cache
@@ -57,7 +59,6 @@ Project has two Build Variants - Release and Debug
 1. Error handling of network / user errors
 1. Handle 'don't have network' state (airplane mode / network off / network not connected)
 1. Rx network call with exponential backoff
-1. Integrate View Binding with a View Model for setting data on View
 
 License
 --------

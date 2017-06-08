@@ -21,8 +21,6 @@ public class ProductionLogTree extends Timber.Tree {
     @Override
     protected void log(int priority, String tag, String message, Throwable throwable) {
 
-        if (!isLoggable(priority)) return;
-
         Crashlytics.log(priority, tag, message);
 
         if (throwable != null) {

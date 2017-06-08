@@ -34,3 +34,12 @@
 #Exclude Saripaar classes from obfuscation and minification.
 -keep class com.mobsandgeeks.saripaar.** {*;}
 -keep @com.mobsandgeeks.saripaar.annotation.ValidateUsing class * {*;}
+
+# temp fix as 3.0.0 fails on Constraint layouts
+# https://stackoverflow.com/questions/44215368/android-gradle-plugin-3-0-0-alpha2-error-inflating-class-android-support-v7-wid
+-dontwarn android.support.v7.**
+-keep class android.support.v7.widget.** { *; }
+-dontwarn android.support.constraint.**
+-keep class android.support.constraint.** { *; }
+-dontwarn android.support.design.**
+-keep class android.support.design.** { *; }

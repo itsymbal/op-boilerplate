@@ -2,42 +2,38 @@ package com.orangepenguin.boilerplate.screens.userdetails;
 
 import android.widget.ImageView;
 
-import com.orangepenguin.boilerplate.BaseRobolectricTest;
-import com.orangepenguin.boilerplate.di.ComponentUtil;
 import com.orangepenguin.boilerplate.di.Injector;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
+import com.orangepenguin.boilerplate.di.TestViewComponent;
+import com.orangepenguin.boilerplate.di.UnitTestComponentFactory;
+import com.orangepenguin.boilerplate.util.ImageFetcher;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
 
-import static com.orangepenguin.boilerplate.fixtures.ActivityFixtures.buildAndStartActivity;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-public class UserDetailsActivityTest extends BaseRobolectricTest {
+public class UserDetailsActivityTest {
 
-    private static Picasso mockPicasso;
-    private static RequestCreator mockRequestCreator = mock(RequestCreator.class);
     private UserDetailsActivity userDetailsActivity;
-    private UserDetailsContract.Presenter mockPresenter = mock(UserDetailsContract.Presenter.class);
+    private TestViewComponent viewComponent;
 
     @Before
     public void setUp() throws Exception {
-        Injector.setPresenter(UserDetailsContract.Presenter.class, mockPresenter);
-        mockPicasso = ComponentUtil.setUpTestActivityModule().providePicasso();
-        userDetailsActivity = buildAndStartActivity(UserDetailsActivity.class);
+        Injector.setComponentFactory(new UnitTestComponentFactory());
+        viewComponent = (TestViewComponent) Injector.getComponentFactory().getViewComponent();
+        userDetailsActivity = new UserDetailsActivity();
+        viewComponent.inject(userDetailsActivity);
     }
 
     @Test
-    public void loadAvatarUrlShouldCallPicasso() {
-        when(mockPicasso.load("test_url")).thenReturn(mockRequestCreator);
+    public void loadAvatarUrlShouldCallImageLoader() {
+        ImageFetcher<String, ImageView> imageFetcher = viewComponent.getImageFetcher();
+        ImageView imageView = mock(ImageView.class);
+        userDetailsActivity.avatarImageView = imageView;
 
         userDetailsActivity.setAvatarUrl("test_url");
 
-        verify(mockPicasso).load("test_url");
-        verify(mockRequestCreator).into((ImageView) Matchers.any());
+        verify(imageFetcher).fetchAndSetImage("test_url", imageView);
     }
 }
