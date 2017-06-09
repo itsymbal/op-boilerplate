@@ -53,14 +53,12 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsPresenter>
     @Override
     public void onStart() {
         super.onStart();
-        presenter.takeView(this);
         presenter.setUser(user);
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.dropView();
+    protected UserDetailsPresenter getPresenter() {
+        return presenter;
     }
 
     @Override
@@ -81,10 +79,5 @@ public class UserDetailsActivity extends BaseActivity<UserDetailsPresenter>
     @Override
     public void setAvatarUrl(String avatarUrl) {
         imageFetcher.fetchAndSetImage(avatarUrl, avatarImageView);
-    }
-
-    @Override
-    protected UserDetailsPresenter getPresenter() {
-        return presenter;
     }
 }

@@ -12,7 +12,6 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.orangepenguin.boilerplate.BaseActivity;
 import com.orangepenguin.boilerplate.R;
-import com.orangepenguin.boilerplate.di.Injector;
 import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsActivity;
 
@@ -33,7 +32,7 @@ import io.fabric.sdk.android.Fabric;
  * The View performs the action (forwarding to next activity or saving / deleting preferences) as those are
  * Android-specific actions.
  */
-public class UsernameActivity extends BaseActivity
+public class UsernameActivity extends BaseActivity<UsernamePresenter>
         implements UsernameView, Validator.ValidationListener {
 
     private final Validator validator = new Validator(this);
@@ -41,12 +40,11 @@ public class UsernameActivity extends BaseActivity
     @NotEmpty(sequence = 1, messageResId = R.string.username_required)
     @BindView(R.id.username_edit_text) EditText usernameEditText;
     @BindView(R.id.remember_check_box) CheckBox rememberCheckBox;
-    @Inject
-    UsernamePresenter presenter;
+    @Inject UsernamePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Injector.getComponentFactory().getViewComponent().inject(this);
+        getViewComponent().inject(this);
 
         super.onCreate(savedInstanceState);
         // TODO: ponder initializing this in a Presenter?
@@ -56,18 +54,6 @@ public class UsernameActivity extends BaseActivity
 
         unbinder = ButterKnife.bind(this);
         validator.setValidationListener(this);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        presenter.takeView(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.dropView();
     }
 
     @Override
@@ -127,5 +113,10 @@ public class UsernameActivity extends BaseActivity
     @OnClick(R.id.username_edit_text)
     void onUserNameClicked() {
 
+    }
+
+    @Override
+    protected UsernamePresenter getPresenter() {
+        return presenter;
     }
 }

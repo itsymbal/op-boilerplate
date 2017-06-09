@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.orangepenguin.boilerplate.Application;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -14,6 +17,8 @@ import dagger.Provides;
 @Module
 public final class AndroidTestApplicationModule {
     private final Application application;
+    //TODO: figure out a way to set this from the test. Actually this can be moved to AndroidTest only module
+    public String gitHubUrl = "YOMAMA";
 
     public AndroidTestApplicationModule(Application application) {
         this.application = application;
@@ -27,4 +32,12 @@ public final class AndroidTestApplicationModule {
     Context provideContext() {
         return application;
     }
+
+    @Provides
+    @Singleton
+    @Named("serverUrl")
+    protected String provideGitHubUrl() {
+        return gitHubUrl;
+    }
+
 }

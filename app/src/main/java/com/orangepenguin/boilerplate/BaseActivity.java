@@ -65,6 +65,17 @@ public abstract class BaseActivity<TypeOfPresenter extends BasePresenter>
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().takeView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getPresenter().dropView();
+    }
 
     @Override
     protected void onDestroy() {

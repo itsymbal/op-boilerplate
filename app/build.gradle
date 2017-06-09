@@ -25,44 +25,55 @@ repositories {
 //ext.key_password="<your private key password>"
 //ext.store_file="<full path to your keystore file.jks>"
 //ext.store_password="<your keystore password>"
+//
+//similarly you can create a top level gradle.properties file.
+//  They are then accessible as member variables of the generated BuildConfig.class file
+//  Use that file to store API keys, paths etc. An initial version of that file
+//  is checked into git but subsequent changes are not tracked in git. This allows each project to customize those
+//  properties without checking in secrets. File is set to watched / unwatched using aliases defined in ~/.gitconfig
+// [alias]
+// unwatch = update-index --assume-unchanged
+// watch = update-index --no-assume-unchanged
+
 
 apply from: "keys.properties"
 
 rootProject.ext {
+    compileSdkVersion = 25
+    targetSdkVersion = 25
+    javaVersion = JavaVersion.VERSION_1_8
+    buildToolsVersion = '26.0.0-rc2'
+    supportLibraryVersion = '25.3.1'
+
     assertJVersion = "1.1.1"
     autoValueMoshiVersion = "0.4.0"
     autoValueParcelVersion = "0.2.4-rc2"
     autoValueVersion = "1.2"
-    buildToolsVersion = '26.0.0-rc2'
     butterKnifeVersion = '8.5.1'
-    compileSdkVersion = 25
     constraintLayoutVersion = '1.0.2'
     daggerVersion = '2.6'
     espressoVersion = '2.2.2'
     gsonVersion = "2.7"
     glassFishVersion = "10.0-b28"
-    javaVersion = JavaVersion.VERSION_1_8
     junitVersion = '4.12'
-    leakCanaryVersion = '1.4-beta2'
+    leakCanaryVersion = '1.5.1'
     minSdkVersion = 19
     mockitoVersion = '1.10.19'
     mockWebeserverPlusVersion = "1.0.0"
-    okHttpVersion = "3.3.0"
+    okHttpVersion = "3.5.0"
     picassoVersion = "2.4.0"
     powerMockVersion = '1.6.4'
     retrofitVersion = "2.1.0"
     rxAndroidVersion = "1.2.1"
     rxJavaVersion = "1.1.4"
     saripaarVersion = "2.0.2"
-    supportLibraryVersion = '25.3.1'
-    targetSdkVersion = 25
     timberVersion = '4.5.1'
 }
 
 android {
     signingConfigs {
         PlayStoreConfig {
-            // values in keys.properties file
+            // values in keys.properties file - see comment above "apply from: "keys.properties""
             keyAlias key_alias
             keyPassword key_password
             storeFile file(store_file)
@@ -120,24 +131,12 @@ android {
             signingConfig signingConfigs.PlayStoreConfig
         }
         debug {
-//            minifyEnabled true
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-rules-debug.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-test.pro'
             applicationIdSuffix ".debug"
         }
     }
-    /**
-     * TODO: update comment now that we have keys.properties
-     * Properties referenced here are defined in the top level gradle.properties file.
-     * They are then accessible as member variables of the generated BuildConfig.class file
-     * Use that file to store API keys, paths etc. An initial version of that file
-     * is checked into git but subsequent changes are not tracked in git. This allows each project to customize those
-     * properties without checking in secrets. File is set to watched / unwatched using aliases defined in ~/.gitconfig
-     [alias]
-     unwatch = update-index --assume-unchanged
-     watch = update-index --no-assume-unchanged
-     */
     buildTypes.each {
         it.buildConfigField('String', 'GITHUB_URL', "\"" + "https://api.github.com" + "\"")
     }
@@ -159,8 +158,6 @@ dependencies {
 
     // LeakCanary memory leak detector
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-    debugCompile 'com.squareup.haha:haha:2.0.3'
-    // fix build error http://stackoverflow.com/questions/36762834/getting-errors-on-building-in-android-studio-2
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     // Retrofit network library and dependencies
@@ -172,14 +169,6 @@ dependencies {
 
     // Picasso image library
     compile "com.squareup.picasso:picasso:$picassoVersion"
-
-    // the explicit inclusion of javapoet is a fix for a (hopefully) temporary issue:
-    // https://github.com/rharter/auto-value-gson/issues/43
-    // java.lang.NoSuchMethodError: com.squareup.javapoet.TypeName.isBoxedPrimitive()
-    // caused by a library including an earlier javapoet. Try removing this later
-    // keeping version local as this is a temporary solution
-    // TODO: ^^
-    annotationProcessor 'com.squareup:javapoet:1.8.0'
 
     // Dagger dependency injection
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -200,25 +189,18 @@ dependencies {
     annotationProcessor "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
     provided "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
 
-    testCompile("junit:junit:$junitVersion")
-//            {
-//        exclude group: 'org.hamcrest', module: 'hamcrest-core'
-//    }
+    testCompile "junit:junit:$junitVersion"
     testCompile "org.mockito:mockito-all:$mockitoVersion"
-    androidTestCompile "org.mockito:mockito-all:$mockitoVersion"
     // LeakCanary memory leak detector
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     // PowerMock mocking framework
     testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
-    testCompile ("org.powermock:powermock-api-mockito:$powerMockVersion")
-//            {
-//        exclude group: 'org.hamcrest', module: 'hamcrest-core'
-//    }
+    testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
     testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
 
     // MockWebServer and Plus
-    testCompile("com.orhanobut:mockwebserverplus:$mockWebeserverPlusVersion")
+    testCompile "com.orhanobut:mockwebserverplus:$mockWebeserverPlusVersion"
 
     // AssertJ assertions
     testCompile("com.squareup.assertj:assertj-android:$assertJVersion") {
@@ -233,7 +215,6 @@ dependencies {
     }
 
     // Espresso
-    androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion") {
-        exclude group: 'org.hamcrest', module: 'hamcrest-core'
-    }
+    androidTestCompile "com.android.support:support-annotations:$supportLibraryVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$espressoVersion"
 }
