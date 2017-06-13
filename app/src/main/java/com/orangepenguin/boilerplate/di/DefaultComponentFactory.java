@@ -5,14 +5,14 @@ import android.support.annotation.NonNull;
 import com.orangepenguin.boilerplate.Application;
 
 public final class DefaultComponentFactory implements ComponentFactory {
-    public final ApplicationComponent applicationComponent;
+    private final ApplicationComponent applicationComponent;
 
     public DefaultComponentFactory(@NonNull Application application) {
         applicationComponent =
                 DaggerApplicationComponent
                         .builder()
                         .applicationModule(new ApplicationModule(application))
-                        .productionAndAndroidTestModule(new ProductionAndAndroidTestModule())
+                        .productionOnlyModule(new ProductionOnlyModule())
                         .build();
     }
 
@@ -20,5 +20,11 @@ public final class DefaultComponentFactory implements ComponentFactory {
     @NonNull
     public ViewComponent getViewComponent() {
         return applicationComponent.plus(new PresenterModule());
+    }
+
+    @NonNull
+    @Override
+    public ApplicationComponent getApplicationComponent() {
+        return applicationComponent;
     }
 }

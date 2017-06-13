@@ -6,8 +6,6 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {
-        AndroidTestApplicationModule.class,
-        ProductionAndAndroidTestModule.class,
-        TestAndAndroidTestModule.class})
+        ApplicationModule.class, AndroidTestOnlyModule.class})
 public interface AndroidTestApplicationComponent extends ApplicationComponent {
 }

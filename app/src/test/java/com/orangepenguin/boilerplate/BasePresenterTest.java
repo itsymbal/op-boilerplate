@@ -1,8 +1,5 @@
 package com.orangepenguin.boilerplate;
 
-import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.di.UnitTestComponentFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,8 +16,6 @@ public class BasePresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        Injector.setComponentFactory(new UnitTestComponentFactory());
-
         testPresenter = new TestPresenter();
     }
 

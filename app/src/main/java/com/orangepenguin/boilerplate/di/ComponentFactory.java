@@ -6,4 +6,7 @@ public interface ComponentFactory {
 
     @NonNull
     ViewComponent getViewComponent();
+
+    @NonNull
+    ApplicationComponent getApplicationComponent();
 }

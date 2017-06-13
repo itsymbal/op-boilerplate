@@ -1,7 +1,5 @@
 package com.orangepenguin.boilerplate.repository;
 
-import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.di.UnitTestComponentFactory;
 import com.orangepenguin.boilerplate.model.User;
 import com.orangepenguin.boilerplate.rest.GitHubClientBuilder;
 import com.orangepenguin.boilerplate.rx.RxTestSchedulers;
@@ -19,7 +17,6 @@ public class UserRepositoryTest {
     @Before
     public void setUp() {
         String serverBaseUrl = server.url("/");
-        Injector.setComponentFactory(new UnitTestComponentFactory());
 
         System.out.printf("serverUrl '" + serverBaseUrl + "'");
         userRepository = new UserRepository(GitHubClientBuilder.getGitHubClient(serverBaseUrl), new RxTestSchedulers());

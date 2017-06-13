@@ -15,8 +15,7 @@ public class PresenterModule {
     @Provides
     @PerScreen
     public UsernamePresenter provideUsernamePresenter(UserUseCase userUseCase, SharedPreferencesUtil
-            sharedPreferencesUtil, NotificationUtil
-                                                              notificationUtil) {
+            sharedPreferencesUtil, NotificationUtil notificationUtil) {
         return new UsernamePresenter(userUseCase, sharedPreferencesUtil, notificationUtil);
     }
 

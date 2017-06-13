@@ -2,6 +2,9 @@ package com.orangepenguin.boilerplate.di;
 
 import com.orangepenguin.boilerplate.Application;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -15,8 +18,9 @@ import dagger.Component;
  * Application}.
  */
 @Singleton
-@Component(modules = {ApplicationModule.class,
-        ProductionAndAndroidTestModule.class})
+@Component(modules = {ApplicationModule.class, ProductionOnlyModule.class})
 public interface ApplicationComponent {
     ViewComponent plus(PresenterModule presenterModule);
+    @Named("serverUrl")
+    AtomicReference<String> getGitHubUrl();
 }

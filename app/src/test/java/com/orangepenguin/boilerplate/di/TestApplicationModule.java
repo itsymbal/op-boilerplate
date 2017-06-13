@@ -2,6 +2,8 @@ package com.orangepenguin.boilerplate.di;
 
 import android.widget.ImageView;
 
+import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsPresenter;
+import com.orangepenguin.boilerplate.screens.username.UsernamePresenter;
 import com.orangepenguin.boilerplate.util.ImageFetcher;
 
 import javax.inject.Named;
@@ -25,4 +27,16 @@ public final class TestApplicationModule {
     ImageFetcher<String, ImageView> provideImageLoader() {
         return mock(ImageFetcher.class);
     }
+
+    @Provides
+    public UserDetailsPresenter provideUserDetailsPresenter() {
+        return mock(UserDetailsPresenter.class);
+    }
+
+    @Provides
+    public UsernamePresenter provideUsernamePresenter() {
+        return mock(UsernamePresenter.class);
+    }
+
+    // add a @Provides line here for every View dependency
 }

@@ -2,8 +2,7 @@ package com.orangepenguin.boilerplate.screens.userdetails;
 
 import android.widget.ImageView;
 
-import com.orangepenguin.boilerplate.di.Injector;
-import com.orangepenguin.boilerplate.di.TestViewComponent;
+import com.orangepenguin.boilerplate.di.UnitTestApplicationComponent;
 import com.orangepenguin.boilerplate.di.UnitTestComponentFactory;
 import com.orangepenguin.boilerplate.util.ImageFetcher;
 
@@ -16,19 +15,19 @@ import static org.mockito.Mockito.verify;
 public class UserDetailsActivityTest {
 
     private UserDetailsActivity userDetailsActivity;
-    private TestViewComponent viewComponent;
+    private UnitTestApplicationComponent applicationComponent;
 
     @Before
     public void setUp() throws Exception {
-        Injector.setComponentFactory(new UnitTestComponentFactory());
-        viewComponent = (TestViewComponent) Injector.getComponentFactory().getViewComponent();
+        UnitTestComponentFactory unitTestComponentFactory = new UnitTestComponentFactory();
+        applicationComponent = unitTestComponentFactory.getApplicationComponent();
         userDetailsActivity = new UserDetailsActivity();
-        viewComponent.inject(userDetailsActivity);
+        applicationComponent.inject(userDetailsActivity);
     }
 
     @Test
     public void loadAvatarUrlShouldCallImageLoader() {
-        ImageFetcher<String, ImageView> imageFetcher = viewComponent.getImageFetcher();
+        ImageFetcher<String, ImageView> imageFetcher = applicationComponent.getImageFetcher();
         ImageView imageView = mock(ImageView.class);
         userDetailsActivity.avatarImageView = imageView;
 

@@ -1,13 +1,14 @@
 package com.orangepenguin.boilerplate.screens.username;
 
-import android.app.Application;
-import android.support.test.filters.LargeTest;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.orangepenguin.boilerplate.Application;
 import com.orangepenguin.boilerplate.R;
 import com.orangepenguin.boilerplate.di.AndroidTestComponentFactory;
 import com.orangepenguin.boilerplate.di.Injector;
+import com.orhanobut.mockwebserverplus.MockWebServerPlus;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,25 +22,31 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class UsernameActivityTest {
 
     @Rule
-    public ActivityTestRule<UsernameActivity> activityRule = new ActivityTestRule<>(UsernameActivity.class);
+    public ActivityTestRule<UsernameActivity> activityRule = new ActivityTestRule<>(UsernameActivity.class, false,
+            false);
+    @Rule public MockWebServerPlus server = new MockWebServerPlus();
 
     @Before
     public void setUp() throws Exception {
 
-        //        activityRule.getActivity();
-        Application application = activityRule.getActivity().getApplication();
-        Injector.setComponentFactory(new AndroidTestComponentFactory((com.orangepenguin.boilerplate.Application)
-                application));
+        Application context = (Application) InstrumentationRegistry.getInstrumentation().getTargetContext()
+                .getApplicationContext();
+        Injector.setComponentFactory(new AndroidTestComponentFactory(context));
+        String serverBaseUrl = server.url("/");
+        Injector.getComponentFactory().getApplicationComponent().getGitHubUrl().set(serverBaseUrl);
+        activityRule.launchActivity(null);
     }
 
     @Test
     public void dontDoNothing() {
+        server.enqueue("github_user");
+
         onView(withId(R.id.username_edit_text))
                 .perform(typeText("itsymbal"), closeSoftKeyboard());
         onView(withId(R.id.view_user_button)).perform(click());
+        //        onView(withId(R.id.username_textview)).check(isDisplayed());
     }
 }

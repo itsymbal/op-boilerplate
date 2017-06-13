@@ -2,7 +2,7 @@ package com.orangepenguin.boilerplate.di;
 
 import android.support.annotation.NonNull;
 
-public class Injector {
+public final class Injector {
     private static ComponentFactory componentFactory;
 
     private Injector() { }

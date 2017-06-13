@@ -1,5 +1,7 @@
 package com.orangepenguin.boilerplate.rest;
 
+import android.support.annotation.NonNull;
+
 import com.orangepenguin.boilerplate.repository.ApiMoshiAdapterFactory;
 import com.orangepenguin.boilerplate.repository.ApiUser;
 import com.squareup.moshi.Moshi;
@@ -15,8 +17,10 @@ import retrofit2.http.Path;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public class GitHubClientBuilder {
-    public static GitHubClient getGitHubClient(String serverUrl) {
+public final class GitHubClientBuilder {
+    private GitHubClientBuilder() {}
+
+    public static GitHubClient getGitHubClient(@NonNull String serverUrl) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
@@ -27,14 +31,13 @@ public class GitHubClientBuilder {
                 .add(ApiMoshiAdapterFactory.create())
                 .build();
 
-        GitHubClient gitHubClient = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .baseUrl(serverUrl)
                 .build()
                 .create(GitHubClient.class);
-        return gitHubClient;
     }
 
     /**

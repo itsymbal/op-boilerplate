@@ -6,14 +6,13 @@ import com.orangepenguin.boilerplate.Application;
 
 public final class AndroidTestComponentFactory implements ComponentFactory {
 
-    public final AndroidTestApplicationComponent testApplicationComponent;
+    private final AndroidTestApplicationComponent testApplicationComponent;
 
     public AndroidTestComponentFactory(@NonNull Application application) {
         testApplicationComponent = DaggerAndroidTestApplicationComponent
                 .builder()
-                .androidTestApplicationModule(new AndroidTestApplicationModule(application))
-                .productionAndAndroidTestModule(new ProductionAndAndroidTestModule())
-                .testAndAndroidTestModule(new TestAndAndroidTestModule())
+                .applicationModule(new ApplicationModule(application))
+                .androidTestOnlyModule(new AndroidTestOnlyModule())
                 .build();
     }
 
@@ -21,5 +20,11 @@ public final class AndroidTestComponentFactory implements ComponentFactory {
     @NonNull
     public ViewComponent getViewComponent() {
         return testApplicationComponent.plus(new PresenterModule());
+    }
+
+    @NonNull
+    @Override
+    public ApplicationComponent getApplicationComponent() {
+        return testApplicationComponent;
     }
 }
