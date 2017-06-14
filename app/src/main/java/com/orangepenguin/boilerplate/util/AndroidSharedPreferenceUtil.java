@@ -2,14 +2,11 @@ package com.orangepenguin.boilerplate.util;
 
 import android.content.Context;
 
-import javax.inject.Inject;
-
 public class AndroidSharedPreferenceUtil implements SharedPreferencesUtil {
 
     private static final String FILE_NAME = "APPLICATION_PREFERENCES";
     private final Context context;
 
-    @Inject
     public AndroidSharedPreferenceUtil(Context context) {
         this.context = context;
     }
