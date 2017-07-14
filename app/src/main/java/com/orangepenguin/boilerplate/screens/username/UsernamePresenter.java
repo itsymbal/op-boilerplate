@@ -4,6 +4,7 @@ import android.widget.Toast;
 
 import com.orangepenguin.boilerplate.BasePresenter;
 import com.orangepenguin.boilerplate.model.User;
+import com.orangepenguin.boilerplate.singletons.Constants;
 import com.orangepenguin.boilerplate.usecase.UserUseCase;
 import com.orangepenguin.boilerplate.util.NotificationUtil;
 import com.orangepenguin.boilerplate.util.SharedPreferencesUtil;
@@ -56,9 +57,9 @@ public class UsernamePresenter extends BasePresenter<UsernameView> {
 
         // example of preference setting
         if (rememberChecked) {
-            sharedPreferencesUtil.savePreference(PREF_USERNAME, username);
+            sharedPreferencesUtil.savePreference(Constants.PREF_USERNAME, username);
         } else {
-            sharedPreferencesUtil.clearPreference(PREF_USERNAME);
+            sharedPreferencesUtil.clearPreference(Constants.PREF_USERNAME);
         }
 
         fetchUser(username.trim());

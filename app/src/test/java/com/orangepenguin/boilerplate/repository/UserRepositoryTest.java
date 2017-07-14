@@ -19,7 +19,8 @@ public class UserRepositoryTest {
         String serverBaseUrl = server.url("/");
 
         System.out.printf("serverUrl '" + serverBaseUrl + "'");
-        userRepository = new UserRepository(GitHubClientBuilder.getGitHubClient(serverBaseUrl), new RxTestSchedulers());
+        userRepository = new UserRepository(GitHubClientBuilder.INSTANCE.getGitHubClient(serverBaseUrl), new
+                RxTestSchedulers());
     }
 
     @Test

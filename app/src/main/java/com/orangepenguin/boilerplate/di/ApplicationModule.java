@@ -74,7 +74,7 @@ public final class ApplicationModule {
     @Singleton
     public GitHubClientBuilder.GitHubClient provideGitHubClient(@NonNull @Named("serverUrl") AtomicReference<String>
                                                                         serverUrl) {
-        return GitHubClientBuilder.getGitHubClient(serverUrl.get());
+        return GitHubClientBuilder.INSTANCE.getGitHubClient(serverUrl.get());
     }
 
 }
