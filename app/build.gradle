@@ -13,6 +13,7 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 //apply plugin: 'io.fabric'
 
 repositories {
@@ -138,6 +139,7 @@ android {
     lintOptions {
         lintConfig file("lint.xml")
     }
+    buildToolsVersion '26.0.2'
 }
 
 
@@ -173,7 +175,7 @@ dependencies {
     compile "com.google.dagger:dagger:$daggerVersion"
 
     // Saripaar input validation
-    compile "com.mobsandgeeks:android-saripaar:2.0.2"
+//    compile "com.mobsandgeeks:android-saripaar:2.0.2"
     // RxJava / RxAndroid
     compile "io.reactivex:rxjava:1.3.0"
     compile "io.reactivex:rxandroid:1.2.1"
@@ -185,22 +187,51 @@ dependencies {
     annotationProcessor "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
     provided "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
 
-    testCompile "junit:junit:$junitVersion"
-    testCompile "org.mockito:mockito-all:$mockitoVersion"
 
-    // PowerMock mocking framework
-    testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
-    testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
-    testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
+    testCompile("junit:junit:$junitVersion") {
+//        exclude module: 'hamcrest-core'
+//        exclude module: 'hamcrest-integration'
+//        exclude module: 'hamcrest-library'
+    }
+    testCompile("org.mockito:mockito-all:$mockitoVersion") {
+        exclude group: "org.mockito",module: 'hamcrest-core'
+        exclude group: "org.mockito",module: 'hamcrest-integration'
+        exclude group: "org.mockito",module: 'hamcrest-library'
+    }
+    androidTestCompile("org.mockito:mockito-all:$mockitoVersion") {
+        exclude group: "org.mockito", module: 'hamcrest-core'
+        exclude group: "org.mockito", module: 'hamcrest-integration'
+        exclude group: "org.mockito",module: 'hamcrest-library'
+    }
 
-    // MockWebServer and Plus
-    testCompile "com.orhanobut:mockwebserverplus:1.0.0"
     androidTestCompile("com.orhanobut:mockwebserverplus:1.0.0") {
+        exclude module: 'snakeyaml'
+        exclude group: "org.mockito", module: 'hamcrest-core'
+
+    }
+
+// PowerMock mocking framework
+//    testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
+//    testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
+//    testCompile "org.powermock:powermock-api-support:$powerMockVersion"
+////    testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
+//    testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
+
+// MockWebServer and Plus
+    testCompile ("com.orhanobut:mockwebserverplus:1.0.0"){
+        exclude  module: 'hamcrest-core'
+        exclude  module: 'junit'
+
+    }
+    androidTestCompile("com.orhanobut:mockwebserverplus:1.0.0") {
+        exclude  module: 'hamcrest-core'
+        exclude  module: 'junit'
+//        exclude group: "org.mockito", module: 'hamcrest-core'
         exclude module: 'snakeyaml'
     }
     androidTestCompile 'pl.droidsonroids.yaml:snakeyaml:1.18-android'
 
-    // AssertJ assertions
+// AssertJ assertions
     testCompile("com.squareup.assertj:assertj-android:$assertJVersion") {
         exclude group: 'com.android.support'
     }
@@ -209,13 +240,18 @@ dependencies {
     }
     provided "org.glassfish:javax.annotation:10.0-b28"
 
-    //Crashlytics
+//Crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.6.4@aar') {
         transitive = true
     }
 
-    // Espresso
+// Espresso
     androidTestCompile "com.android.support:support-annotations:$supportLibraryVersion"
-    androidTestCompile "com.android.support.test.espresso:espresso-core:$espressoVersion"
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion")
+            {
+                exclude module: 'hamcrest-core'
+                exclude module: 'hamcrest-integration'
+                exclude module: 'hamcrest-library'
+            }
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }

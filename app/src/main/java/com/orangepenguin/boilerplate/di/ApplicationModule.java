@@ -2,7 +2,6 @@ package com.orangepenguin.boilerplate.di;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.widget.ImageView;
 
 import com.orangepenguin.boilerplate.Application;
 import com.orangepenguin.boilerplate.rest.GitHubClientBuilder;
@@ -10,8 +9,6 @@ import com.orangepenguin.boilerplate.rx.AndroidRxSchedulers;
 import com.orangepenguin.boilerplate.rx.RxSchedulers;
 import com.orangepenguin.boilerplate.util.AndroidNotificationUtil;
 import com.orangepenguin.boilerplate.util.AndroidSharedPreferenceUtil;
-import com.orangepenguin.boilerplate.util.FitCenterCropWhitePlaceholderFetcher;
-import com.orangepenguin.boilerplate.util.ImageFetcher;
 import com.orangepenguin.boilerplate.util.NotificationUtil;
 import com.orangepenguin.boilerplate.util.SharedPreferencesUtil;
 
@@ -43,13 +40,6 @@ public final class ApplicationModule {
     @Provides
     Context provideContext() {
         return application;
-    }
-
-    @Singleton
-    @Provides
-    @Named("fitCenterCropWhitePlaceholder")
-    ImageFetcher<String, ImageView> provideImageFetcher() {
-        return new FitCenterCropWhitePlaceholderFetcher();
     }
 
     @Provides

@@ -10,7 +10,7 @@
 -dontwarn android.support.test.**
 -keep class android.support.test.** { *; }
 
--keep class org.hamcrest.** { *; }
+#-keep class org.hamcrest.** { *; }
 
 -keep class org.junit.** { *; }
 -dontwarn org.junit.**

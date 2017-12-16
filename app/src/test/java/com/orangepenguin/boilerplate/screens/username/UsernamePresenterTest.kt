@@ -1,6 +1,7 @@
 package com.orangepenguin.boilerplate.screens.username
 
 import com.orangepenguin.boilerplate.model.User
+import com.orangepenguin.boilerplate.rx.RxTestSchedulers
 import com.orangepenguin.boilerplate.singletons.Constants
 import com.orangepenguin.boilerplate.usecase.UserUseCase
 import com.orangepenguin.boilerplate.util.NotificationUtil
@@ -30,11 +31,12 @@ class UsernamePresenterTest {
     @Mock lateinit var sharedPreferencesUtil: SharedPreferencesUtil
     @Mock lateinit var notificationUtil: NotificationUtil
     private lateinit var usernamePresenter: UsernamePresenter
+    private val schedulers = RxTestSchedulers()
 
     @Before
     fun setUp() {
         `when`<Observable<User>>(userUseCase.fetchUser(USERNAME)).thenReturn(just<User>(mockUser))
-        usernamePresenter = UsernamePresenter(userUseCase, sharedPreferencesUtil, notificationUtil)
+        usernamePresenter = UsernamePresenter(userUseCase, sharedPreferencesUtil, notificationUtil, schedulers)
     }
 
     @Test
