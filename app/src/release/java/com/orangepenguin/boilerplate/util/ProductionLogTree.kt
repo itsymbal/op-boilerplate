@@ -12,8 +12,7 @@ import android.util.Log.INFO
 import android.util.Log.WARN
 
 class ProductionLogTree : Timber.Tree() {
-    @Override
-    protected fun isLoggable(priority: Int): Boolean {
+    override protected fun isLoggable(priority: Int): Boolean {
         return priority > INFO
     }
 
