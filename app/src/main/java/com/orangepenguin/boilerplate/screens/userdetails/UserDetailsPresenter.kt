@@ -15,9 +15,9 @@ open class UserDetailsPresenter
 @Inject constructor() : BasePresenter() {
 
     // TODO: replace with MVVM implementation
-    var myView = view as UserDetailsView?
     var user: User? = null
         set(value) {
+            val myView = super.view as UserDetailsView?
             field = value
             myView?.setUsername(value?.login() ?: "")
             myView?.setName(value?.name() ?: "")

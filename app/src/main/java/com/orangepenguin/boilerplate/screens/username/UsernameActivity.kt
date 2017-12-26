@@ -63,5 +63,4 @@ class UsernameActivity : BaseActivity<UsernamePresenter>(), UsernameView {
         super.onStart()
         presenter.takeView(this)
     }
-
 }

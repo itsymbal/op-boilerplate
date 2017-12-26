@@ -6,7 +6,7 @@ import rx.subscriptions.CompositeSubscription
 
 abstract class BasePresenter {
 
-    public var view: BaseViewInterface? = null
+    var view: BaseViewInterface? = null
 
     private var compositeSubscription: CompositeSubscription? = null
 
