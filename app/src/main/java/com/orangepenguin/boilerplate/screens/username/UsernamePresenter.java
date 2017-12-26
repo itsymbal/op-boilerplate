@@ -111,7 +111,6 @@ public class UsernamePresenter extends BasePresenter {
                 })
                 .doOnTerminate(this::setViewState)
                 .subscribe();
-
     }
 
     /**

@@ -24,7 +24,6 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter>(), UserDetailsVie
     private val tvUsername: TextView by bindView(R.id.username_textview)
     private val tvName: TextView  by bindView(R.id.name_textview)
     private val tvCompany: TextView by bindView(R.id.company_textview)
-    private val tvRepos: TextView by bindView(R.id.repos_textview)
     private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +35,7 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter>(), UserDetailsVie
 
         setContentView(R.layout.activity_user_details)
 
-        user = intent.getParcelableExtra<User>(USER_INTENT_PARAM)
+        user = intent.getParcelableExtra(USER_INTENT_PARAM)
         presenter.initialize(savedInstanceState)
     }
 
