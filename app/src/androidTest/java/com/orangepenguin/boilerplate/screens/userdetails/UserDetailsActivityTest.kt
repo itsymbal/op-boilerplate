@@ -17,6 +17,7 @@ import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
 class UserDetailsActivityTest {
+    @JvmField
     @Rule
     var activityRule = ActivityTestRule(UserDetailsActivity::class.java, false, false)
     lateinit var applicationComponent: ApplicationComponent

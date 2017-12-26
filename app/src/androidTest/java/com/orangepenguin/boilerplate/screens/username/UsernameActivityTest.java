@@ -15,6 +15,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import kotlin.jvm.JvmField;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -24,10 +26,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class UsernameActivityTest {
 
+    @JvmField
     @Rule
     public ActivityTestRule<UsernameActivity> activityRule = new ActivityTestRule<>(UsernameActivity.class, false,
             false);
-    @Rule public MockWebServerPlus server = new MockWebServerPlus();
+    @JvmField @Rule public MockWebServerPlus server = new MockWebServerPlus();
 
     @Before
     public void setUp() throws Exception {
