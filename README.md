@@ -20,13 +20,11 @@ Add your Fabric keys to app/fabric.properties. They are necessary to log to Cras
 1. Timber logging
 1. LeakCanary memory leak detector
 1. ConstraintLayout 
-1. Saripaar user input validation
 1. RxJava
 
 # Testing via
 1. jUnit 4.12
-1. Mockito mocking
-1. PowerMock mocking (for mocking Final classes in Rx, e.g. Subscription)
+1. Mockito 2 mocking
 1. AssertJ Java assertions
 1. AssertJ Android View assertions
 

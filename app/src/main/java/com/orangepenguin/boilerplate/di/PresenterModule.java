@@ -1,5 +1,6 @@
 package com.orangepenguin.boilerplate.di;
 
+import com.orangepenguin.boilerplate.rx.RxSchedulers;
 import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsPresenter;
 import com.orangepenguin.boilerplate.screens.username.UsernamePresenter;
 import com.orangepenguin.boilerplate.usecase.UserUseCase;
@@ -15,8 +16,8 @@ public class PresenterModule {
     @Provides
     @PerScreen
     public UsernamePresenter provideUsernamePresenter(UserUseCase userUseCase, SharedPreferencesUtil
-            sharedPreferencesUtil, NotificationUtil notificationUtil) {
-        return new UsernamePresenter(userUseCase, sharedPreferencesUtil, notificationUtil);
+            sharedPreferencesUtil, NotificationUtil notificationUtil, RxSchedulers schedulers) {
+        return new UsernamePresenter(userUseCase, sharedPreferencesUtil, notificationUtil, schedulers);
     }
 
     @Provides

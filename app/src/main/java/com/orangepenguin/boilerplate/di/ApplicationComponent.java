@@ -1,6 +1,9 @@
 package com.orangepenguin.boilerplate.di;
 
+import android.widget.ImageView;
+
 import com.orangepenguin.boilerplate.Application;
+import com.orangepenguin.boilerplate.util.ImageFetcher;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -23,4 +26,6 @@ public interface ApplicationComponent {
     ViewComponent plus(PresenterModule presenterModule);
     @Named("serverUrl")
     AtomicReference<String> getGitHubUrl();
+    @Named("fitCenterCropWhitePlaceholder")
+    ImageFetcher<String, ImageView> getImageFetcher();
 }

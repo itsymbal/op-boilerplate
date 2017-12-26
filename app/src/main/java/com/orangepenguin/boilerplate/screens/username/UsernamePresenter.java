@@ -3,7 +3,10 @@ package com.orangepenguin.boilerplate.screens.username;
 import android.widget.Toast;
 
 import com.orangepenguin.boilerplate.BasePresenter;
+import com.orangepenguin.boilerplate.BaseViewInterface;
 import com.orangepenguin.boilerplate.model.User;
+import com.orangepenguin.boilerplate.rx.RxSchedulers;
+import com.orangepenguin.boilerplate.singletons.Constants;
 import com.orangepenguin.boilerplate.usecase.UserUseCase;
 import com.orangepenguin.boilerplate.util.NotificationUtil;
 import com.orangepenguin.boilerplate.util.SharedPreferencesUtil;
@@ -21,27 +24,30 @@ import static com.orangepenguin.boilerplate.screens.username.UsernamePresenter.P
 import static com.orangepenguin.boilerplate.screens.username.UsernamePresenter.PresenterState.RESPONSE_RECEIVED;
 import static com.orangepenguin.boilerplate.singletons.Constants.PREF_USERNAME;
 
-public class UsernamePresenter extends BasePresenter<UsernameView> {
+public class UsernamePresenter extends BasePresenter {
 
     private final UserUseCase userUseCase;
     private final SharedPreferencesUtil sharedPreferencesUtil;
     private final NotificationUtil notificationUtil;
-    Subscription subscription;
+    private final AtomicReference<User> user = new AtomicReference<>();
+    private final RxSchedulers schedulers;
     PresenterState presenterState = PresenterState.REQUEST_NOT_SENT;
-    private AtomicReference<User> user = new AtomicReference<>();
+    Subscription subscription;
     private UsernameView view;
 
     @Inject
     public UsernamePresenter(UserUseCase userUseCase, SharedPreferencesUtil sharedPreferencesUtil, NotificationUtil
-            notificationUtil) {
+            notificationUtil, RxSchedulers schedulers) {
         this.userUseCase = userUseCase;
         this.sharedPreferencesUtil = sharedPreferencesUtil;
         this.notificationUtil = notificationUtil;
+        this.schedulers = schedulers;
     }
 
     @Override
-    public void onTakeView(UsernameView view) {
-        this.view = view;
+    public void onTakeView(BaseViewInterface takeView) {
+        // TODO: this ugly cast is here instead of parametrizing BasePresenter
+        view = (UsernameView) takeView;
         String savedUsername = sharedPreferencesUtil.getPreference(PREF_USERNAME, null);
         if (savedUsername != null) {
             view.checkRememberCheckbox();
@@ -56,9 +62,9 @@ public class UsernamePresenter extends BasePresenter<UsernameView> {
 
         // example of preference setting
         if (rememberChecked) {
-            sharedPreferencesUtil.savePreference(PREF_USERNAME, username);
+            sharedPreferencesUtil.savePreference(Constants.PREF_USERNAME, username);
         } else {
-            sharedPreferencesUtil.clearPreference(PREF_USERNAME);
+            sharedPreferencesUtil.clearPreference(Constants.PREF_USERNAME);
         }
 
         fetchUser(username.trim());
@@ -91,6 +97,8 @@ public class UsernamePresenter extends BasePresenter<UsernameView> {
         presenterState = INITIAL_PAGE_REQUEST_IN_PROGRESS;
         subscription = userUseCase
                 .fetchUser(username)
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.mainThread())
                 .doOnNext(user -> {
                     this.user.set(user);
                     presenterState = RESPONSE_RECEIVED;
@@ -102,7 +110,7 @@ public class UsernamePresenter extends BasePresenter<UsernameView> {
                     // 1 - no network, 2 - network error, 3 - bad username
                 })
                 .doOnTerminate(this::setViewState)
-                .subscribe(user1 -> {}, t -> {});
+                .subscribe();
     }
 
     /**
