@@ -10,6 +10,7 @@ import com.orangepenguin.boilerplate.rx.RxSchedulers;
 import com.orangepenguin.boilerplate.util.AndroidNotificationUtil;
 import com.orangepenguin.boilerplate.util.AndroidSharedPreferenceUtil;
 import com.orangepenguin.boilerplate.util.NotificationUtil;
+import com.orangepenguin.boilerplate.util.PermissionUtil;
 import com.orangepenguin.boilerplate.util.SharedPreferencesUtil;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,6 +45,18 @@ public final class ApplicationModule {
 
     @Provides
     @Singleton
+    NotificationUtil provideNotificationUtil(Context context) {
+        return new AndroidNotificationUtil(context);
+    }
+
+    @Provides
+    @Singleton
+    PermissionUtil providePermissionUtil(SharedPreferencesUtil sharedPreferencesUtil, Context context) {
+        return new PermissionUtil(sharedPreferencesUtil, context);
+    }
+
+    @Provides
+    @Singleton
     RxSchedulers provideSchedulers() {
         return new AndroidRxSchedulers();
     }
@@ -52,12 +65,6 @@ public final class ApplicationModule {
     @Singleton
     SharedPreferencesUtil provideSharedPreferenceUtil(Context context) {
         return new AndroidSharedPreferenceUtil(context);
-    }
-
-    @Provides
-    @Singleton
-    NotificationUtil provideNotificationUtil(Context context) {
-        return new AndroidNotificationUtil(context);
     }
 
     @Provides

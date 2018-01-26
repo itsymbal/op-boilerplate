@@ -31,8 +31,7 @@ public class UsernamePresenter extends BasePresenter {
     private final NotificationUtil notificationUtil;
     private final AtomicReference<User> user = new AtomicReference<>();
     private final RxSchedulers schedulers;
-    PresenterState presenterState = PresenterState.REQUEST_NOT_SENT;
-    Subscription subscription;
+    private PresenterState presenterState = PresenterState.REQUEST_NOT_SENT;
     private UsernameView view;
 
     @Inject
@@ -46,7 +45,7 @@ public class UsernamePresenter extends BasePresenter {
 
     @Override
     public void onTakeView(BaseViewInterface takeView) {
-        // TODO: this ugly cast is here instead of parametrizing BasePresenter
+        // TODO: this ugly cast is here instead of parametrizing BasePresenter - to be removed by MVVM
         view = (UsernameView) takeView;
         String savedUsername = sharedPreferencesUtil.getPreference(PREF_USERNAME, null);
         if (savedUsername != null) {
@@ -95,7 +94,7 @@ public class UsernamePresenter extends BasePresenter {
         view.showLoadingIndicator();
 
         presenterState = INITIAL_PAGE_REQUEST_IN_PROGRESS;
-        subscription = userUseCase
+        userUseCase
                 .fetchUser(username)
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.mainThread())

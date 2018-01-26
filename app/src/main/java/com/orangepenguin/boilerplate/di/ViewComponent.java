@@ -1,5 +1,6 @@
 package com.orangepenguin.boilerplate.di;
 
+import com.orangepenguin.boilerplate.screens.permissions.PermissionsActivity;
 import com.orangepenguin.boilerplate.screens.userdetails.UserDetailsActivity;
 import com.orangepenguin.boilerplate.screens.username.UsernameActivity;
 
@@ -13,4 +14,5 @@ import dagger.Subcomponent;
 public interface ViewComponent {
     void inject(UsernameActivity usernameActivity);
     void inject(UserDetailsActivity userDetailsActivity);
+    void inject(PermissionsActivity permissionsActivity);
 }

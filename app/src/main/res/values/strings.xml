@@ -11,4 +11,10 @@
     <string name="view_user_content_description">view user button</string>
     <string name="view_user_button_label">View User Info</string>
     <string name="title_activity_user_details">UserDetailsActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="generic_ok">OK</string>
+    <string name="permission_open_settings_screen">Click OK to open Settings to enable this permission</string>
+    <string name="permission_open_settings_suggestion">Open Settings screen and enable this permission.</string>
+    <string name="generic_cancel">Cancel</string>
+    <string name="permission_rationale_location">Your location is required to get local results</string>
 </resources>
