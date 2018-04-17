@@ -21,14 +21,15 @@ class PermissionUtil {
         fun requestPermissionsShowingRationaleIfDeniedOnce(activity: Activity,
                                                            permissionRequestResultCode: Int,
                                                            rationaleMsgId: Int, allRequiredPermissions: Array<String>) {
+            when {
+                anyPermissionPermanentlyDenied(activity, * allRequiredPermissions) ->
+                    suggestUserEnablePermsInSettings(activity, rationaleMsgId)
 
-            if (anyPermissionPermanentlyDenied(activity, * allRequiredPermissions)) {
-                suggestUserEnablePermsInSettings(activity, rationaleMsgId)
-            } else if (anyPermissionDenied(activity, * allRequiredPermissions)) {
-                showRationaleThenRequestPermissions(activity, allRequiredPermissions,
-                        permissionRequestResultCode, rationaleMsgId)
-            } else {
-                requestPermissionsFromActivity(activity, permissionRequestResultCode, * allRequiredPermissions)
+                anyPermissionDenied(activity, * allRequiredPermissions) ->
+                    showRationaleThenRequestPermissions(activity, allRequiredPermissions, permissionRequestResultCode,
+                            rationaleMsgId)
+
+                else -> requestPermissionsFromActivity(activity, permissionRequestResultCode, * allRequiredPermissions)
             }
         }
 
@@ -39,26 +40,26 @@ class PermissionUtil {
         fun requestPermissionsShowingRationale(activity: Activity,
                                                permissionRequestResultCode: Int,
                                                rationaleMsgId: Int, allRequiredPermissions: Array<String>) {
+            when {
+                anyPermissionPermanentlyDenied(activity, * allRequiredPermissions) ->
+                    suggestUserEnablePermsInSettings(activity, rationaleMsgId)
 
-            if (anyPermissionPermanentlyDenied(activity, * allRequiredPermissions)) {
-                suggestUserEnablePermsInSettings(activity, rationaleMsgId)
-            } else {
-                showRationaleThenRequestPermissions(activity, allRequiredPermissions,
+                else -> showRationaleThenRequestPermissions(activity, allRequiredPermissions,
                         permissionRequestResultCode, rationaleMsgId)
             }
         }
 
         /**
-         * Request permissions. If any permission permanently denied
-         * with "Don't ask again", send to settings screen. Show rationale then ask for permissions.
+         * Request permissions. If any permission permanently denied  with "Don't ask again", send to settings screen.
+         * Otherwise show rationale then ask for permissions.
          */
         fun requestPermissions(activity: Activity, permissionRequestResultCode: Int,
                                rationaleMsgId: Int, allRequiredPermissions: Array<String>) {
+            when {
+                anyPermissionPermanentlyDenied(activity, * allRequiredPermissions) ->
+                    suggestUserEnablePermsInSettings(activity, rationaleMsgId)
 
-            if (anyPermissionPermanentlyDenied(activity, * allRequiredPermissions)) {
-                suggestUserEnablePermsInSettings(activity, rationaleMsgId)
-            } else {
-                requestPermissionsFromActivity(activity, permissionRequestResultCode, * allRequiredPermissions)
+                else -> requestPermissionsFromActivity(activity, permissionRequestResultCode, * allRequiredPermissions)
             }
         }
 

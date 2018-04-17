@@ -1,11 +1,8 @@
 package com.orangepenguin.boilerplate.util
 
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.os.Build
-import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 
 class PermissionApi {
@@ -23,17 +20,12 @@ class PermissionApi {
         /**
          * Show if supplied permission has been granted
          */
-        @TargetApi(Build.VERSION_CODES.M)
-        fun permissionGranted(context: Context, permission: String): Boolean {
-            return if (!usesRuntimePermissions()) {
-                true
-            } else ActivityCompat.checkSelfPermission(context, permission) == PERMISSION_GRANTED
-        }
+        fun permissionGranted(context: Context, permission: String): Boolean =
+                ActivityCompat.checkSelfPermission(context, permission) == PERMISSION_GRANTED
 
         /**
          * Show if at least one of the supplied permissions has been denied
          */
-        @TargetApi(Build.VERSION_CODES.M)
         fun anyPermissionDenied(activity: Activity, vararg permissions: String): Boolean {
             return permissions.any { permissionDenied(activity, it) }
         }
@@ -41,12 +33,8 @@ class PermissionApi {
         /**
          * Show if at the supplied permission has been denied
          */
-        @RequiresApi(Build.VERSION_CODES.M)
-        fun permissionDenied(activity: Activity, permission: String): Boolean {
-            return if (!usesRuntimePermissions()) {
-                false
-            } else activity.shouldShowRequestPermissionRationale(permission)
-        }
+        fun permissionDenied(activity: Activity, permission: String): Boolean =
+                ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
 
         /**
          * Show if any of the supplied permissions has been permanently denied
@@ -57,13 +45,10 @@ class PermissionApi {
         /**
          * Show if permission has been permanently denied
          */
-        fun permissionPermanentlyDenied(activity: Activity, permission: String): Boolean {
-            return if (!usesRuntimePermissions()) {
-                false
-            } else !permissionGranted(activity, permission) &&
+        fun permissionPermanentlyDenied(activity: Activity, permission: String): Boolean =
+                !permissionGranted(activity, permission) &&
                     !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) &&
                     hasRequestedPermission(activity, permission)
-        }
 
         fun setPermissionRequestedFlag(context: Context, permissions: Array<String>) {
             for (permission in permissions) {
@@ -90,9 +75,5 @@ class PermissionApi {
 
         private fun getPreference(context: Context, key: String, defaultValue: Boolean): Boolean =
                 context.getSharedPreferences(PERMISSIONS_PREFS, Context.MODE_PRIVATE).getBoolean(key, defaultValue)
-
-        private fun usesRuntimePermissions(): Boolean {
-            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-        }
     }
 }
