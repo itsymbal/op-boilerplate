@@ -6,7 +6,7 @@ import com.orangepenguin.boilerplate.screens.util.PermissionsDialogWithRationale
 import com.orangepenguin.boilerplate.screens.util.PermissionsDialogWithSettingsLink
 import com.orangepenguin.boilerplate.util.PermissionApi.Companion.anyPermissionDenied
 import com.orangepenguin.boilerplate.util.PermissionApi.Companion.anyPermissionPermanentlyDenied
-import com.orangepenguin.boilerplate.util.PermissionApi.Companion.requestPermissionsFromActivity
+import com.orangepenguin.boilerplate.util.PermissionApi.Companion.requestPermissions
 
 /**
  * This is a utility class to check permissions available to the current app.
@@ -29,7 +29,7 @@ class PermissionUtil {
                     showRationaleThenRequestPermissions(activity, allRequiredPermissions, permissionRequestResultCode,
                             rationaleMsgId)
 
-                else -> requestPermissionsFromActivity(activity, permissionRequestResultCode, * allRequiredPermissions)
+                else -> requestPermissions(activity, permissionRequestResultCode, * allRequiredPermissions)
             }
         }
 
@@ -59,7 +59,7 @@ class PermissionUtil {
                 anyPermissionPermanentlyDenied(activity, * allRequiredPermissions) ->
                     suggestUserEnablePermsInSettings(activity, rationaleMsgId)
 
-                else -> requestPermissionsFromActivity(activity, permissionRequestResultCode, * allRequiredPermissions)
+                else -> requestPermissions(activity, permissionRequestResultCode, * allRequiredPermissions)
             }
         }
 

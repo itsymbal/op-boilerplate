@@ -34,7 +34,7 @@ public class PermissionsDialogWithRationale extends DialogFragment {
                 .setMessage(getString(getArguments().getInt(ARG_INT_MESSAGE_ID)))
                 .setPositiveButton(R.string.generic_ok,
                         (dialog, id) -> PermissionApi.Companion
-                                .requestPermissionsFromActivity(getActivity(),
+                                .requestPermissions(getActivity(),
                                         getArguments().getInt(ARG_INT_REQUEST_CODE),
                                         getArguments().getStringArray(ARG_PERMS)))
                 .create();

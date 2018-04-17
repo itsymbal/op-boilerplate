@@ -50,21 +50,23 @@ class PermissionApi {
                     !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) &&
                     hasRequestedPermission(activity, permission)
 
+        /**
+         * Record the fact that permission has been requested. Used later to tell that it's been denied.
+         */
         fun setPermissionRequestedFlag(context: Context, permissions: Array<String>) {
-            for (permission in permissions) {
-                savePreference(context, PREF_HAS_REQUESTED_PERM + permission, true)
-            }
+            permissions.forEach { permission -> savePreference(context, PREF_HAS_REQUESTED_PERM + permission, true) }
+        }
+
+        /**
+         * Request permissions which haven't yet been granted
+         */
+        fun requestPermissions(activity: Activity, permRequestResultCode: Int, vararg allRequiredPermissions: String) {
+            ActivityCompat.requestPermissions(activity, getNotGrantedPermissions(activity, allRequiredPermissions),
+                    permRequestResultCode)
         }
 
         private fun hasRequestedPermission(context: Context, permission: String): Boolean =
                 getPreference(context, PREF_HAS_REQUESTED_PERM + permission, false)
-
-        fun requestPermissionsFromActivity(activity: Activity, permRequestResultCode: Int,
-                                           vararg allRequiredPermissions: String) {
-            ActivityCompat.requestPermissions(activity,
-                    getNotGrantedPermissions(activity, allRequiredPermissions),
-                    permRequestResultCode)
-        }
 
         private fun getNotGrantedPermissions(activity: Activity, wanted: Array<out String>): Array<String> {
             return wanted.filterNot { permissionGranted(activity, it) }.toTypedArray()

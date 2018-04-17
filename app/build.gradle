@@ -90,7 +90,6 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
     //noinspection GradleDependency
-    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.orangepenguin.boilerplate"
