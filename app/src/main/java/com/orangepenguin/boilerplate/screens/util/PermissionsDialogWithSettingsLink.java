@@ -36,13 +36,12 @@ public class PermissionsDialogWithSettingsLink extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        String message = getString(getArguments().getInt(ARG_INT_SUGGESTION_STRING_ID)) + " ";
+        String message = getString(getArguments().getInt(ARG_INT_SUGGESTION_STRING_ID)) + ' ';
 
         if (targetActivityExists(getActivity(), SETTINGS_INTENT)) {
             SETTINGS_INTENT.setData(Uri.parse("package:" + getActivity().getPackageName()));
             message += getString(R.string.permission_open_settings_screen);
-            builder.setPositiveButton(R.string.generic_ok,
-                    (dialog, id) -> startActivity(SETTINGS_INTENT));
+            builder.setPositiveButton(R.string.generic_ok, (dialog, id) -> startActivity(SETTINGS_INTENT));
         } else {
             message += getString(R.string.permission_open_settings_suggestion);
         }
@@ -53,9 +52,7 @@ public class PermissionsDialogWithSettingsLink extends DialogFragment {
     }
 
     private boolean targetActivityExists(Context context, Intent intent) {
-        List<ResolveInfo> resolveInfos =
-                context.getPackageManager().queryIntentActivities(intent, 0);
-
-        return (resolveInfos.isEmpty());
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(intent, 0);
+        return resolveInfos.isEmpty();
     }
 }
