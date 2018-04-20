@@ -13,9 +13,8 @@ class PermissionApi {
         /**
          * Show if all supplied permissions have been granted
          */
-        fun permissionsGranted(context: Context, permissions: Array<String>): Boolean {
-            return permissions.all { permissionGranted(context, it) }
-        }
+        fun permissionsGranted(context: Context, vararg permissions: String): Boolean =
+                permissions.all { permissionGranted(context, it) }
 
         /**
          * Show if supplied permission has been granted
@@ -26,9 +25,8 @@ class PermissionApi {
         /**
          * Show if at least one of the supplied permissions has been denied
          */
-        fun anyPermissionDenied(activity: Activity, vararg permissions: String): Boolean {
-            return permissions.any { permissionDenied(activity, it) }
-        }
+        fun anyPermissionDenied(activity: Activity, vararg permissions: String): Boolean =
+                permissions.any { permissionDenied(activity, it) }
 
         /**
          * Show if at the supplied permission has been denied

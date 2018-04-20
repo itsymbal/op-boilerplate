@@ -26,8 +26,7 @@ class UserDetailsActivityTest {
 
     @Before
     fun setUp() {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-                .applicationContext as Application
+        val context = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as Application
         Injector.setComponentFactory(AndroidTestComponentFactory(context))
         applicationComponent = Injector.getComponentFactory().applicationComponent
 
@@ -38,7 +37,7 @@ class UserDetailsActivityTest {
     @Test
     fun loadAvatarUrlShouldCallImageLoader() {
         val imageFetcher = applicationComponent.imageFetcher
-        var imageView = userDetailsActivity.findViewById(R.id.avatar_imageview) as ImageView
+        val imageView = userDetailsActivity.findViewById(R.id.avatar_imageview) as ImageView
 
         userDetailsActivity.setAvatarUrl("test_url")
 

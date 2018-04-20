@@ -1,6 +1,5 @@
 package com.orangepenguin.boilerplate.util
 
-import android.Manifest
 import android.app.Activity
 import com.orangepenguin.boilerplate.screens.util.PermissionsDialogWithRationale
 import com.orangepenguin.boilerplate.screens.util.PermissionsDialogWithSettingsLink
@@ -9,10 +8,11 @@ import com.orangepenguin.boilerplate.util.PermissionApi.Companion.anyPermissionP
 import com.orangepenguin.boilerplate.util.PermissionApi.Companion.requestPermissions
 
 /**
- * This is a utility class to check permissions available to the current app.
+ * Utility class to request permissions.
  */
 class PermissionUtil {
     companion object {
+
         /**
          * Request permissions. If any permission permanently denied
          * with "Don't ask again", send to settings screen. If already shown once, show rationale then
@@ -20,7 +20,7 @@ class PermissionUtil {
          */
         fun requestPermissionsShowingRationaleIfDeniedOnce(activity: Activity,
                                                            permissionRequestResultCode: Int,
-                                                           rationaleMsgId: Int, allRequiredPermissions: Array<String>) {
+                                                           rationaleMsgId: Int, vararg allRequiredPermissions: String) {
             when {
                 anyPermissionPermanentlyDenied(activity, * allRequiredPermissions) ->
                     suggestUserEnablePermsInSettings(activity, rationaleMsgId)
@@ -63,7 +63,6 @@ class PermissionUtil {
             }
         }
 
-
         private fun showRationaleThenRequestPermissions(activity: Activity,
                                                         permissions: Array<out String>, resultCode: Int,
                                                         rationaleResourceId: Int) {
@@ -75,11 +74,5 @@ class PermissionUtil {
             PermissionsDialogWithSettingsLink.createInstance(suggestionTextStringId)
                     .show(activity.fragmentManager, null)
         }
-
-        val PERMS_LOCATION = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        val PERMS_CAMERA = arrayOf(Manifest.permission.CAMERA)
-
-        val RESULT_PERMS_LOCATION = 1
-        val RESULT_PERMS_CAMERA = 2
     }
 }
