@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_permissions.*
 import javax.inject.Inject
 
 private const val RESULT_PERMS_LOCATION = 1
+
 class PermissionsActivity : BaseActivity<PermissionsPresenter>() {
 
     @Inject override lateinit var presenter: PermissionsPresenter
@@ -39,10 +40,10 @@ class PermissionsActivity : BaseActivity<PermissionsPresenter>() {
     }
 
     private fun requestLocation() {
-        Toast.makeText(this,"Requesting location ", LENGTH_LONG).show()
+        Toast.makeText(this, "Requesting location ", LENGTH_LONG).show()
     }
 
-    override fun onRequestPermissionsResult (requestCode:Int, perms:Array<String>, grantResults:IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, perms: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, perms, grantResults)
         permissionApi.setPermissionRequestedFlag(this, perms)
 
