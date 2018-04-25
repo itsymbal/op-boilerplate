@@ -3,18 +3,25 @@ package com.orangepenguin.boilerplate.screens.username
 import com.orangepenguin.boilerplate.model.User
 import com.orangepenguin.boilerplate.rx.RxTestSchedulers
 import com.orangepenguin.boilerplate.singletons.Constants
+import com.orangepenguin.boilerplate.singletons.Constants.Companion.PREF_USERNAME
 import com.orangepenguin.boilerplate.usecase.UserUseCase
 import com.orangepenguin.boilerplate.util.NotificationUtil
 import com.orangepenguin.boilerplate.util.SharedPreferencesUtil
+import com.orangepenguin.boilerplate.util.eq
+import com.orangepenguin.boilerplate.util.upon
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.isNull
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
-import rx.Observable
 import rx.Observable.just
 import rx.schedulers.Schedulers
 import rx.subjects.PublishSubject
@@ -37,9 +44,8 @@ class UsernamePresenterTest {
 
     @Before
     fun setUp() {
-        `when`<Observable<User>>(userUseCase.fetchUser(USERNAME)).thenReturn(just<User>(mockUser))
-        usernamePresenter = UsernamePresenter(userUseCase, sharedPreferencesUtil, notificationUtil,
-                schedulers)
+        upon(userUseCase.fetchUser(USERNAME)).thenReturn(just<User>(mockUser))
+        usernamePresenter = UsernamePresenter(userUseCase, sharedPreferencesUtil, notificationUtil, schedulers)
     }
 
     @Test
@@ -59,8 +65,7 @@ class UsernamePresenterTest {
     fun shouldSetUsernamePreferenceIfCheckboxChecked() {
         usernamePresenter.takeView(mockView)
         usernamePresenter.showUserButtonPressed(USERNAME, true)
-        verify<SharedPreferencesUtil>(sharedPreferencesUtil).savePreference(Constants.PREF_USERNAME,
-                USERNAME)
+        verify<SharedPreferencesUtil>(sharedPreferencesUtil).savePreference(Constants.PREF_USERNAME, USERNAME)
     }
 
     /**
@@ -70,8 +75,7 @@ class UsernamePresenterTest {
     fun shouldClearPreferenceIfCheckboxNotChecked() {
         usernamePresenter.takeView(mockView)
         usernamePresenter.showUserButtonPressed(USERNAME, false)
-        verify<SharedPreferencesUtil>(sharedPreferencesUtil).clearPreference(
-                Constants.PREF_USERNAME)
+        verify<SharedPreferencesUtil>(sharedPreferencesUtil).clearPreference(Constants.PREF_USERNAME)
     }
 
     /**
@@ -80,8 +84,7 @@ class UsernamePresenterTest {
     @Test
     @Ignore //TODO: get this mocking nullable business working
     fun shouldPopulateUsernameAndRememberCheckboxIfUsernamePreferenceSet() {
-        `when`(sharedPreferencesUtil.getPreference(eq(Constants.PREF_USERNAME),
-                ArgumentMatchers.isNull<String>())).thenReturn(USERNAME)
+        `when`(sharedPreferencesUtil.getPreference(PREF_USERNAME, null as String?)).thenReturn(USERNAME)
 
         usernamePresenter.takeView(mockView)
 
@@ -122,7 +125,7 @@ class UsernamePresenterTest {
         worker.schedule({ mockUserObservable.onNext(mockUser) }, 1000, MILLISECONDS)
         worker.schedule({ mockUserObservable.onCompleted() }, 1000, MILLISECONDS)
         // configure mock client to actually use mock Observable
-        `when`<Observable<User>>(userUseCase.fetchUser(USERNAME)).thenReturn(mockUserObservable)
+        upon(userUseCase.fetchUser(USERNAME)).thenReturn(mockUserObservable)
     }
 
     companion object {

@@ -10,6 +10,8 @@ import com.orangepenguin.boilerplate.util.PermissionApi;
 
 public class PermissionsDialogWithRationale extends DialogFragment {
 
+    private PermissionApi permissionApi = PermissionApi.INSTANCE;
+
     private static final String ARG_PERMS =
             PermissionsDialogWithRationale.class.getName() + "permissions";
     private static final String ARG_INT_MESSAGE_ID =
@@ -33,7 +35,7 @@ public class PermissionsDialogWithRationale extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setMessage(getString(getArguments().getInt(ARG_INT_MESSAGE_ID)))
                 .setPositiveButton(R.string.generic_ok,
-                        (dialog, id) -> PermissionApi.Companion
+                        (dialog, id) -> permissionApi
                                 .requestPermissions(getActivity(),
                                         getArguments().getInt(ARG_INT_REQUEST_CODE),
                                         getArguments().getStringArray(ARG_PERMS)))

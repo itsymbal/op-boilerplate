@@ -50,6 +50,7 @@ rootProject.ext {
     supportLibraryVersion = '25.4.0'
     assertJVersion = "1.1.1"
     autoValueMoshiVersion = "0.4.0"
+    powerMockVersion = "1.6.6"
     autoValueVersion = "1.2"
     daggerVersion = '2.6'
     gsonVersion = "2.7"
@@ -79,6 +80,12 @@ android {
             androidTest {
                 java.srcDir sharedTestDir
                 resources.srcDirs sharedResourceDir
+            }
+        }
+        // see https://teamtreehouse.com/community/androidcontentresresourcesnotfoundexception-string-resource-id-0x7f0c0013
+        testOptions {
+            unitTests {
+                includeAndroidResources = true
             }
         }
     }
@@ -180,6 +187,12 @@ dependencies {
     testImplementation("junit:junit:4.12")
     testImplementation "org.mockito:mockito-core:2.13.0"
     androidTestImplementation "org.mockito:mockito-android:2.13.0"
+    testImplementation 'org.robolectric:robolectric:3.6.1'
+    testImplementation "org.powermock:powermock-module-junit4:$powerMockVersion"
+    testImplementation "org.powermock:powermock-module-junit4-rule:$powerMockVersion"
+    testImplementation "org.powermock:powermock-api-mockito:$powerMockVersion"
+    testImplementation "org.powermock:powermock-classloading-xstream:$powerMockVersion"
+    testImplementation "org.powermock:powermock-api-mockito2:$powerMockVersion"
 
 // MockWebServer and Plus
     testImplementation("com.orhanobut:mockwebserverplus:1.0.0")
